@@ -22,7 +22,8 @@ var styles = StyleSheet.create({
     },
 
     button: {
-        height: 36,
+        height: 45,
+        marginTop:10,
         backgroundColor: '#48BBEC',
         alignSelf: 'stretch',
         justifyContent: 'center'
