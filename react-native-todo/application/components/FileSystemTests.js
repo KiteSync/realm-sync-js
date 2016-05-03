@@ -2,6 +2,7 @@
 var styles = require('../styles/styles');
 var React = require('react-native');
 var ToDoListItem = require('./ToDoListItem');
+var RNFS = require('react-native-fs');
 var { View, TouchableHighlight, Text} = React;
 
 
@@ -15,8 +16,34 @@ class FileSystemTests extends React.Component {
 
     }
 
+    getDatabaseLocation() {
+      console.log('get database location tapped')
+    }
+
+    //https://github.com/johanneslumpe/react-native-fs#usage
     listFiles() {
-      console.log('list files tapped')
+      console.log('listing the documents directory');
+      RNFS.readDir(RNFS.DocumentDirectoryPath)
+        .then((result) => {
+          console.log('GOT RESULT', result);
+
+          // stat the first file
+          return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+        })
+        .then((statResult) => {
+          if (statResult[0].isFile()) {
+            // if we have a file, read it
+            return RNFS.readFile(statResult[1], 'utf8');
+          }
+          return 'no file';
+        })
+        .then((contents) => {
+          // log the file contents
+          console.log(contents);
+        })
+        .catch((err) => {
+          console.log(err.message, err.code);
+        });
     }
 
     addFile() {
@@ -39,6 +66,13 @@ class FileSystemTests extends React.Component {
     render() {
         return (
             <View style = {styles.container}>
+              <TouchableHighlight
+                  style={[styles.button, styles.newButton]}
+                  underlayColor='#99d9f4'
+                  onPress={this.getDatabaseLocation.bind(this)}>
+                  <Text style={styles.buttonText}>Get database location</Text>
+              </TouchableHighlight>
+
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
                   underlayColor='#99d9f4'

@@ -2,6 +2,7 @@
 var styles = require('../styles/styles');
 var React = require('react-native');
 var ToDoList = require('./ToDoList');
+var ToDoEdit = require('./ToDoEdit');
 var FileSystemTests = require('./FileSystemTests');
 var { Text, View, ListView, TouchableHighlight, AlertIOS } = React;
 
