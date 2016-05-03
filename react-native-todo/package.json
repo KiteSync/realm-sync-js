@@ -8,6 +8,7 @@
   "dependencies": {
     "react": "^0.14.8",
     "react-native": "^0.24.1",
+    "react-native-fs": "^1.4.0",
     "tcomb-form-native": "^0.4.2"
   }
 }
