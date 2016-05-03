@@ -11,15 +11,13 @@
 
 
 //0. Set up AWS cradentials
+AWS.config.update({
+  accessKeyId: config.AWS_ACCESS_KEY_ID,
+  secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  region: config.AWS_REGION
+});
 
-AWS.config.update({accessKeyId: '', secretAccessKey: ''});
-AWS.config.update({region: 'us-west-1'});
-
-var s3 = new AWS.S3({params: {Bucket: 'jsuploadbucket'}});
-
-
-
-
+var s3 = new AWS.S3({params: {Bucket: config.AWS_BUCKET}});
 
 var fileChooser = document.getElementById('file-chooser');
 var button = document.getElementById('upload-button');
@@ -32,7 +30,10 @@ button.addEventListener('click', function() {
     var params = {
       Key: file.name,
       ContentType: file.type,
-      Body: file
+      Body: file,
+      Metadata: {
+        'x-amz-meta-test': '??????'
+      }
     };
     s3.upload(params, function (err, data) {
       results.innerHTML = err ? err : 'UPLOADED.';
@@ -71,7 +72,7 @@ return false;
 // var headers = function(url) {
 //   url = url || 'https://s3.amazonaws.com/jsuploadbucket/img.jpg'
 //   var headersText = ''
-//   fetch(url).then(function (response) {
+//   fetch(url).t                                                                                                                                                                      hen(function (response) {
 //     response.headers.forEach(function(val, key) {
 //       headersText +=  key + ': ' + val + '\n'
 //     })
