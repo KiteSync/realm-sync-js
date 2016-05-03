@@ -1,16 +1,4 @@
-// var awsConfig = {
-//   accessKeyId: 'AKIAJQCB3QZSVJ2RNU3A',
-//   secretAccessKey: '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'
-// };
-//
-// AWS.config.credentials = new AWS.WebIdentityCredentials({});
-// AWS.config.update({accessKeyId: 'AKIAJQCB3QZSVJ2RNU3A', secretAccessKey: 'W6GxFjJaaOD2gNIUNSj8BbyaDxXLBW'});
-//
-// AWS.config.region = 'us-west-1';
-// var s3 = new AWS.S3();
 
-
-//0. Set up AWS cradentials
 AWS.config.update({
   accessKeyId: config.AWS_ACCESS_KEY_ID,
   secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
