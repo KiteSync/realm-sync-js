@@ -5,15 +5,28 @@ var ToDoList = require('./ToDoList');
 var ToDoEdit = require('./ToDoEdit');
 var FileSystemTests = require('./FileSystemTests');
 var { Text, View, ListView, TouchableHighlight, AlertIOS } = React;
+const Realm = require('realm');
+
 
 class ToDoContainer extends React.Component {
     constructor() {
         super();
+           let realm = new Realm(
+           // {
+           //   schema: [{name: 'Dog', properties: {name: 'string'}}]
+           // });
+
+           // realm.write(() => {
+           //   realm.create('Dog', {name: 'Rex'});
+           // }
+           );
+
         this.state = {
             items: [
                 {txt: 'Learn react native', complete: false},
                 {txt: 'Make a to-do app', complete: true}
-            ]
+            ],
+            realmPath: Realm.defaultPath
         };
         this.alertMenu = this.alertMenu.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -63,7 +76,8 @@ class ToDoContainer extends React.Component {
     openFileSystemTests() {
         this.props.navigator.push({
             title: 'Test out the file system',
-            component: FileSystemTests
+            component: FileSystemTests,
+            passProps: {realmPath: this.state.realmPath}
         });
     }
 
