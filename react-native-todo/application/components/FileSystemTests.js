@@ -5,6 +5,8 @@ var ToDoListItem = require('./ToDoListItem');
 var RNFS = require('react-native-fs');
 var { View, TouchableHighlight, Text} = React;
 import { RNS3 } from 'react-native-aws3';
+const Realm = require('realm');
+
 
 class FileSystemTests extends React.Component {
 
@@ -17,26 +19,13 @@ class FileSystemTests extends React.Component {
     }
 
     getDatabaseLocation() {
-      console.log('get database location tapped')
+      console.log('get database location tapped', this.props.realmPath)
     }
 
     //https://github.com/johanneslumpe/react-native-fs#usage
     listFiles() {
       console.log('listing the documents directory');
-      RNFS.readDir(RNFS.DocumentDirectoryPath)
-        .then((result) => {
-          console.log('GOT RESULT', result);
-
-          // stat the first file
-          return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-        })
-        .then((statResult) => {
-          if (statResult[0].isFile()) {
-            // if we have a file, read it
-            return RNFS.readFile(statResult[1], 'utf8');
-          }
-          return 'no file';
-        })
+      RNFS.readFile(statResult[1], 'base64')
         .then((contents) => {
           // log the file contents
           console.log(contents);
@@ -55,7 +44,51 @@ class FileSystemTests extends React.Component {
     }
 
     getFromS3() {
-      console.log('get from s3 tapped')
+      // console.log('get from s3 tapped')
+      // // Get request to S3
+      // fetch('https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm', {
+      //   method: 'GET',
+      //   headers: {
+      //     // 'Accept-Encoding': 'base64',
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // })
+      // .then((data) => {
+      //   console.log('<><><>data: ', data);
+      //   console.log('<><><>data.get: ', data.blob());
+      // })
+      // .catch((error) => {
+      //   console.error(error);
+      // });
+      // // write fetch data to FS in realm location
+      var data = null;//new FormData();
+      //data.append("avatars", {"0":{}});
+
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.onreadystatechange = (e) => {
+        if (xhr.readyState === 4) {
+          // console.log(xhr.responseText);
+          RNFS.writeFile(this.props.realmPath, xhr.responseText, 'base64')
+            .then((success) => {
+              console.log('DATABASE OVER-WRITTEN');
+              console.log(Realm().objects('RealmTestClass2'));
+              
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        }
+      };
+
+      xhr.open("GET", "https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm");
+      xhr.setRequestHeader("cache-control", "no-cache");
+      // xhr.setRequestHeader("postman-token", "727cbfae-d5c6-95d3-a9d4-5c16b1654ddb");
+
+      xhr.send(data);
+
+
     }
 
     putToS3() {

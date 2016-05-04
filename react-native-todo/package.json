@@ -12,6 +12,7 @@
     "react-native-aws-signature": "0.0.9",
     "react-native-aws3": "0.0.1",
     "react-native-fs": "^1.4.0",
+    "realm": "^0.11.1",
     "tcomb-form-native": "^0.4.2"
   }
 }
