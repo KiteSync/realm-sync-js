@@ -4,7 +4,7 @@ var React = require('react-native');
 var ToDoListItem = require('./ToDoListItem');
 var RNFS = require('react-native-fs');
 var { View, TouchableHighlight, Text} = React;
-
+import { RNS3 } from 'react-native-aws3';
 
 class FileSystemTests extends React.Component {
 
@@ -59,9 +59,40 @@ class FileSystemTests extends React.Component {
     }
 
     putToS3() {
-      console.log('Put to s3 tapped')
-    }
+      console.log('put to s3 tapped');
+      let file = {
+        // `uri` can also be a file system path (i.e. file://)
+        uri: "https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm",
+        name: "realm.db.realm",
+        type: "application/octet-stream"
+      }
 
+      let options = {
+        keyPrefix: "uploads/",
+        bucket: "jsuploadbucket",
+        region: "us-west-1",
+        accessKey: "",
+        secretKey: "",
+        successActionStatus: 201
+      }
+
+      RNS3.put(file, options).then(response => {
+        if (response.status !== 201)
+          throw new Error("Failed to upload image to S3");
+        console.log(response.body);
+        /**
+         * {
+         *   postResponse: {
+         *     bucket: "your-bucket",
+         *     etag : "9f620878e06d28774406017480a59fd4",
+         *     key: "uploads/image.png",
+         *     location: "https://your-bucket.s3.amazonaws.com/uploads%2Fimage.png"
+         *   }
+         * }
+         */
+      });
+
+    }
 
     render() {
         return (
