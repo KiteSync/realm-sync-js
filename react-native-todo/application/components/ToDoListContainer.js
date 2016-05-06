@@ -4,6 +4,7 @@ var React = require('react-native');
 var ToDoList = require('./ToDoList');
 var ToDoEdit = require('./ToDoEdit');
 var FileSystemTests = require('./FileSystemTests');
+var RealmDbTests = require('./RealmDbTests');
 var { Text, View, ListView, TouchableHighlight, AlertIOS } = React;
 const Realm = require('realm');
 
@@ -81,6 +82,14 @@ class ToDoContainer extends React.Component {
         });
     }
 
+    openRealmDbTests() {
+        this.props.navigator.push({
+            title: 'Test out the file system',
+            component: RealmDbTests,
+            passProps: {realmPath: this.state.realmPath}
+        });
+    }
+
     render() {
         return (
             <View style={{flex:1}}>
@@ -88,6 +97,13 @@ class ToDoContainer extends React.Component {
                     items={this.state.items}
                     onPressItem={this.openItem}
                     onLongPressItem={this.alertMenu}/>
+
+                <TouchableHighlight
+                    style={[styles.button, styles.newButton]}
+                    underlayColor='#99d9f4'
+                    onPress={this.openRealmDbTests.bind(this)}>
+                    <Text style={styles.buttonText}>Test realm DB</Text>
+                </TouchableHighlight>
 
                 <TouchableHighlight
                     style={[styles.button, styles.newButton]}
