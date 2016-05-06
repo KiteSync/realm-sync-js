@@ -6,6 +6,11 @@ var { View, TouchableHighlight, Text} = React;
 const Realm = require('realm');
 
 
+let realm = new Realm({
+  schema: [{name: 'Dog', properties: {name: 'string'}}]
+});
+
+
 class RealmDbTests extends React.Component {
 
     constructor() {
@@ -16,12 +21,30 @@ class RealmDbTests extends React.Component {
     }
 
     addItemToDB() {
-      console.log('add item to DB')
+
+      realm.write(() => {
+        try {
+          realm.create('Dog', {name: 'Phil'});
+          console.log('success');
+        } catch(error) {
+          console.log(error);
+        }
+      });
+
     }
 
     //https://github.com/johanneslumpe/react-native-fs#usage
     addItemToDB2() {
-      console.log('add item to DB2');
+
+      realm.write(() => {
+        try {
+          realm.create('Dofg', {name: 'Phil'});
+          console.log('success');
+        } catch(error) {
+          console.log(error);
+        }
+      });
+
     }
 
     modifyItemInDB() {
