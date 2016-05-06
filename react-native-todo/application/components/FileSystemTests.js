@@ -44,58 +44,19 @@ class FileSystemTests extends React.Component {
     }
 
     getFromS3() {
-      // console.log('get from s3 tapped')
-      // // Get request to S3
-      // fetch('https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm', {
-      //   method: 'GET',
-      //   headers: {
-      //     // 'Accept-Encoding': 'base64',
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // })
-      // .then((data) => {
-      //   console.log('<><><>data: ', data);
-      //   console.log('<><><>data.get: ', data.blob());
-      // })
-      // .catch((error) => {
-      //   console.error(error);
-      // });
-      // // write fetch data to FS in realm location
-      var data = null;//new FormData();
-      //data.append("avatars", {"0":{}});
-
-      var xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-
-      xhr.onreadystatechange = (e) => {
-        if (xhr.readyState === 4) {
-          // console.log(xhr.responseText);
-          RNFS.writeFile(this.props.realmPath, xhr.responseText, 'base64')
-            .then((success) => {
-              console.log('DATABASE OVER-WRITTEN');
-              console.log(Realm().objects('RealmTestClass2'));
-              
-            })
-            .catch((err) => {
-              console.log(err.message);
-            });
-        }
-      };
-
-      xhr.open("GET", "https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm");
-      xhr.setRequestHeader("cache-control", "no-cache");
-      // xhr.setRequestHeader("postman-token", "727cbfae-d5c6-95d3-a9d4-5c16b1654ddb");
-
-      xhr.send(data);
-
-
+      console.log('get from S3');
+      RNFS.downloadFile(
+        'https://s3-us-west-1.amazonaws.com/jsuploadbucket/uploads/realm.db.realm',
+        this.props.realmPath
+      );
+      console.log('check!!', this.props.realmPath);
     }
 
     putToS3() {
       console.log('put to s3 tapped');
       let file = {
         // `uri` can also be a file system path (i.e. file://)
-        uri: "https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm",
+        uri: this.props.realmPath,
         name: "realm.db.realm",
         type: "application/octet-stream"
       }
@@ -182,3 +143,47 @@ class FileSystemTests extends React.Component {
 
 
 module.exports = FileSystemTests;
+
+      // // console.log('get from s3 tapped')
+      // // // Get request to S3
+      // // fetch('https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm', {
+      // //   method: 'GET',
+      // //   headers: {
+      // //     // 'Accept-Encoding': 'base64',
+      // //     'Content-Type': 'multipart/form-data'
+      // //   }
+      // // })
+      // // .then((data) => {
+      // //   console.log('<><><>data: ', data);
+      // //   console.log('<><><>data.get: ', data.blob());
+      // // })
+      // // .catch((error) => {
+      // //   console.error(error);
+      // // });
+      // // // write fetch data to FS in realm location
+      // var data = null;//new FormData();
+      // // //data.append("avatars", {"0":{}});
+
+      // var xhr = new XMLHttpRequest();
+      // xhr.withCredentials = true;
+
+      // xhr.onreadystatechange = (e) => {
+      //   if (xhr.readyState === 4) {
+      //     // console.log(xhr.responseText);
+      //     RNFS.writeFile(this.props.realmPath+'1', xhr.responseText, 'base64')
+      //       .then((success) => {
+      //         console.log('DATABASE OVER-WRITTEN');
+      //         console.log(Realm().objects('RealmTestClass2'));
+              
+      //       })
+      //       .catch((err) => {
+      //         console.log(err.message);
+      //       });
+      //   }
+      // };
+
+      // xhr.open("GET", "https://s3-us-west-1.amazonaws.com/jsuploadbucket/realm.db.realm");
+      // xhr.setRequestHeader("cache-control", "no-cache");
+      // // xhr.setRequestHeader("postman-token", "727cbfae-d5c6-95d3-a9d4-5c16b1654ddb");
+
+      // xhr.send(data);
