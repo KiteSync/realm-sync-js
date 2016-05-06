@@ -174,7 +174,7 @@ module.exports = FileSystemTests;
       //       .then((success) => {
       //         console.log('DATABASE OVER-WRITTEN');
       //         console.log(Realm().objects('RealmTestClass2'));
-              
+
       //       })
       //       .catch((err) => {
       //         console.log(err.message);
