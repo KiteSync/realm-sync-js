@@ -4,7 +4,6 @@ var React = require('react-native');
 var ToDoListItem = require('./ToDoListItem');
 var RNFS = require('react-native-fs');
 var { View, TouchableHighlight, Text} = React;
-import { transferUtility } from 'react-native-s3';
 import { RNS3 } from 'react-native-aws3';
 const Realm = require('realm');
 
@@ -66,8 +65,8 @@ class FileSystemTests extends React.Component {
         keyPrefix: "uploads/",
         bucket: "jsuploadbucket",
         region: "us-west-1",
-        accessKey: "AKIAJQU5A52ZPU6OQUXQ",
-        secretKey: "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",
+        accessKey: "",
+        secretKey: "",
         successActionStatus: 201
       }
 
