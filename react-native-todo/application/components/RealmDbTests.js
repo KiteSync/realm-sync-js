@@ -73,19 +73,24 @@ class RealmDbTests extends React.Component {
     }
     deleteAllItemsFromDB() {
       realm.write(() => {
-        let allDogs = realm.objects('Dog');
-        realm.delete(allDogs);
+        try {
+          let allDogs = realm.objects('Dog');
+          let allDogsIds = [];
+          allDogs.forEach(dog => {
+            allDogsIds.push(dog.realmSyncId);
+          });
+          realm.delete(allDogs);
+          console.log(allDogsIds);
+        } catch(error) {
+          console.log(error);
+        }
       });
-
     }
 
     listItemsInDB() {
       let dogs = realm.objects('Dog')
       for(var i = 0; i < dogs.length; i++) {
         console.log(JSON.stringify(dogs[i]));
-          for(var key in dogs[i]) {
-            console.log(dogs[i][key]);
-          }
       }
     }
 
