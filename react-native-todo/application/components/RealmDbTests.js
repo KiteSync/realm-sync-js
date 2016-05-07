@@ -112,14 +112,14 @@ class RealmDbTests extends React.Component {
               </TouchableHighlight>
 
               <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
+                  style={[styles.button, styles.newButton, styles.buttonUnimplemented]}
                   underlayColor='#99d9f4'
                   onPress={this.modifyItemInDB.bind(this)}>
                   <Text style={styles.buttonText}>Modify item in DB</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
+                  style={[styles.button, styles.newButton, styles.buttonUnimplemented]}
                   underlayColor='#99d9f4'
                   onPress={this.deleteItemFromDB.bind(this)}>
                   <Text style={styles.buttonText}>Delete an item from DB</Text>
