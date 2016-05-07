@@ -39,9 +39,10 @@ class RealmDbTests extends React.Component {
     }
 
     addItemToDB() {
+      console.log(scripts.randomName());
       realm.write(() => {
         try {
-          let dog = realm.create('Dog', {name: 'Phil', realmSyncId: scripts.generateGuid()});
+          let dog = realm.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()});
           console.log(scripts.addObjToLocalChanges(dog));
         } catch(error) {
           console.log("ERROR", error);
