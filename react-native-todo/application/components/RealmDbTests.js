@@ -6,7 +6,6 @@ var ToDoListItem = require('./ToDoListItem');
 var { View, TouchableHighlight, Text} = React;
 const Realm = require('realm');
 
-
 let realm = new Realm({
   schema: [{
     name: 'Dog',
@@ -15,11 +14,10 @@ let realm = new Realm({
       realmSyncId: 'string',
     }
   }],
-  schemaVersion: 1,
+  schemaVersion: 4,
   migration: function(oldRealm, newRealm) {
     // only apply this change if upgrading to schemaVersion 1
     if (oldRealm.schemaVersion < 1) {
-      var oldObjects = oldRealm.objects('Dog');
       var newObjects = newRealm.objects('Dog');
 
       // loop through all objects and set the name property in the new schema
@@ -41,18 +39,14 @@ class RealmDbTests extends React.Component {
     }
 
     addItemToDB() {
-
       realm.write(() => {
-        console.log('in realm write');
-
         try {
-          realm.create('Dog', {name: 'Phil'});
-          console.log('success');
+          let dog = realm.create('Dog', {name: 'Phil', realmSyncId: scripts.generateGuid()});
+          console.log(scripts.addObjToLocalChanges(dog));
         } catch(error) {
           console.log("ERROR", error);
         }
       });
-
     }
 
     //https://github.com/johanneslumpe/react-native-fs#usage
@@ -60,7 +54,7 @@ class RealmDbTests extends React.Component {
 
       realm.write(() => {
         try {
-          realm.create('Dof', {name: 'Phil'});
+          realm.create('Dof', {name: 'Phil', realmSyncId: scripts.generateGuid()});
           console.log('success');
         } catch(error) {
           console.log(error);
@@ -77,18 +71,39 @@ class RealmDbTests extends React.Component {
       console.log('delete item from DB')
     }
     deleteAllItemsFromDB() {
-      console.log('delete all items from DB')
+      realm.write(() => {
+        try {
+          let allDogs = realm.objects('Dog');
+          let allDogsIds = [];
+          allDogs.forEach(dog => {
+            allDogsIds.push(dog.realmSyncId);
+          });
+          realm.delete(allDogs);
+          allDogsIds.forEach(function(id) {
+            scripts.deleteObjFromLocalChanges(id);
+          });
+        } catch(error) {
+          console.log(error);
+        }
+      });
     }
 
     listItemsInDB() {
       let dogs = realm.objects('Dog')
       for(var i = 0; i < dogs.length; i++) {
-        debugger;
         console.log(JSON.stringify(dogs[i]));
-          for(var key in dogs[i]) {
-            console.log(dogs[i][key]);
-          }
       }
+    }
+
+    listItemsInDB() {
+      let dogs = realm.objects('Dog')
+      for(var i = 0; i < dogs.length; i++) {
+        console.log(JSON.stringify(dogs[i]));
+      }
+    }
+
+    listItemsInLocalChangesCache() {
+      console.log(scripts.itemsInLocalChanges());
     }
 
     render() {
@@ -109,14 +124,14 @@ class RealmDbTests extends React.Component {
               </TouchableHighlight>
 
               <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
+                  style={[styles.button, styles.newButton, styles.buttonUnimplemented]}
                   underlayColor='#99d9f4'
                   onPress={this.modifyItemInDB.bind(this)}>
                   <Text style={styles.buttonText}>Modify item in DB</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
+                  style={[styles.button, styles.newButton, styles.buttonUnimplemented]}
                   underlayColor='#99d9f4'
                   onPress={this.deleteItemFromDB.bind(this)}>
                   <Text style={styles.buttonText}>Delete an item from DB</Text>
@@ -134,6 +149,13 @@ class RealmDbTests extends React.Component {
                 underlayColor='#99d9f4'
                 onPress={this.listItemsInDB.bind(this)}>
                 <Text style={styles.buttonText}>List items in DB</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight
+                style={[styles.button, styles.newButton]}
+                underlayColor='#99d9f4'
+                onPress={this.listItemsInLocalChangesCache.bind(this)}>
+                <Text style={styles.buttonText}>List items in local changes cache</Text>
               </TouchableHighlight>
             </View>
         );

@@ -28,6 +28,9 @@ var styles = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center'
     },
+    buttonUnimplemented: {
+        backgroundColor: '#aaa',
+    },
 
     saveButton: {
         borderColor: '#48BBEC',

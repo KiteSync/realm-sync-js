@@ -106,14 +106,14 @@ class FileSystemTests extends React.Component {
               </TouchableHighlight>
 
               <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
+                  style={[styles.button, styles.newButton, styles.buttonUnimplemented ]}
                   underlayColor='#99d9f4'
                   onPress={this.addFile.bind(this)}>
                   <Text style={styles.buttonText}>Add File</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
+                  style={[styles.button, styles.newButton, styles.buttonUnimplemented]}
                   underlayColor='#99d9f4'
                   onPress={this.deleteFile.bind(this)}>
                   <Text style={styles.buttonText}>Delete File</Text>
