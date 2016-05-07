@@ -1,3 +1,25 @@
+var localChangesCache = {}
+var usn = 0;
+
+
+var addObjToLocalChanges = function(obj) {
+  var returnObj = {}
+  returnObj['usn'] = usn++;
+  returnObj['body'] = obj;
+  localChangesCache[obj.realmSyncId] = (returnObj);
+  return(JSON.stringify(returnObj));
+}
+
+var deleteObjFromLocalChanges = function(realmSyncId) {
+  delete localChangesCache[realmSyncId]
+  usn--
+  console.log('item deleted. current USN: ', usn );
+}
+
+var itemsInLocalChanges = function() {
+  return JSON.stringify(localChangesCache);
+}
+
 var generateGuid = function() {
   var result, i, j;
   result = '';
@@ -11,4 +33,10 @@ var generateGuid = function() {
 }
 
 
-module.exports = {generateGuid: generateGuid}
+module.exports = {
+  usn: usn,
+  addObjToLocalChanges: addObjToLocalChanges,
+  deleteObjFromLocalChanges: deleteObjFromLocalChanges,
+  itemsInLocalChanges: itemsInLocalChanges,
+  generateGuid: generateGuid
+}

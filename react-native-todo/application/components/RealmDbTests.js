@@ -6,7 +6,6 @@ var ToDoListItem = require('./ToDoListItem');
 var { View, TouchableHighlight, Text} = React;
 const Realm = require('realm');
 
-
 let realm = new Realm({
   schema: [{
     name: 'Dog',
@@ -43,7 +42,7 @@ class RealmDbTests extends React.Component {
       realm.write(() => {
         try {
           let dog = realm.create('Dog', {name: 'Phil', realmSyncId: scripts.generateGuid()});
-          console.log(JSON.stringify(dog));
+          console.log(scripts.addObjToLocalChanges(dog));
         } catch(error) {
           console.log("ERROR", error);
         }
@@ -80,7 +79,9 @@ class RealmDbTests extends React.Component {
             allDogsIds.push(dog.realmSyncId);
           });
           realm.delete(allDogs);
-          console.log(allDogsIds);
+          allDogsIds.forEach(function(id) {
+            scripts.deleteObjFromLocalChanges(id);
+          });
         } catch(error) {
           console.log(error);
         }
@@ -92,6 +93,17 @@ class RealmDbTests extends React.Component {
       for(var i = 0; i < dogs.length; i++) {
         console.log(JSON.stringify(dogs[i]));
       }
+    }
+
+    listItemsInDB() {
+      let dogs = realm.objects('Dog')
+      for(var i = 0; i < dogs.length; i++) {
+        console.log(JSON.stringify(dogs[i]));
+      }
+    }
+
+    listItemsInLocalChangesCache() {
+      console.log(scripts.itemsInLocalChanges());
     }
 
     render() {
@@ -137,6 +149,13 @@ class RealmDbTests extends React.Component {
                 underlayColor='#99d9f4'
                 onPress={this.listItemsInDB.bind(this)}>
                 <Text style={styles.buttonText}>List items in DB</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight
+                style={[styles.button, styles.newButton]}
+                underlayColor='#99d9f4'
+                onPress={this.listItemsInLocalChangesCache.bind(this)}>
+                <Text style={styles.buttonText}>List items in local changes cache</Text>
               </TouchableHighlight>
             </View>
         );
