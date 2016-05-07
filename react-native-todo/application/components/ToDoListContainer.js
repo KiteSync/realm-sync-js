@@ -12,7 +12,7 @@ const Realm = require('realm');
 class ToDoContainer extends React.Component {
     constructor() {
         super();
-           let realm = new Realm(
+          //  let realm = new Realm(
            // {
            //   schema: [{name: 'Dog', properties: {name: 'string'}}]
            // });
@@ -20,7 +20,7 @@ class ToDoContainer extends React.Component {
            // realm.write(() => {
            //   realm.create('Dog', {name: 'Rex'});
            // }
-           );
+          //  );
 
         this.state = {
             items: [
