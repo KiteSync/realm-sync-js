@@ -5,6 +5,7 @@ var ToDoList = require('./ToDoList');
 var ToDoEdit = require('./ToDoEdit');
 var FileSystemTests = require('./FileSystemTests');
 var RealmDbTests = require('./RealmDbTests');
+var RemoteDbTests = require('./RemoteDbTests');
 var { Text, View, ListView, TouchableHighlight, AlertIOS } = React;
 const Realm = require('realm');
 
@@ -90,6 +91,14 @@ class ToDoContainer extends React.Component {
         });
     }
 
+    openRemoteDbTests() {
+        this.props.navigator.push({
+            title: 'Test out the file system',
+            component: RemoteDbTests,
+            passProps: {realmPath: this.state.realmPath}
+        });
+    }
+
     render() {
         return (
             <View style={{flex:1}}>
@@ -101,9 +110,17 @@ class ToDoContainer extends React.Component {
                 <TouchableHighlight
                     style={[styles.button, styles.newButton]}
                     underlayColor='#99d9f4'
+                    onPress={this.openRemoteDbTests.bind(this)}>
+                    <Text style={styles.buttonText}>Test remote DB</Text>
+                </TouchableHighlight>
+                
+                <TouchableHighlight
+                    style={[styles.button, styles.newButton]}
+                    underlayColor='#99d9f4'
                     onPress={this.openRealmDbTests.bind(this)}>
                     <Text style={styles.buttonText}>Test realm DB</Text>
                 </TouchableHighlight>
+
 
                 <TouchableHighlight
                     style={[styles.button, styles.newButton]}
