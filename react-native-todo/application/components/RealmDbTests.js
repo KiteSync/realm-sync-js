@@ -13,6 +13,7 @@ class RealmDbTests extends React.Component {
         super();
     }
     componentWillMount() {
+      console.log('Database location: ', this.props.realmPath)
 
     }
 
@@ -61,6 +62,17 @@ class RealmDbTests extends React.Component {
           allDogsIds.forEach(function(id) {
             scripts.deleteObjFromLocalChanges(id);
           });
+        } catch(error) {
+          console.log(error);
+        }
+      });
+    }
+
+    deleteAllItemsFromSyncQueue() {
+      realm.write(() => {
+        try {
+          let SyncQueue = realm.objects('SyncQueue');
+          realm.delete(SyncQueue);
         } catch(error) {
           console.log(error);
         }
@@ -121,6 +133,12 @@ class RealmDbTests extends React.Component {
                   underlayColor='#99d9f4'
                   onPress={this.deleteAllItemsFromDB.bind(this)}>
                   <Text style={styles.buttonText}>Delete all items from DB</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                  style={[styles.button, styles.newButton]}
+                  underlayColor='#99d9f4'
+                  onPress={this.deleteAllItemsFromSyncQueue.bind(this)}>
+                  <Text style={styles.buttonText}>Delete all items from SyncQueue</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
