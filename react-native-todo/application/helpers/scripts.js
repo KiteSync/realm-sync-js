@@ -1,20 +1,37 @@
+import realm from '../components/realm';
+
+
 var clientDbCache = {}
 var usn = 0;
 
 
 var addObjToLocalChanges = function(obj) {
   var returnObj = {}
-  returnObj['usn'] = usn++;
-  returnObj['body'] = obj;
-  clientDbCache[obj.realmSyncId] = (returnObj);
-  return(JSON.stringify(returnObj));
+  returnObj.usn = usn++;
+  returnObj.realmSyncId = obj.realmSyncId;
+  var body = {}
+  for(var key in obj) {
+    body[key] = obj[key];
+  }
+  returnObj.body = JSON.stringify(body);
+    try {
+      let syncQueue = realm.create('SyncQueue', returnObj);
+    } catch(error) {
+      console.log("ERROR in syncQueue write", error);
+    }
 }
 
 var deleteObjFromLocalChanges = function(realmSyncId) {
-  clientDbCache[realmSyncId]['usn'] = usn++;
-  clientDbCache[realmSyncId]['body'] = undefined;
-  console.log('item deleted. current USN: ', usn );
+  // clientDbCache[realmSyncId]['usn'] = usn++;
+  // clientDbCache[realmSyncId]['body'] = undefined;
+  // console.log('item deleted. current USN: ', usn );
+  var filterText = 'realmSyncId = "' + realmSyncId + '"'
+  let objToDelete = realm.objects('SyncQueue').filtered(filterText);
+  objToDelete[0].usn = ++usn;
+  objToDelete[0].body = "";
 }
+
+
 
 var itemsInLocalChanges = function() {
   return JSON.stringify(clientDbCache);
