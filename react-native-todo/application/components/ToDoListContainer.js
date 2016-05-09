@@ -77,7 +77,7 @@ class ToDoContainer extends React.Component {
 
     openFileSystemTests() {
         this.props.navigator.push({
-            title: 'Test out the file system',
+            title: 'Testing File System',
             component: FileSystemTests,
             passProps: {realmPath: this.state.realmPath}
         });
@@ -85,7 +85,7 @@ class ToDoContainer extends React.Component {
 
     openRealmDbTests() {
         this.props.navigator.push({
-            title: 'Test out the file system',
+            title: 'Testing Realm DB',
             component: RealmDbTests,
             passProps: {realmPath: this.state.realmPath}
         });
@@ -93,7 +93,7 @@ class ToDoContainer extends React.Component {
 
     openRemoteDbTests() {
         this.props.navigator.push({
-            title: 'Test out the file system',
+            title: 'Testing Remote DB',
             component: RemoteDbTests,
             passProps: {realmPath: this.state.realmPath}
         });
