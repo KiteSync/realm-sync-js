@@ -113,7 +113,7 @@ class ToDoContainer extends React.Component {
                     onPress={this.openRemoteDbTests.bind(this)}>
                     <Text style={styles.buttonText}>Test remote DB</Text>
                 </TouchableHighlight>
-                
+
                 <TouchableHighlight
                     style={[styles.button, styles.newButton]}
                     underlayColor='#99d9f4'

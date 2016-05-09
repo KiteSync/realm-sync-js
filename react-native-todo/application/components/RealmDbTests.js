@@ -4,29 +4,7 @@ var scripts = require('../helpers/scripts');
 var React = require('react-native');
 var ToDoListItem = require('./ToDoListItem');
 var { View, TouchableHighlight, Text} = React;
-const Realm = require('realm');
-
-let realm = new Realm({
-  schema: [{
-    name: 'Dog',
-    properties: {
-      name: 'string',
-      realmSyncId: 'string',
-    }
-  }],
-  schemaVersion: 4,
-  migration: function(oldRealm, newRealm) {
-    // only apply this change if upgrading to schemaVersion 1
-    if (oldRealm.schemaVersion < 1) {
-      var newObjects = newRealm.objects('Dog');
-
-      // loop through all objects and set the name property in the new schema
-      for (var i = 0; i < oldObjects.length; i++) {
-        newObjects[i].realmSyncId = scripts.generateGuid();
-      }
-    }
-  }
-});
+import realm from './realm';
 
 
 class RealmDbTests extends React.Component {
@@ -39,9 +17,10 @@ class RealmDbTests extends React.Component {
     }
 
     addItemToDB() {
+      console.log(scripts.randomName());
       realm.write(() => {
         try {
-          let dog = realm.create('Dog', {name: 'Phil', realmSyncId: scripts.generateGuid()});
+          let dog = realm.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()});
           console.log(scripts.addObjToLocalChanges(dog));
         } catch(error) {
           console.log("ERROR", error);
