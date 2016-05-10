@@ -3,7 +3,7 @@ var styles = require('../styles/styles');
 var scripts = require('../helpers/scripts');
 var React = require('react-native');
 var ToDoListItem = require('./ToDoListItem');
-var { View, TouchableHighlight, Text} = React;
+var {View, TouchableHighlight, Text} = React;
 
 class RemoteDbTests extends React.Component {
 
@@ -16,29 +16,45 @@ class RemoteDbTests extends React.Component {
 
     addItemToRemoteDB() {
       console.log('add item to remote db');
-      // fetch('https://fk6uzmbdhc.execute-api.us-east-1.amazonaws.com/test/pets', {
-      //   method: 'POST',
-      //   headers: {
-      //     // 'Accept-Encoding': 'base64',
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({"pets": [ {"id": 1, "type": "pup", "price": 249.99},
-      //      {"id": 2, "type": "kitten", "price": 124.99}
-      //    ]
-      //   })
-      // })
-      // .then((data) => {
-      //   console.log('<><><>data: ', data);
-      //   console.log('<><><>data.get: ', data.json());
-      // })
-      // .catch((error) => {
-      //   console.error(error);
-      // });
+      fetch('https://fk6uzmbdhc.execute-api.us-east-1.amazonaws.com/test/pets', {
+        method: 'POST',
+        headers: {
+          // 'Accept-Encoding': 'base64',
+          'Content-Type': 'application/json',
+          'X-API-Key': ''
+        },
+        body: JSON.stringify({
+          "pets": [ {"id": 1, "type": "pup", "price": 249.99},
+                    {"id": 2, "type": "kitten", "price": 124.99}
+                  ]
+        })
+      })
+      .then((data) => {
+        console.log('<><><>data: ', data);
+        console.log('<><><>data.get: ', data.json());
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
 
     //https://github.com/johanneslumpe/react-native-fs#usage
-    addItemToRemoteDB2() {
-      console.log('add item to remote db (simulate error)');
+    queryItemsFromRemoteDB() {
+      console.log('get items from remote db')
+      fetch('https://fk6uzmbdhc.execute-api.us-east-1.amazonaws.com/test/pets', {
+        method: 'GET',
+        headers: {
+          // 'Accept-Encoding': 'base64',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((data) => {
+        console.log('<><><>data: ', data);
+        console.log('<><><>data.get: ', data.json());
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     }
 
     getItemsFromRemoteDB() {
@@ -84,7 +100,7 @@ class RemoteDbTests extends React.Component {
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
                   underlayColor='#99d9f4'
-                  onPress={this.addItemToRemoteDB2.bind(this)}>
+                  onPress={this.queryItemsFromDB.bind(this)}>
                   <Text style={styles.buttonText}>Add item to Remote DB test 2 (simulate error)</Text>
               </TouchableHighlight>
 
