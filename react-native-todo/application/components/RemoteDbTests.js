@@ -21,7 +21,7 @@ class RemoteDbTests extends React.Component {
         headers: {
           // 'Accept-Encoding': 'base64',
           'Content-Type': 'application/json',
-          'X-API-Key': 'AKIAJR6LM6LHYSEY4VTQ'
+          'X-API-Key': ''
         },
         body: JSON.stringify({
           "pets": [ {"id": 1, "type": "pup", "price": 249.99},

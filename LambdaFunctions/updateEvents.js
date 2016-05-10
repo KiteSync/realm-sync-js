@@ -1,10 +1,12 @@
 var AWS = require('aws-sdk');
-var DOC = require('dynamodb-doc');
-var dynamo = new DOC.DynamoDB();
 var dynamodb = new AWS.DynamoDB();
+// var DOC = require('dynamodb-doc');
+// var dynamo = new DOC.DynamoDB();
 
-AWS.config.update({accessKeyId: 'AKIAITPAKT6WNQ26CCWA',
-                   secretAccessKey:  '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'});
+AWS.config.update({accessKeyId: '',
+                   secretAccessKey:  ''});
+                   
+var dynamo = new AWS.DynamoDB.DocumentClient();                   
                    
 var params = {
     TableName : "RealmSync",
@@ -54,7 +56,7 @@ exports.handler = function(event, context) {
     };    
     event.forEach(function(item){
         console.log(item);
-        dynamo.putItem({TableName:"RealmSync", Item:item}, cb);
+        dynamo.put({TableName:"RealmSync", Item:item}, cb);
     });
    
 };
