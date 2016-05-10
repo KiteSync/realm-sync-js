@@ -7,7 +7,7 @@ AWS.config.update({accessKeyId: '',
                    secretAccessKey:  ''});
                    
 var dynamo = new AWS.DynamoDB.DocumentClient();                   
-                   
+              
 var params = {
     TableName : "RealmSync",
     KeySchema: [       
@@ -56,6 +56,7 @@ exports.handler = function(event, context) {
     };    
     event.forEach(function(item){
         console.log(item);
+
         dynamo.put({TableName:"RealmSync", Item:item}, cb);
     });
    
