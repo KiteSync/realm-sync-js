@@ -16,18 +16,22 @@ class RemoteDbTests extends React.Component {
 
     addItemToRemoteDB() {
       console.log('add item to remote db');
-      fetch('https://fk6uzmbdhc.execute-api.us-east-1.amazonaws.com/test/pets', {
+      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'POST',
         headers: {
           // 'Accept-Encoding': 'base64',
           'Content-Type': 'application/json',
           'X-API-Key': ''
         },
-        body: JSON.stringify({
-          "pets": [ {"id": 1, "type": "pup", "price": 249.99},
-                    {"id": 2, "type": "kitten", "price": 124.99}
-                  ]
-        })
+        body: JSON.stringify([
+          {
+            "syncId": "232-534-123",
+            "obj": {
+              "name": "colin"
+            },
+            "usn": 4
+          }
+        ])
       })
       .then((data) => {
         console.log('<><><>data: ', data);
@@ -41,7 +45,7 @@ class RemoteDbTests extends React.Component {
     //https://github.com/johanneslumpe/react-native-fs#usage
     queryItemsFromRemoteDB() {
       console.log('get items from remote db')
-      fetch('https://fk6uzmbdhc.execute-api.us-east-1.amazonaws.com/test/pets', {
+      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'GET',
         headers: {
           // 'Accept-Encoding': 'base64',
@@ -59,7 +63,7 @@ class RemoteDbTests extends React.Component {
 
     getItemsFromRemoteDB() {
       console.log('get items from remote db')
-      fetch('https://fk6uzmbdhc.execute-api.us-east-1.amazonaws.com/test/pets', {
+      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'GET',
         headers: {
           // 'Accept-Encoding': 'base64',
@@ -100,7 +104,7 @@ class RemoteDbTests extends React.Component {
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
                   underlayColor='#99d9f4'
-                  onPress={this.queryItemsFromDB.bind(this)}>
+                  onPress={this.queryItemsFromRemoteDB.bind(this)}>
                   <Text style={styles.buttonText}>Add item to Remote DB test 2 (simulate error)</Text>
               </TouchableHighlight>
 

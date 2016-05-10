@@ -29,6 +29,7 @@ exports.handler = function(event, context) {
             data.Items.forEach(function(obj) {
                console.log('Obj USN'+obj.usn);
             });
+            context.done(null, data.Items);
        }
     };
 
