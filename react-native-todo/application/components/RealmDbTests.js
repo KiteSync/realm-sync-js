@@ -17,21 +17,22 @@ class RealmDbTests extends React.Component {
 
     }
 
+    //
     addItemToDB() {
-      console.log(scripts.randomName());
       realm.write(() => {
         try {
           let dog = realm.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()});
-          console.log(scripts.addObjToLocalChanges(dog));
+          // adds log of created object to sync queue
+          scripts.addObjectToSyncQueue(dog);
         } catch(error) {
+          //If there's an error in realm.create, go here!
           console.log("ERROR", error);
         }
       });
     }
 
-    //https://github.com/johanneslumpe/react-native-fs#usage
+    //Testing what happens if realm.create is broken.
     addItemToDB2() {
-
       realm.write(() => {
         try {
           realm.create('Dof', {name: 'Phil', realmSyncId: scripts.generateGuid()});
@@ -44,22 +45,23 @@ class RealmDbTests extends React.Component {
     }
 
     modifyItemInDB() {
-      console.log(scripts.generateGuid())
+
     }
 
     deleteItemFromDB() {
       console.log('delete item from DB')
     }
+
     deleteAllItemsFromDB() {
       realm.write(() => {
         try {
           let allDogs = realm.objects('Dog');
-          let allDogsIds = [];
+          let allRealmSyncIds = [];
           allDogs.forEach(dog => {
-            allDogsIds.push(dog.realmSyncId);
+            allRealmSyncIds.push(dog.realmSyncId);
           });
           realm.delete(allDogs);
-          allDogsIds.forEach(function(id) {
+          allRealmSyncIds.forEach(function(id) {
             scripts.deleteObjFromLocalChanges(id);
           });
         } catch(error) {
@@ -93,9 +95,6 @@ class RealmDbTests extends React.Component {
       }
     }
 
-    listItemsInLocalChangesCache() {
-      console.log(scripts.itemsInLocalChanges());
-    }
 
     render() {
         return (
@@ -148,12 +147,6 @@ class RealmDbTests extends React.Component {
                 <Text style={styles.buttonText}>List items in DB</Text>
               </TouchableHighlight>
 
-              <TouchableHighlight
-                style={[styles.button, styles.newButton]}
-                underlayColor='#99d9f4'
-                onPress={this.listItemsInLocalChangesCache.bind(this)}>
-                <Text style={styles.buttonText}>List items in local changes cache</Text>
-              </TouchableHighlight>
             </View>
         );
     }

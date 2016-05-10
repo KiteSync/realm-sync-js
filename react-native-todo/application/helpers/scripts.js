@@ -1,13 +1,9 @@
 import realm from '../components/realm';
+import usnHandler from './usnHandler';
 
-
-var clientDbCache = {}
-var usn = 0;
-
-
-var addObjToLocalChanges = function(obj) {
+var addObjectToSyncQueue = function(obj) {
   var returnObj = {}
-  returnObj.usn = usn++;
+  returnObj.usn = usnHandler.incrementAndReturnUsn();
   returnObj.realmSyncId = obj.realmSyncId;
   var body = {}
   for(var key in obj) {
@@ -22,20 +18,13 @@ var addObjToLocalChanges = function(obj) {
 }
 
 var deleteObjFromLocalChanges = function(realmSyncId) {
-  // clientDbCache[realmSyncId]['usn'] = usn++;
-  // clientDbCache[realmSyncId]['body'] = undefined;
-  // console.log('item deleted. current USN: ', usn );
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
-  objToDelete[0].usn = ++usn;
+  objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
   objToDelete[0].body = "";
 }
 
 
-
-var itemsInLocalChanges = function() {
-  return JSON.stringify(clientDbCache);
-}
 
 var generateGuid = function() {
   var result, i, j;
@@ -56,10 +45,8 @@ var randomName = function() {
 }
 
 module.exports = {
-  usn: usn,
-  addObjToLocalChanges: addObjToLocalChanges,
+  addObjectToSyncQueue: addObjectToSyncQueue,
   deleteObjFromLocalChanges: deleteObjFromLocalChanges,
-  itemsInLocalChanges: itemsInLocalChanges,
   generateGuid: generateGuid,
   randomName: randomName
 }
