@@ -25,6 +25,8 @@ var addObjectToSyncQueue = function(type, obj) {
     }
 }
 
+
+
 var deleteObjFromLocalChanges = function(realmSyncId) {
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
   debugger;

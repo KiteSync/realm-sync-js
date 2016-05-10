@@ -1,6 +1,7 @@
 'use strict';
 var styles = require('../styles/styles');
 var scripts = require('../helpers/scripts');
+var realmSync = require('../helpers/realmSync');
 var React = require('react-native');
 var ToDoListItem = require('./ToDoListItem');
 var { View, TouchableHighlight, Text} = React;
@@ -20,14 +21,17 @@ class RealmDbTests extends React.Component {
     //
     addItemToDB() {
       realm.write(() => {
-        try {
-          let dog = realm.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()});
-          // adds log of created object to sync queue
-          scripts.addObjectToSyncQueue('Dog', dog);
-        } catch(error) {
-          //If there's an error in realm.create, go here!
-          console.log("ERROR", error);
-        }
+
+      realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()})
+
+        // try {
+        //   let dog = realm.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()});
+        //   // adds log of created object to sync queue
+        //   scripts.addObjectToSyncQueue('Dog', dog);
+        // } catch(error) {
+        //   //If there's an error in realm.create, go here!
+        //   console.log("ERROR", error);
+        // }
       });
     }
 
