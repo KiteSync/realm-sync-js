@@ -23,7 +23,7 @@ class RealmDbTests extends React.Component {
         try {
           let dog = realm.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()});
           // adds log of created object to sync queue
-          scripts.addObjectToSyncQueue(dog);
+          scripts.addObjectToSyncQueue('Dog', dog);
         } catch(error) {
           //If there's an error in realm.create, go here!
           console.log("ERROR", error);

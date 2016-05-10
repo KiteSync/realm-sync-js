@@ -17,8 +17,9 @@ SyncQueue.schema = {
   properties: {
     usn: Realm.Types.INT,
     realmSyncId: Realm.Types.STRING,
-    modified: Realm.Types.INT,
+    type: Realm.Types.STRING,
     body: Realm.Types.STRING,
+    modified: Realm.Types.INT,
   },
 };
 export default new Realm({schema: [Dog, SyncQueue]});
