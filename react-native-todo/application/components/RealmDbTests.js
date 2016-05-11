@@ -21,17 +21,7 @@ class RealmDbTests extends React.Component {
     //
     addItemToDB() {
       realm.write(() => {
-
-      realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()})
-
-        // try {
-        //   let dog = realm.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()});
-        //   // adds log of created object to sync queue
-        //   scripts.addObjectToSyncQueue('Dog', dog);
-        // } catch(error) {
-        //   //If there's an error in realm.create, go here!
-        //   console.log("ERROR", error);
-        // }
+        realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()})
       });
     }
 
@@ -57,20 +47,9 @@ class RealmDbTests extends React.Component {
     }
 
     deleteAllItemsFromDB() {
+      let allDogs = realm.objects('Dog');
       realm.write(() => {
-        try {
-          let allDogs = realm.objects('Dog');
-          let allRealmSyncIds = [];
-          allDogs.forEach(dog => {
-            allRealmSyncIds.push(dog.realmSyncId);
-          });
-          realm.delete(allDogs);
-          allRealmSyncIds.forEach(function(id) {
-            scripts.deleteObjFromLocalChanges(id);
-          });
-        } catch(error) {
-          console.log(error);
-        }
+        realmSync.delete(allDogs)
       });
     }
 
