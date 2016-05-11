@@ -51,6 +51,7 @@ var clearDatabase = function(path1, path2) {
  * Test the functionality of interacting with the local
  */
 var testDatabaseInteraction = function(realm) {
+  // TODO: Add test that also check the sync queue to see if the change was added
   // it('should save locally and retreive it', function(done) {
   var test1 = function test1() {  // Save a test object to the database using syncCreate
     // Test that data can be removed
@@ -74,7 +75,12 @@ var testDatabaseInteraction = function(realm) {
 
   // it('should update a specific value in an existing item', function(done) {
   var test3 = function() {
-
+    var person = realm.objects(personType)[0];
+    realm.write(() => {
+      person.name = 'test1Updated';
+    });
+    // TODO: Test that the name is update using sync method
+    expect(person.name).equals('test1Updated');
     // done();
   }();
 
