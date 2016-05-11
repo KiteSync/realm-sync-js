@@ -25,9 +25,10 @@ var addObjectToSyncQueue = function(type, obj) {
     }
 }
 
+
+
 var deleteObjFromLocalChanges = function(realmSyncId) {
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
-  debugger;
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
 
   objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
