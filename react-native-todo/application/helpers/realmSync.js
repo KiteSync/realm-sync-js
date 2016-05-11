@@ -9,8 +9,8 @@ var realmSync = {};
 realmSync.create = function(type, properties, update) {
   update = update || false;
   try {
-    let dog = realm.create(type, properties, update);
-    scripts.addObjectToSyncQueue('Dog', dog);
+    let savedObject = realm.create(type, properties, update);
+    scripts.addObjectToSyncQueue(type, savedObject);
   } catch(error) {
     console.log("ERROR", error);
   }
