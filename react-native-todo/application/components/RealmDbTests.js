@@ -38,6 +38,15 @@ class RealmDbTests extends React.Component {
 
     }
 
+    addThenRemoveFromDB() {
+      realm.write(() => {
+        var dog = realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()})
+        realmSync.delete(dog);
+
+      });
+
+    }
+
     modifyItemInDB() {
 
     }
@@ -94,6 +103,13 @@ class RealmDbTests extends React.Component {
                   underlayColor='#99d9f4'
                   onPress={this.addItemToDB2.bind(this)}>
                   <Text style={styles.buttonText}>Add item to DB test 2 (simulate error)</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight
+                  style={[styles.button, styles.newButton]}
+                  underlayColor='#99d9f4'
+                  onPress={this.addThenRemoveFromDB.bind(this)}>
+                  <Text style={styles.buttonText}>Add Then remove same item from db</Text>
               </TouchableHighlight>
 
               <TouchableHighlight

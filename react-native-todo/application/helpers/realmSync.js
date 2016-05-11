@@ -11,6 +11,7 @@ realmSync.create = function(type, properties, update) {
   try {
     let savedObject = realm.create(type, properties, update);
     scripts.addObjectToSyncQueue(type, savedObject);
+    return savedObject;
   } catch(error) {
     console.log("ERROR", error);
   }
@@ -19,11 +20,18 @@ realmSync.create = function(type, properties, update) {
 //takes in the same parameters as realm.delete
 //https://realm.io/docs/react-native/latest/api/Realm.html#delete
 realmSync.delete = function(realmObject) {
-  try {
-    let allRealmSyncIds = [];
+
+  let allRealmSyncIds = [];
+
+  if(realmObject.constructor.length !== undefined) {
     realmObject.forEach(object => {
       allRealmSyncIds.push(object.realmSyncId);
     });
+  } else {
+    allRealmSyncIds.push(realmObject.realmSyncId);
+  };
+
+  try {
     realm.delete(realmObject);
     allRealmSyncIds.forEach(function(id) {
       scripts.deleteObjFromLocalChanges(id);
