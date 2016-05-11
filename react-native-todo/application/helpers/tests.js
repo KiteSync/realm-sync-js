@@ -1,6 +1,14 @@
 // import realm from '../components/realm';
 import rnfs from 'react-native-fs';
 const Realm = require('realm');
+const schemas = require('./schemas');
+const realmSync = require('./realmSync');
+var chai = require('chai');
+let expect = chai.expect;
+var realm1;
+var realm2;
+
+let personType = 'PersonObject';
 
 module.exports.runTests = function() {
   var realm; // = new Realm();
@@ -8,53 +16,64 @@ module.exports.runTests = function() {
   var basePath = Realm.defaultPath.split('/');
   basePath.splice(basePath.length - 1, 1);
   basePath = basePath.join('/');
-  var realm1Path = basePath + '/realm1.realm';
-  var realm2Path = basePath + '/realm2.realm';
+  var realm1Path = 'realm1.realm';
+  var realm2Path = 'realm2.realm';
   console.log('Realm Path1', realm1Path, 'Realm Path2', realm2Path);
   // Delete any existing test databases
-  // testSetup(realm1Path1, realm1Path2);
+  // testSetup(basePath + '/' + realm1Path, basePath + '/' + realm2Path);
   // Create the realm database
-  //realm1 = new Realm({path: 'test1.realm'});
+  let realm1 = new Realm({
+    path: realm1Path,
+    schema: [schemas.PersonObject]
+  });
+  // realm.write
+  let persons = realm1.objects('PersonObject');
+  realm1.write(() => {
+    realm1.delete(persons);
+  });
 
+  var databaseTestResults = testDatabaseInteraction(realm1);
   // Add a test schema to the database
 };
 
 // TODO: Migrate over test cases
-var testSetup = function(path1, path2) {
-  // Delete the realm test database
-  rnfs.stat(path1)
-    .then(function(stats) {
-    if (stats) {
-      rnfs.unlink(path1)
-        .then(function(result) {
-
-      })
-    }
-  })
-  .catch(function(err) {
-    console.log(err);
+var clearDatabase = function(path1, path2) {
+  /* Delete all values in database realm test database
+    //done();
+    */
+  let persons = realm1.objects('PersonObject');
+  realm1.write(() => {
+    realm1.delete(persons);
   });
-  //done();
 };
 
 /**
  * Test the functionality of interacting with the local
  */
-var testDatabaseInteraction = function() {
+var testDatabaseInteraction = function(realm) {
   // it('should save locally and retreive it', function(done) {
   var test1 = function test1() {  // Save a test object to the database using syncCreate
-
     // Test that data can be removed
-    done();
+    expect(realm.objects('PersonObject')[0]).equals(undefined);
+    // TODO: Change create to createSync
+    realm.write(function() {
+      realm.create(personType, {name: 'test1', age: 30, married: true});
+    });
+    var person = realm.objects(personType);
+    expect(person.length).equals(1);
+    // done();
   }();
 
   // it('should add a unique identifier to the data saved', function(done) {
   var test2 = function() {
+    var person = realm.objects(personType);
+    // TODO: Uncomment test
+    // expect(person[0].realmSyncId).to.exist;
     //done();
   }();
 
   // it('should update a specific value in an existing item', function(done) {
-  var fest3 = function() {
+  var test3 = function() {
 
     // done();
   }();
