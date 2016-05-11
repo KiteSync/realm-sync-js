@@ -16,7 +16,7 @@ exports.handler = function(event, context) {
             // "#syncId": "syncId"
         },
         "ExpressionAttributeValues": {
-            ":usn": 1
+            ":usn": event.lastUpdate
             // ":syncId": "ANY"
         }
     };
@@ -33,5 +33,6 @@ exports.handler = function(event, context) {
        }
     };
 
-   dynamo.scan(params, cb);
+   console.log('cb set');
+   console.log(dynamo.scan(params, cb));
 };

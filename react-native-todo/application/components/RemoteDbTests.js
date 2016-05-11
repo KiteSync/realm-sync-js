@@ -15,7 +15,7 @@ class RemoteDbTests extends React.Component {
     }
 
     addItemToRemoteDB() {
-      console.log('add item to remote db');
+      console.log('add item to remote db');      
       fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'POST',
         headers: {
@@ -45,12 +45,11 @@ class RemoteDbTests extends React.Component {
     //https://github.com/johanneslumpe/react-native-fs#usage
     queryItemsFromRemoteDB() {
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
+      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=3', {
         method: 'GET',
         headers: {
-          // 'Accept-Encoding': 'base64',
           'Content-Type': 'application/json'
-        }
+        },
       })
       .then((data) => {
         console.log('<><><>data: ', data);
@@ -63,12 +62,11 @@ class RemoteDbTests extends React.Component {
 
     getItemsFromRemoteDB() {
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
+      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1', {
         method: 'GET',
         headers: {
-          // 'Accept-Encoding': 'base64',
           'Content-Type': 'application/json'
-        }
+        },
       })
       .then((data) => {
         console.log('<><><>data: ', data);
@@ -105,7 +103,7 @@ class RemoteDbTests extends React.Component {
                   style={[styles.button, styles.newButton]}
                   underlayColor='#99d9f4'
                   onPress={this.queryItemsFromRemoteDB.bind(this)}>
-                  <Text style={styles.buttonText}>Add item to Remote DB test 2 (simulate error)</Text>
+                  <Text style={styles.buttonText}>Query items from Remote DB</Text>
               </TouchableHighlight>
 
               <TouchableHighlight
