@@ -16,7 +16,7 @@ exports.handler = function(event, context) {
             // "#syncId": "syncId"
         },
         "ExpressionAttributeValues": {
-            ":usn": 1
+            ":usn": event.lastUpdate
             // ":syncId": "ANY"
         }
     };
@@ -29,8 +29,10 @@ exports.handler = function(event, context) {
             data.Items.forEach(function(obj) {
                console.log('Obj USN'+obj.usn);
             });
+            context.done(null, data.Items);
        }
     };
 
-   dynamo.scan(params, cb);
+   console.log('cb set');
+   console.log(dynamo.scan(params, cb));
 };
