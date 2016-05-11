@@ -1,37 +1,41 @@
-import realm from '../components/realm';
+// import realm from '../components/realm';
+import rnfs from 'react-native-fs';
+const Realm = require('realm');
 
-var runTests = function() {
-
-};
-
-// TODO: Migrate over test cases
-var testSetup = function() {
-  var realm1;
-  var realm1Path = 'realm1.realm';
-
-  // Delete the realm database
-  fs.statSync(realm1Path, function(err, stats) {
-    if (err) {
-      throw err;
-    }
-    if (stats) {
-      fs.unlink(realm1Path, function(err) {
-
-        if (err) {
-          throw err;
-        }
-      });
-      console.log(stats);
-    }
-  });
-
+module.exports.runTests = function() {
+  var realm; // = new Realm();
+  // debugger;
+  var basePath = Realm.defaultPath.split('/');
+  basePath.splice(basePath.length - 1, 1);
+  basePath = basePath.join('/');
+  var realm1Path = basePath + '/realm1.realm';
+  var realm2Path = basePath + '/realm2.realm';
+  console.log('Realm Path1', realm1Path, 'Realm Path2', realm2Path);
+  // Delete any existing test databases
+  // testSetup(realm1Path1, realm1Path2);
   // Create the realm database
   //realm1 = new Realm({path: 'test1.realm'});
 
   // Add a test schema to the database
-  done();
 };
 
+// TODO: Migrate over test cases
+var testSetup = function(path1, path2) {
+  // Delete the realm test database
+  rnfs.stat(path1)
+    .then(function(stats) {
+    if (stats) {
+      rnfs.unlink(path1)
+        .then(function(result) {
+
+      })
+    }
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+  //done();
+};
 
 /**
  * Test the functionality of interacting with the local

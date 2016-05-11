@@ -5,7 +5,7 @@ var tests = require('../helpers/tests');
 var {
   View, TouchableHighlight, Text
   } = React;
-import realm from './realm';
+// import realm from './realm';
 
 class TestSuite extends React.Component {
   constructor() {
@@ -13,6 +13,7 @@ class TestSuite extends React.Component {
   }
 
   render() {
+    tests.runTests();
     return (
       <View style = {styles.container}>
         <Text style={styles.button} onPress={tests.runTests}>
