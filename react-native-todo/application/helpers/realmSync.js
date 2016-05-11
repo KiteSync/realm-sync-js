@@ -23,7 +23,7 @@ realmSync.delete = function(realmObject) {
 
   let allRealmSyncIds = [];
 
-  if(realmObject.constructor.length !== undefined) {
+  if(realmObject.constructor.name === "Results") {
     realmObject.forEach(object => {
       allRealmSyncIds.push(object.realmSyncId);
     });
