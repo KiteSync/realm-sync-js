@@ -35,16 +35,28 @@ var clearDatabase = function(realm1, realm2) {
     //done();
     */
   if (realm1) {
-    let persons = realm1.objects('PersonObject');
+    let persons = realm1.objects(personType);
     realm1.write(() => {
       realm1.delete(persons);
     });
+    /*
+    let syncQueue = realm1.objects(syncType);
+    realm1.write(() => {
+      realm1.delete(syncQueue);
+    });
+    */
   }
   if (realm2) {
-    let persons = realm1.objects('PersonObject');
+    let persons = realm1.objects(personType);
     realm1.write(() => {
       realm1.delete(persons);
     });
+    /*
+    let syncQueue = realm1.objects(syncType);
+    realm1.write(() => {
+      realm1.delete(syncQueue);
+    });
+    */
   }
 };
 
