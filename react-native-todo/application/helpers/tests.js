@@ -13,7 +13,7 @@ module.exports.runTests = function() {
   basePath.splice(basePath.length - 1, 1);
   basePath = basePath.join('/');
   var realmLocalPath = 'realmLocal.realm';
-  var realmRemoteMockPath = 'realm2.realm';
+  var realmRemoteMockPath = 'realmRemoteMock.realm';
   // Create the realm database
   // Add a test schema to the database
   let realmLocal = new Realm({
