@@ -33,7 +33,8 @@ PersonObject.schema = {
     properties: {
         name:    Realm.Types.STRING,
         age:     Realm.Types.DOUBLE,
-        married: {type: Realm.Types.BOOL, default: false}, 
+        married: {type: Realm.Types.BOOL, default: false},
+        realmSyncId: Realm.Types.STRING
     }
 };
 PersonObject.prototype.description = function() {
