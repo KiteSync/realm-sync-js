@@ -86,7 +86,14 @@ var testDatabaseInteraction = function(realm) {
 
   // it('should delete an item from the database', function(done) {
   var test4 = function() {
-
+    var person = realm.objects(personType);
+    expect(person.length).equals(1);
+    realm.write(() => {
+      // TODO: Change to delete sync
+      realm.delete(person);
+    });
+    person = realm.objects(personType);
+    expect(person.length).equals(0);
     // done();
   }();
 };
