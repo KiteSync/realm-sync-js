@@ -23,6 +23,7 @@ realmSync.delete = function(realmObject) {
 
   let allRealmSyncIds = [];
 
+  //Add realmSyncId's of deleted items to array
   if(realmObject.constructor.name === "Results") {
     realmObject.forEach(object => {
       allRealmSyncIds.push(object.realmSyncId);
@@ -33,6 +34,7 @@ realmSync.delete = function(realmObject) {
 
   try {
     realm.delete(realmObject);
+    //After deleting, update syncQueue
     allRealmSyncIds.forEach(function(id) {
       scripts.deleteObjFromLocalChanges(id);
     });
