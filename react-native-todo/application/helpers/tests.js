@@ -5,6 +5,7 @@ var chai = require('chai');
 let expect = chai.expect;
 
 let personType = 'PersonObject';
+let syncType = 'SyncQueue';
 
 module.exports.runTests = function() {
   var realm; // = new Realm();
@@ -19,6 +20,7 @@ module.exports.runTests = function() {
     path: realm1Path,
     schema: [schemas.PersonObject]
   });
+
   // Delete any existing test databases
   clearDatabase(realm1);
 
@@ -62,6 +64,8 @@ var testDatabaseInteraction = function(realm) {
     });
     var person = realm.objects(personType);
     expect(person.length).equals(1);
+    // var syncQueue = realm.objects(syncType);
+    // expect(syncQueue.length).equals(1);
     // done();
   }();
 
@@ -81,6 +85,8 @@ var testDatabaseInteraction = function(realm) {
     });
     // TODO: Test that the name is update using sync method
     expect(person.name).equals('test1Updated');
+    // var syncQueue = realm.objects(syncType);
+    // expect(syncQueue.length).equals(2);
     // done();
   }();
 
@@ -94,6 +100,8 @@ var testDatabaseInteraction = function(realm) {
     });
     person = realm.objects(personType);
     expect(person.length).equals(0);
+    // var syncQueue = realm.objects(syncType);
+    // expect(syncQueue.length).equals(3);
     // done();
   }();
 };
