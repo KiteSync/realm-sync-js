@@ -1,54 +1,54 @@
-// import realm from '../components/realm';
-import rnfs from 'react-native-fs';
 const Realm = require('realm');
 const schemas = require('./schemas');
 const realmSync = require('./realmSync');
 var chai = require('chai');
 let expect = chai.expect;
-var realm1;
-var realm2;
 
 let personType = 'PersonObject';
 
 module.exports.runTests = function() {
   var realm; // = new Realm();
-  // debugger;
   var basePath = Realm.defaultPath.split('/');
   basePath.splice(basePath.length - 1, 1);
   basePath = basePath.join('/');
   var realm1Path = 'realm1.realm';
   var realm2Path = 'realm2.realm';
-  console.log('Realm Path1', realm1Path, 'Realm Path2', realm2Path);
-  // Delete any existing test databases
-  // testSetup(basePath + '/' + realm1Path, basePath + '/' + realm2Path);
   // Create the realm database
+  // Add a test schema to the database
   let realm1 = new Realm({
     path: realm1Path,
     schema: [schemas.PersonObject]
   });
-  // realm.write
-  let persons = realm1.objects('PersonObject');
-  realm1.write(() => {
-    realm1.delete(persons);
-  });
+  // Delete any existing test databases
+  clearDatabase(realm1);
 
+  // Run tests
   var databaseTestResults = testDatabaseInteraction(realm1);
-  // Add a test schema to the database
+
 };
 
 // TODO: Migrate over test cases
-var clearDatabase = function(path1, path2) {
+var clearDatabase = function(realm1, realm2) {
   /* Delete all values in database realm test database
     //done();
     */
-  let persons = realm1.objects('PersonObject');
-  realm1.write(() => {
-    realm1.delete(persons);
-  });
+  if (realm1) {
+    let persons = realm1.objects('PersonObject');
+    realm1.write(() => {
+      realm1.delete(persons);
+    });
+  }
+  if (realm2) {
+    let persons = realm1.objects('PersonObject');
+    realm1.write(() => {
+      realm1.delete(persons);
+    });
+  }
 };
 
 /**
- * Test the functionality of interacting with the local
+ * Test the functionality of interacting with the local database.
+ * @param {Realm} realm - realm database instance
  */
 var testDatabaseInteraction = function(realm) {
   // TODO: Add test that also check the sync queue to see if the change was added
@@ -99,7 +99,7 @@ var testDatabaseInteraction = function(realm) {
 };
 
 /**
- * 'Authentication with service'
+ * 'Authentication with service
  */
 var testAuthenticationService = function() {
   //it('should not allow an unauthenticated user access', function(done) {
@@ -115,8 +115,7 @@ var testAuthenticationService = function() {
 };
 
 /**
- * Test syncronization with the remote AWS cloud store.
- * Database synchronization with remote database.
+ * Test synchronization with the remote AWS cloud store.
  */
 var testRemoteSync = function() {
   // it('should receive data from remote database based on synchronization', function(done) {
@@ -131,7 +130,7 @@ var testRemoteSync = function() {
 };
 
 /**
- * 'Database restoration through synchronization with another database'
+ * 'Database restoration through synchronization with another database.
  */
 var testSyncLocally = function() {
 
@@ -154,7 +153,7 @@ var testSyncLocally = function() {
 
 
 /**
- * Conflict resolution
+ * Conflict resolution.
  */
 var testConflictResolution = function() {
   // it('should resolve a conflict with same guid', function(done) {
