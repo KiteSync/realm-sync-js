@@ -12,49 +12,52 @@ module.exports.runTests = function() {
   var basePath = Realm.defaultPath.split('/');
   basePath.splice(basePath.length - 1, 1);
   basePath = basePath.join('/');
-  var realm1Path = 'realm1.realm';
-  var realm2Path = 'realm2.realm';
+  var realmLocalPath = 'realmLocal.realm';
+  var realmRemoteMockPath = 'realm2.realm';
   // Create the realm database
   // Add a test schema to the database
-  let realm1 = new Realm({
-    path: realm1Path,
+  let realmLocal = new Realm({
+    path: realmLocalPath,
     schema: [schemas.PersonObject]
   });
-
+  let realmRemoteMock = new Realm({
+    path: realmRemoteMockPath,
+    schema: [schemas.PersonObject]
+  });
   // Delete any existing test databases
-  clearDatabase(realm1);
+  clearDatabase(realmLocal, realmRemoteMock);
 
   // Run tests
-  var databaseTestResults = testDatabaseInteraction(realm1);
+  var databaseTestResults = testDatabaseInteraction(realmLocal);
 
 };
 
 // TODO: Migrate over test cases
-var clearDatabase = function(realm1, realm2) {
+var clearDatabase = function(realmLocal, realmRemoteMock) {
   /* Delete all values in database realm test database
     //done();
     */
-  if (realm1) {
-    let persons = realm1.objects(personType);
-    realm1.write(() => {
-      realm1.delete(persons);
+  if (realmLocal) {
+    let persons = realmLocal.objects(personType);
+    realmLocal.write(() => {
+      realmLocal.delete(persons);
     });
     /*
-    let syncQueue = realm1.objects(syncType);
-    realm1.write(() => {
-      realm1.delete(syncQueue);
+    let syncQueue = realmLocal.objects(syncType);
+    realmLocal.write(() => {
+      realmLocal.delete(syncQueue);
     });
     */
   }
-  if (realm2) {
-    let persons = realm1.objects(personType);
-    realm1.write(() => {
-      realm1.delete(persons);
+  if (realmRemoteMock) {
+    let persons = realmRemoteMock.objects(personType);
+    realmRemoteMock.write(() => {
+      realmRemoteMock.delete(persons);
     });
     /*
-    let syncQueue = realm1.objects(syncType);
-    realm1.write(() => {
-      realm1.delete(syncQueue);
+    let syncQueue = realmRemoteMock.objects(syncType);
+     realmRemoteMock.write(() => {
+     realmRemoteMock.delete(syncQueue);
     });
     */
   }
@@ -137,7 +140,7 @@ var testAuthenticationService = function() {
 /**
  * Test synchronization with the remote AWS cloud store.
  */
-var testRemoteSync = function() {
+var testRemoteSync = function(realmLocal, realmRemoteMock) {
   // it('should receive data from remote database based on synchronization', function(done) {
   var test1 = function() {
     // done();
