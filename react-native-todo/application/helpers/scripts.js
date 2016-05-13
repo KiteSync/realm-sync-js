@@ -8,11 +8,6 @@ import usnHandler from './usnHandler';
  * @return something here
 */
 var addObjectToSyncQueue = function(type, obj, realmParam) {
-  // Added to work with RealmSync class
-  if (realmParam) {
-    realm = realmParam;
-  }
-
   var returnObj = {}
   returnObj.usn = usnHandler.incrementAndReturnUsn();
   returnObj.realmSyncId = obj.realmSyncId;
@@ -24,7 +19,12 @@ var addObjectToSyncQueue = function(type, obj, realmParam) {
   }
   returnObj.body = JSON.stringify(body);
     try {
-      let syncQueue = realm.create('SyncQueue', returnObj);
+      // Added to work with RealmSync class
+      if (realmParam) {
+        let syncQueue = realmParam.create('SyncQueue', returnObj);
+      } else {
+        let syncQueue = realm.create('SyncQueue', returnObj);
+      }
     } catch(error) {
       console.log("ERROR in syncQueue write", error);
     }
