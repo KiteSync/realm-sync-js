@@ -1,6 +1,7 @@
 const Realm = require('realm');
 const schemas = require('./schemas');
 const realmSync = require('./realmSync');
+const sync = require('./Sync');
 var chai = require('chai');
 let expect = chai.expect;
 let personType = 'PersonObject';
@@ -20,17 +21,18 @@ module.exports.runTests = function() {
   let realmLocal = new Realm({
     path: realmLocalPath
   });
-  console.log(basePath);
   let realmRemoteMock = new Realm({
     path: realmRemoteMockPath
   });
   // Delete any existing test databases
   clearDatabase(realmLocal, realmRemoteMock);
 
-  // Run tests
-  var databaseTestResults = testDatabaseInteraction(realmLocal);
-  var syncLocallyResults = testSyncLocally(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
+  console.log("Saving realm data in ", basePath);
 
+  // Run tests
+  var databaseTestResults = testDatabaseInteraction(realmLocal, realmLocalSync);
+  clearDatabase(realmLocal, realmRemoteMock);
+  var syncLocallyResults = testSyncLocally(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
 };
 
 // TODO: Migrate over test cases
@@ -43,24 +45,21 @@ var clearDatabase = function(realmLocal, realmRemoteMock) {
     realmLocal.write(() => {
       realmLocal.delete(persons);
     });
-    /*
     let syncQueue = realmLocal.objects(syncType);
     realmLocal.write(() => {
       realmLocal.delete(syncQueue);
     });
-    */
   }
   if (realmRemoteMock) {
     let persons = realmRemoteMock.objects(personType);
     realmRemoteMock.write(() => {
       realmRemoteMock.delete(persons);
     });
-    /*
+
     let syncQueue = realmRemoteMock.objects(syncType);
      realmRemoteMock.write(() => {
      realmRemoteMock.delete(syncQueue);
     });
-    */
   }
 };
 
@@ -68,29 +67,26 @@ var clearDatabase = function(realmLocal, realmRemoteMock) {
  * Test the functionality of interacting with the local database.
  * @param {Realm} realm - realm database instance
  */
-var testDatabaseInteraction = function(realm) {
-  // TODO: Add test that also check the sync queue to see if the change was added
+var testDatabaseInteraction = function(realm, realmSync) {
   // it('should save locally and retreive it', function(done) {
   var test1 = function test1() {  // Save a test object to the database using syncCreate
     // Test that data can be removed
     expect(realm.objects('PersonObject')[0]).equals(undefined);
-    // TODO: Change create to createSync
-    /*realm.write(function() {
-      realm.create(personType, {name: 'test1', age: 30, married: true});
+    realm.write(function() {
+      realmSync.create(personType, {name: 'test1', age: 30, married: true});
     });
     var person = realm.objects(personType);
     expect(person.length).equals(1);
-    // var syncQueue = realm.objects(syncType);
-    // expect(syncQueue.length).equals(1);
+    var syncQueue = realm.objects(syncType);
+    expect(syncQueue.length).equals(1);
     // done();
-    */
+
   }();
 
   // it('should add a unique identifier to the data saved', function(done) {
   var test2 = function() {
     var person = realm.objects(personType);
-    // TODO: Uncomment test
-    // expect(person[0].realmSyncId).to.exist;
+    expect(person[0].realmSyncId).to.exist;
     //done();
   }();
 
@@ -186,7 +182,6 @@ var testSyncLocally = function(realmLocal, realmRemoteMock, realmLocalSync, real
         married: false
       });
     });
-    debugger;
     // Pull the sync data into a sync chunk
     var syncChunk = {};
     var syncQueue = realmRemoteMock.objects(syncType);
@@ -199,7 +194,14 @@ var testSyncLocally = function(realmLocal, realmRemoteMock, realmLocalSync, real
       }
     });
     // Use the sync method on local to sync
+    sync.localSyncFromServer(realmLocal, syncChunk);
     // Verify that the data updated in the local database
+    person = realmLocal.objects(personType);
+    expect(person.length).to.be.above(0);
+    expect(person[0].name).to.equal('Remote Test');
+    expect(person[0].age).to.equal(20);
+    expect(person[0].married).to.be.false;
+
     //done();
   }();
 
