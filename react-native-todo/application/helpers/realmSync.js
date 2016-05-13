@@ -122,7 +122,7 @@ realmSync.RealmSync = RealmSync;
 var remoteFullSync = {
   1: {
     body: {
-      name: "2AndorrA",
+      name: "AndorrA",
     },
     modified: '1463096139904',
     realmSyncId: "216A4C28-0BC4-C644",
@@ -130,7 +130,7 @@ var remoteFullSync = {
   },
   2: {
     body: {
-      name: "2Comoros",
+      name: "Comoros",
     },
     modified: '1463096139904',
     realmSyncId: "F0CE8695-3410-451D",
@@ -138,7 +138,7 @@ var remoteFullSync = {
   },
   3: {
     body: {
-      name: "2Bermuda",
+      name: "Bermuda",
     },
     modified: '1463096139904',
     realmSyncId: "2B533C1F-40AA-CFDC",
@@ -146,7 +146,7 @@ var remoteFullSync = {
   },
   4: {
     body: {
-      name: "2Cook Islands2",
+      name: "Cook Islands2",
     },
     modified: '1463096139904',
     realmSyncId: "A7353E1F-1KQ8-CQFC",
@@ -155,25 +155,25 @@ var remoteFullSync = {
 }
 
 realmSync.sync = function() {
-  let sincQueue = realm.objects('SyncQueue');
   // if last sync date is never and USN is 0:
 
+  realm.write(() => {
     for(key in remoteFullSync) {
       var type = remoteFullSync[key].type;
       var body = remoteFullSync[key].body;
       body.realmSyncId = remoteFullSync[key].realmSyncId;
 
-
       var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
       let objToUpdate = realm.objects(type).filtered(filterText);
-      realm.write(() => {
         if(objToUpdate.length > 0) {
-          objToUpdate[0].body = body;
+          for(key in body) {
+            objToUpdate[0][key] = body[key];
+          }
         } else {
           realm.create(type, body)
         }
-      });
-    }
+      }
+    });
   }
 
 

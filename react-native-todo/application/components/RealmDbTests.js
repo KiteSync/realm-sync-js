@@ -77,17 +77,18 @@ class RealmDbTests extends React.Component {
       });
     }
 
-    listItemsInDB() {
-      let dogs = realm.objects('Dog')
-      for(var i = 0; i < dogs.length; i++) {
-        console.log(JSON.stringify(dogs[i]));
-      }
-    }
+    // listItemsInDB() {
+    //   let dogs = realm.objects('Dog')
+    //   for(var i = 0; i < dogs.length; i++) {
+    //     console.log(JSON.stringify(dogs[i]));
+    //   }
+    // }
 
     listItemsInDB() {
-      let dogs = realm.objects('Dog')
-      for(var i = 0; i < dogs.length; i++) {
-        console.log(JSON.stringify(dogs[i]));
+      let syncQueue = realm.objects('SyncQueue')
+      debugger;
+      for(var i = 0; i < syncQueue.length; i++) {
+        console.log(JSON.stringify(syncQueue[i]));
       }
     }
 
