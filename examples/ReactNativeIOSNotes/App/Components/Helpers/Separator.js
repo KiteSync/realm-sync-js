@@ -8,7 +8,7 @@ var {
 var styles = StyleSheet.create({
   separator: {
     height: 1,
-    backgroundColor: '#E4E4E4',
+    padding: 5,
     flex: 1,
     marginLeft: 15
   }
