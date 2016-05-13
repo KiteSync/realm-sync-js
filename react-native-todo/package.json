@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.3.8",
+    "chai": "^3.5.0",
     "react": "^0.14.8",
     "react-native": "^0.24.1",
     "react-native-aws-signature": "0.0.9",

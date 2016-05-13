@@ -62,6 +62,10 @@ class RealmDbTests extends React.Component {
       });
     }
 
+    syncDb() {
+      realmSync.sync();
+    }
+
     deleteAllItemsFromSyncQueue() {
       realm.write(() => {
         try {
@@ -73,17 +77,18 @@ class RealmDbTests extends React.Component {
       });
     }
 
-    listItemsInDB() {
-      let dogs = realm.objects('Dog')
-      for(var i = 0; i < dogs.length; i++) {
-        console.log(JSON.stringify(dogs[i]));
-      }
-    }
+    // listItemsInDB() {
+    //   let dogs = realm.objects('Dog')
+    //   for(var i = 0; i < dogs.length; i++) {
+    //     console.log(JSON.stringify(dogs[i]));
+    //   }
+    // }
 
     listItemsInDB() {
-      let dogs = realm.objects('Dog')
-      for(var i = 0; i < dogs.length; i++) {
-        console.log(JSON.stringify(dogs[i]));
+      let syncQueue = realm.objects('SyncQueue')
+      debugger;
+      for(var i = 0; i < syncQueue.length; i++) {
+        console.log(JSON.stringify(syncQueue[i]));
       }
     }
 
@@ -131,6 +136,13 @@ class RealmDbTests extends React.Component {
                   underlayColor='#99d9f4'
                   onPress={this.deleteAllItemsFromDB.bind(this)}>
                   <Text style={styles.buttonText}>Delete all items from DB</Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight
+                  style={[styles.button, styles.newButton]}
+                  underlayColor='#99d9f4'
+                  onPress={this.syncDb.bind(this)}>
+                  <Text style={styles.buttonText}>Sync realm DB</Text>
               </TouchableHighlight>
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
