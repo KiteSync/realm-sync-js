@@ -20,9 +20,7 @@ realmSync.create = function(type, properties, update) {
 //takes in the same parameters as realm.delete
 //https://realm.io/docs/react-native/latest/api/Realm.html#delete
 realmSync.delete = function(realmObject) {
-
   let allRealmSyncIds = [];
-
   //Add realmSyncId's of deleted items to array
   if(realmObject.constructor.name === "Results") {
     realmObject.forEach(object => {
@@ -121,4 +119,79 @@ SyncQueue.schema = {
 };
 
 realmSync.RealmSync = RealmSync;
+var remoteFullSync = {
+  1: {
+    body: {
+      name: "2AndorrA",
+    },
+    modified: '1463096139904',
+    realmSyncId: "216A4C28-0BC4-C644",
+    type: "Dog"
+  },
+  2: {
+    body: {
+      name: "2Comoros",
+    },
+    modified: '1463096139904',
+    realmSyncId: "F0CE8695-3410-451D",
+    type: "Dog"
+  },
+  3: {
+    body: {
+      name: "2Bermuda",
+    },
+    modified: '1463096139904',
+    realmSyncId: "2B533C1F-40AA-CFDC",
+    type: "Dog"
+  },
+  4: {
+    body: {
+      name: "2Cook Islands2",
+    },
+    modified: '1463096139904',
+    realmSyncId: "A7353E1F-1KQ8-CQFC",
+    type: "Dog"
+  }
+}
+
+realmSync.sync = function() {
+  let sincQueue = realm.objects('SyncQueue');
+  // if last sync date is never and USN is 0:
+
+    for(key in remoteFullSync) {
+      var type = remoteFullSync[key].type;
+      var body = remoteFullSync[key].body;
+      body.realmSyncId = remoteFullSync[key].realmSyncId;
+
+
+      var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
+      let objToUpdate = realm.objects(type).filtered(filterText);
+      realm.write(() => {
+        if(objToUpdate.length > 0) {
+          objToUpdate[0].body = body;
+        } else {
+          realm.create(type, body)
+        }
+      });
+    }
+  }
+
+
+
+// realmSync.CreateSyncQueueTable = function() {
+//   class SyncQueue {}
+//   SyncQueue.schema = {
+//     name: 'SyncQueue',
+//     properties: {
+//       usn: Realm.Types.INT,
+//       realmSyncId: Realm.Types.STRING,
+//       type: Realm.Types.STRING,
+//       body: Realm.Types.STRING,
+//       modified: Realm.Types.INT,
+//     },
+//   };
+//
+//   return SyncQueue;
+// }
+
 module.exports = realmSync;

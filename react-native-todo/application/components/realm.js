@@ -11,6 +11,7 @@ Dog.schema = {
     realmSyncId: Realm.Types.STRING,
   },
 };
+
 class SyncQueue {}
 SyncQueue.schema = {
   name: 'SyncQueue',
@@ -22,4 +23,6 @@ SyncQueue.schema = {
     modified: Realm.Types.INT,
   },
 };
+
+
 export default new Realm({schema: [Dog, SyncQueue]});
