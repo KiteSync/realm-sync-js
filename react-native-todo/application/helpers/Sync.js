@@ -35,3 +35,48 @@ module.exports.localSyncFromServer = function(realm, syncChunk) {
     }
   });
 };
+
+/**
+ * Creates a sync chunk to push the sync queue to remote storage.
+ * @param realm
+ * @return {JSON} contains objects to sync to remote storage
+ */
+module.exports.localSyncQueuePush = function(realm) {
+  // Determine
+  var syncQueue = realm.objects('SyncQueue');
+  return JSON.stringify(syncQueue.slice());
+};
+
+/**
+ * Incremental pull from remote storage.
+ */
+module.exports.incrementalSyncFromServer = function(realm, syncChunk) {
+  // noConflict bucket
+  // conflict bucket
+  // Pull sync chunk from server
+  // For each item in the chunk
+    // if the sync queue does not have this guid
+      // add to noConflic bucket
+    // else a possible conflict
+      // add to conflict bucket
+  // pass no conflict bucket to localSyncFromServer
+  // pass conflict bucket to conflict manager
+};
+
+/**
+ * Handle conflict based on policy
+ * @param realm
+ * @param syncChunk
+ * @param policy {function(localObject, remoteObject)}
+ */
+module.exports.conflictManager = function(realm, syncChunk, policy) {
+  // Create an empty resolved bucket
+
+  // For each item in the sync chunk
+    // For each sync queue conflict
+      // TODO: Validate logic
+      // Apply the policy on the remote and local object
+      // Store the results in the resolved bucket based on guid
+  // pass resolved bucket to localSyncFromServer
+};
+
