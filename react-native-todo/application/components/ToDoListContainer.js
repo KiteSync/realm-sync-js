@@ -7,35 +7,40 @@ var FileSystemTests = require('./FileSystemTests');
 var RealmDbTests = require('./RealmDbTests');
 var RemoteDbTests = require('./RemoteDbTests');
 var TestSuite = require('./TestSuite');
-var { Text, View, ListView, TouchableHighlight, AlertIOS } = React;
+var Login = require('./Authentication/Login')
+var { Text, View, ListView, TouchableHighlight, AlertIOS, AsyncStorage } = React;
 const Realm = require('realm');
 
 
 class ToDoContainer extends React.Component {
     constructor() {
         super();
-          //  let realm = new Realm(
-           // {
-           //   schema: [{name: 'Dog', properties: {name: 'string'}}]
-           // });
-
-           // realm.write(() => {
-           //   realm.create('Dog', {name: 'Rex'});
-           // }
-          //  );
 
         this.state = {
             items: [
                 {txt: 'Learn react native', complete: false},
                 {txt: 'Make a to-do app', complete: true}
             ],
-            realmPath: Realm.defaultPath
+            realmPath: Realm.defaultPath,
+            loggedIn: false
         };
         this.alertMenu = this.alertMenu.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.updateItem = this.updateItem.bind(this);
         this.openItem = this.openItem.bind(this);
 
+    }
+
+    componentDidMount() {
+        AsyncStorage.getItem('authData').then(authData => {
+            console.log('authData:',authData, this.state.loggedIn);
+            if(authData) {
+              authData = JSON.parse(authData);
+              this.setState({
+                loggedIn: true
+              });
+            }
+        });
     }
 
     alertMenu(rowData, rowID) {
@@ -100,11 +105,17 @@ class ToDoContainer extends React.Component {
         });
     }
 
+
     openTestSuite() {
         this.props.navigator.push({
             title: 'Testing Suite',
             component: TestSuite,
             passProps: {realmPath: this.state.realmPath}
+
+    onLogin() {
+        this.props.navigator.push({
+            title: 'Login',
+            component: Login
         });
     }
 
@@ -115,6 +126,21 @@ class ToDoContainer extends React.Component {
                     items={this.state.items}
                     onPressItem={this.openItem}
                     onLongPressItem={this.alertMenu}/>
+
+                {(this.state.loggedIn
+                    ? ( <TouchableHighlight
+                        style={[styles.button, styles.newButton]}
+                        underlayColor='#99d94f'
+                        onPress={this.onLogin.bind(this)}>
+                        <Text style={styles.buttonText}>Logout</Text>
+                      </TouchableHighlight> )   
+                    : (<TouchableHighlight
+                        style={[styles.button, styles.newButton]}
+                        underlayColor='#99d94f'
+                        onPress={this.onLogin.bind(this)}>
+                        <Text style={styles.buttonText}>Login</Text>
+                      </TouchableHighlight>)
+                )}
 
                 <TouchableHighlight
                     style={[styles.button, styles.newButton]}
