@@ -25,12 +25,12 @@ module.exports.localSyncFromServer = function(realm, syncChunk) {
     var type = syncChunk[usn].type;
     var object = syncChunk[usn].body;
     var filteredText = 'realmSyncId = "' + realmSyncID + '"';
-    let objectToBeModified = realm.objects(type).filtered(realmSyncID);
-    if (objectToBeModified !== undefined) {
+    let objectToBeModified = realm.objects(type).filtered(filteredText);
+    if (objectToBeModified.length !== 0) {
       objectToBeModified = syncChunk[usn].body;
     } else {
       realm.write(() => {
-        realm.create(type, object);
+        realm.create(type, JSON.parse(object));
       });
     }
   });
