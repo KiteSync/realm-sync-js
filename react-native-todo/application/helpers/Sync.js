@@ -1,17 +1,17 @@
 /**
- * Get the count from the server for last sync.
- * @return server's last sync count.
+ * Get the count from the remote storage for last sync.
+ * @return remote storage's last sync count.
  */
 module.exports.getSyncCount = function() {
 
 };
 
 /**
- * Synchronizes the data received from the server to the local database.
- * @param {object} syncChunk - contains all data from the server that must be
+ * Synchronizes the data received from the remote storage to the local database.
+ * @param {object} syncChunk - contains all data from the remote storage that must be
  *     synced in local database.
  * @pre - No conflicts are detected in sync data
- * @post = The database will be in sync with server
+ * @post = The database will be in sync with remote storage
  * @return true indicating sync is successful, otherwise failure
  */
 module.exports.localSyncFromServer = function(realm, syncChunk) {
@@ -53,10 +53,10 @@ module.exports.localSyncQueuePush = function(realm) {
 module.exports.incrementalSyncFromServer = function(realm, syncChunk) {
   // noConflict bucket
   // conflict bucket
-  // Pull sync chunk from server
+  // Pull sync chunk from remote storage
   // For each item in the chunk
     // if the sync queue does not have this guid
-      // add to noConflic bucket
+      // add to noConflict bucket
     // else a possible conflict
       // add to conflict bucket
   // pass no conflict bucket to localSyncFromServer
