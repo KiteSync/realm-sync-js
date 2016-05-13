@@ -7,7 +7,12 @@ import usnHandler from './usnHandler';
  * @post
  * @return something here
 */
-var addObjectToSyncQueue = function(type, obj) {
+var addObjectToSyncQueue = function(type, obj, realmParam) {
+  // Added to work with RealmSync class
+  if (realmParam) {
+    realm = realmParam;
+  }
+
   var returnObj = {}
   returnObj.usn = usnHandler.incrementAndReturnUsn();
   returnObj.realmSyncId = obj.realmSyncId;
