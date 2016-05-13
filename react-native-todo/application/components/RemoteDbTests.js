@@ -2,7 +2,6 @@
 var styles = require('../styles/styles');
 var scripts = require('../helpers/scripts');
 var React = require('react-native');
-var ToDoListItem = require('./ToDoListItem');
 var {View, TouchableHighlight, Text} = React;
 
 class RemoteDbTests extends React.Component {
@@ -15,7 +14,7 @@ class RemoteDbTests extends React.Component {
     }
 
     addItemToRemoteDB() {
-      console.log('add item to remote db');      
+      console.log('add item to remote db');
       fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'POST',
         headers: {
@@ -84,7 +83,7 @@ class RemoteDbTests extends React.Component {
     deleteItemFromRemoteDB() {
       console.log('delete item from DB')
     }
-    
+
     listItemsInRemoteDB() {
       console.log('delete all items from DB')
     }
