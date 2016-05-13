@@ -108,9 +108,11 @@ class ToDoContainer extends React.Component {
 
     openTestSuite() {
         this.props.navigator.push({
-            title: 'Testing Suite',
-            component: TestSuite,
-            passProps: {realmPath: this.state.realmPath}
+          title: 'Testing Suite',
+          component: TestSuite,
+          passProps: {realmPath: this.state.realmPath}
+        });
+    }
 
     onLogin() {
         this.props.navigator.push({
