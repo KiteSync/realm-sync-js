@@ -35,7 +35,7 @@ exports.handler = function(event, context) {
                 console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
             } else {
                 console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
-                event.logs.forEach(function(item){
+                event.forEach(function(item){
                     console.log(item);
                     dynamo.put({TableName:event.userId, Item:item}, cb);
                 });
