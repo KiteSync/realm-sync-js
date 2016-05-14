@@ -53,7 +53,7 @@ class RemoteDbTests extends React.Component {
     //https://github.com/johanneslumpe/react-native-fs#usage
     queryItemsFromRemoteDB() {
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=3', {
+      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=0&userId=4535789080', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ class RemoteDbTests extends React.Component {
 
     getItemsFromRemoteDB() {
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1', {
+      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1&userId=4535789080', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
