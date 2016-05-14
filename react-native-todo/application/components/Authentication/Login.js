@@ -19,17 +19,26 @@ class Login extends React.Component {
     console.log(data);
     this.setState({ user : data.credentials });
     AsyncStorage.setItem('authData', JSON.stringify(data.credentials));
+
   }
 
   handleLogout() {
     console.log("Logged out.");
     this.setState({ user : null });
+    AsyncStorage.removeItem('authData');
+    AsyncStorage.getItem('authData').then(authData => {
+      console.log('authData:',authData);
+    });
   }
 
   handleLoginFound(data) {
     console.log("Existing login found.");
     console.log(data);
-    this.setState({ user : data.credentials}); 
+    this.setState({ user : data.credentials});
+    AsyncStorage.setItem('authData', JSON.stringify(data.credentials));
+    AsyncStorage.getItem('authData').then(authData => {
+      console.log('authData:',authData);
+    });
   }
 
   handleLoginNotFound() {

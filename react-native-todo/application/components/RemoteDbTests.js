@@ -2,7 +2,8 @@
 var styles = require('../styles/styles');
 var scripts = require('../helpers/scripts');
 var React = require('react-native');
-var {View, TouchableHighlight, Text} = React;
+var ToDoListItem = require('./ToDoListItem');
+var {View, TouchableHighlight, Text, AsyncStorage} = React;
 
 class RemoteDbTests extends React.Component {
 
@@ -14,65 +15,95 @@ class RemoteDbTests extends React.Component {
     }
 
     addItemToRemoteDB() {
-      console.log('add item to remote db');
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
-        method: 'POST',
-        headers: {
-          // 'Accept-Encoding': 'base64',
-          'Content-Type': 'application/json',
-          'X-API-Key': ''
-        },
-        body: JSON.stringify([
-          {
-            "syncId": "232-534-123",
-            "obj": {
-              "name": "colin"
-            },
-            "usn": 4
-          }
-        ])
-      })
-      .then((data) => {
-        console.log('<><><>data: ', data);
-        console.log('<><><>data.get: ', data.json());
-      })
-      .catch((error) => {
-        console.error(error);
+      var userId = '';
+      AsyncStorage.getItem('authData').then((authData) => {
+        if(authData) {
+          authData = JSON.parse(authData);
+        }
+        userId += authData.userId;
+        console.log(userId, authData)
+      
+        console.log('add item to remote db', userId);      
+        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
+          method: 'POST',
+          headers: {
+            // 'Accept-Encoding': 'base64',
+            'Content-Type': 'application/json',
+            'X-API-Key': ''
+          },
+          body: JSON.stringify([
+            {
+              "userId": userId,
+              "obj": {
+                "name": "kitesync",
+                "syncId": "232-534-1234",
+              },
+              "usn": 1
+            }
+          ])
+        })
+        .then((data) => {
+          console.log('<><><>data: ', data);
+          console.log('<><><>data.get: ', data.json());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       });
     }
 
     //https://github.com/johanneslumpe/react-native-fs#usage
     queryItemsFromRemoteDB() {
+      var userId = '';
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=3', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      .then((data) => {
-        console.log('<><><>data: ', data);
-        console.log('<><><>data.get: ', data.json());
-      })
-      .catch((error) => {
-        console.error(error);
+      AsyncStorage.getItem('authData').then((authData) => {
+        if(authData) {
+          authData = JSON.parse(authData);
+        }
+        userId += authData.userId;
+        console.log(userId, authData)
+      
+        console.log('add item to remote db', userId);
+        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=5&userId='+userId, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((data) => {
+          console.log('<><><>data: ', JSON.stringify(data));
+          console.log('<><><>data.get: ', data.json());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       });
     }
 
     getItemsFromRemoteDB() {
+      var userId = '';
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      .then((data) => {
-        console.log('<><><>data: ', data);
-        console.log('<><><>data.get: ', data.json());
-      })
-      .catch((error) => {
-        console.error(error);
+      AsyncStorage.getItem('authData').then((authData) => {
+        if(authData) {
+          authData = JSON.parse(authData);
+        }
+        userId += authData.userId;
+        console.log(userId, authData)
+      
+        console.log('add item to remote db', userId);
+        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1&userId='+userId, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((data) => {
+          console.log('<><><>data: ', data);
+          console.log('<><><>data.get: ', data.json());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       });
     }
 
@@ -83,7 +114,7 @@ class RemoteDbTests extends React.Component {
     deleteItemFromRemoteDB() {
       console.log('delete item from DB')
     }
-
+    
     listItemsInRemoteDB() {
       console.log('delete all items from DB')
     }
