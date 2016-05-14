@@ -15,38 +15,40 @@ class RemoteDbTests extends React.Component {
     }
 
     addItemToRemoteDB() {
-      var userId;
+      var userId = '';
       AsyncStorage.getItem('authData').then((authData) => {
         if(authData) {
           authData = JSON.parse(authData);
         }
-        userId = authData.userId;
-      });
-      console.log('add item to remote db');      
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
-        method: 'POST',
-        headers: {
-          // 'Accept-Encoding': 'base64',
-          'Content-Type': 'application/json',
-          'X-API-Key': ''
-        },
-        body: JSON.stringify([
-          {
-            "userId": userId,
-            "syncId": "232-534-123",
-            "obj": {
-              "name": "colin"
-            },
-            "usn": 4
-          }
-        ])
-      })
-      .then((data) => {
-        console.log('<><><>data: ', data);
-        console.log('<><><>data.get: ', data.json());
-      })
-      .catch((error) => {
-        console.error(error);
+        userId += authData.userId;
+        console.log(userId, authData)
+      
+        console.log('add item to remote db', userId);      
+        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
+          method: 'POST',
+          headers: {
+            // 'Accept-Encoding': 'base64',
+            'Content-Type': 'application/json',
+            'X-API-Key': ''
+          },
+          body: JSON.stringify([
+            {
+              "userId": userId,
+              "obj": {
+                "name": "jonas",
+                "syncId": "232-534-1234",
+              },
+              "usn": 3
+            }
+          ])
+        })
+        .then((data) => {
+          console.log('<><><>data: ', data);
+          console.log('<><><>data.get: ', data.json());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       });
     }
 
