@@ -1,7 +1,11 @@
 import realm from '../components/realm';
 import scripts from './scripts';
 const Realm = require('realm');
+import remoteSync from './remoteSync'
 
+//this is for dynamoDb sync.
+var React = require('react-native');
+var {AsyncStorage} = React;
 var realmSync = {};
 
 //Takes in the same parameters as realm.create
@@ -177,25 +181,39 @@ realmSync.testSync = function() {
   });
 }
 
+
+// Handling fullsync from dynamo db.
+// The logic (and imports at top) will need 
+// to be put in sync.js component
 realmSync.Sync = function() {
   // if last sync date is never and USN is 0:
-  realm.write(() => {
-    for(key in remoteFullSync) {
-      var type = remoteFullSync[key].type;
-      var body = remoteFullSync[key].body;
-      body.realmSyncId = remoteFullSync[key].realmSyncId;
-
-      var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
-      let objToUpdate = realm.objects(type).filtered(filterText);
-      if(objToUpdate.length > 0) {
-        for(key in body) {
-          objToUpdate[0][key] = body[key];
-        }
-      } else {
-        realm.create(type, body)
-      }
+  var userId = '';
+  AsyncStorage.getItem('authData').then((authData) => {
+    if(authData) {
+      authData = JSON.parse(authData);
     }
+    userId += authData.userId;
+    var incomingItems = remoteSync.getUpdatesFromRemoteDB(0, userId);
+    debugger;
   });
+
+  // realm.write(() => {
+  //   for(key in remoteFullSync) {
+  //     var type = remoteFullSync[key].type;
+  //     var body = remoteFullSync[key].body;
+  //     body.realmSyncId = remoteFullSync[key].realmSyncId;
+  //
+  //     var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
+  //     let objToUpdate = realm.objects(type).filtered(filterText);
+  //     if(objToUpdate.length > 0) {
+  //       for(key in body) {
+  //         objToUpdate[0][key] = body[key];
+  //       }
+  //     } else {
+  //       realm.create(type, body)
+  //     }
+  //   }
+  // });
 }
 
 module.exports = realmSync;
