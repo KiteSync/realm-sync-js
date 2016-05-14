@@ -14,7 +14,8 @@ realmSync.create = function(type, properties, update) {
     scripts.addObjectToSyncQueue(type, savedObject);
     return savedObject;
   } catch(error) {
-    console.log("ERROR", error);
+    console.log(error);
+    return error;
   }
 }
 

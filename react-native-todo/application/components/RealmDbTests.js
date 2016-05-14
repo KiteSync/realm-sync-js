@@ -27,12 +27,15 @@ class RealmDbTests extends React.Component {
     //Testing what happens if realm.create is broken.
     addItemToDB2() {
       realm.write(() => {
-        try {
-          realmSync.create('Dof', {name: 'Phil', realmSyncId: scripts.generateGuid()});
-          console.log('success');
-        } catch(error) {
-          console.log(error);
-        }
+        realmSync.create('Dog', {nafme: 'Phil'});
+
+
+        // try {
+        //   realmSync.create('Dof', {name: 'Phil', realmSyncId: scripts.generateGuid()});
+        //   console.log('success');
+        // } catch(error) {
+        //   console.log(error);
+        // }
       });
 
     }
