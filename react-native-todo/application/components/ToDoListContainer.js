@@ -26,7 +26,7 @@ class ToDoContainer extends React.Component {
 
     componentDidMount() {
         AsyncStorage.getItem('authData').then(authData => {
-            console.log('authData:',authData, this.state.loggedIn);
+            // console.log('authData:',authData, this.state.loggedIn);
             if(authData) {
               authData = JSON.parse(authData);
               this.setState({
