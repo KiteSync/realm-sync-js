@@ -12,7 +12,7 @@ remoteSync.getUpdatesFromRemoteDB = function(latestUsn, userId){
         var data = res.json();
         return data;
       })
-      .then(() => {
+      .then((data) => {
         console.log(data);
       })
       .catch((error) => {
