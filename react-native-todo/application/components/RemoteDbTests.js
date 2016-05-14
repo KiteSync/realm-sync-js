@@ -2,7 +2,6 @@
 var styles = require('../styles/styles');
 var scripts = require('../helpers/scripts');
 var React = require('react-native');
-var ToDoListItem = require('./ToDoListItem');
 var {View, TouchableHighlight, Text, AsyncStorage} = React;
 
 class RemoteDbTests extends React.Component {
@@ -22,8 +21,8 @@ class RemoteDbTests extends React.Component {
         }
         userId += authData.userId;
         console.log(userId, authData)
-      
-        console.log('add item to remote db', userId);      
+
+        console.log('add item to remote db', userId);
         fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
           method: 'POST',
           headers: {
@@ -62,7 +61,7 @@ class RemoteDbTests extends React.Component {
         }
         userId += authData.userId;
         console.log(userId, authData)
-      
+
         console.log('add item to remote db', userId);
         fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=2&userId='+userId, {
           method: 'GET',
@@ -90,7 +89,7 @@ class RemoteDbTests extends React.Component {
         }
         userId += authData.userId;
         console.log(userId, authData)
-      
+
         console.log('add item to remote db', userId);
         fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1&userId='+userId, {
           method: 'GET',
@@ -115,7 +114,7 @@ class RemoteDbTests extends React.Component {
     deleteItemFromRemoteDB() {
       console.log('delete item from DB')
     }
-    
+
     listItemsInRemoteDB() {
       console.log('delete all items from DB')
     }

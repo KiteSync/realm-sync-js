@@ -38,3 +38,4 @@ remoteSync.pushLocalUpdatesToDB = function(updates) {
       });
 };
 
+module.exports = remoteSync;

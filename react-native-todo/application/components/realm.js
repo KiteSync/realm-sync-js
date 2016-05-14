@@ -2,6 +2,7 @@
 'use strict';
 
 import Realm from 'realm';
+import SyncSchema from '../helpers/SyncSchema';
 
 class Dog {}
 Dog.schema = {
@@ -12,17 +13,5 @@ Dog.schema = {
   },
 };
 
-class SyncQueue {}
-SyncQueue.schema = {
-  name: 'SyncQueue',
-  properties: {
-    usn: Realm.Types.INT,
-    realmSyncId: Realm.Types.STRING,
-    type: Realm.Types.STRING,
-    body: Realm.Types.STRING,
-    modified: Realm.Types.INT,
-  },
-};
-
-
-export default new Realm({schema: [Dog, SyncQueue]});
+// User has to
+export default new Realm({schema: [Dog, SyncSchema.SyncQueue]});
