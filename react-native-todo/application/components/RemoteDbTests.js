@@ -64,7 +64,7 @@ class RemoteDbTests extends React.Component {
         console.log(userId, authData)
       
         console.log('add item to remote db', userId);
-        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=5&userId='+userId, {
+        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=2&userId='+userId, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
