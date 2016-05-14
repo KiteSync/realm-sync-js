@@ -3,7 +3,7 @@ var styles = require('../styles/styles');
 var scripts = require('../helpers/scripts');
 var React = require('react-native');
 var ToDoListItem = require('./ToDoListItem');
-var {View, TouchableHighlight, Text} = React;
+var {View, TouchableHighlight, Text, AsyncStorage} = React;
 
 class RemoteDbTests extends React.Component {
 
@@ -15,6 +15,13 @@ class RemoteDbTests extends React.Component {
     }
 
     addItemToRemoteDB() {
+      var userId;
+      AsyncStorage.getItem('authData').then((authData) => {
+        if(authData) {
+          authData = JSON.parse(authData);
+        }
+        userId = authData.userId;
+      });
       console.log('add item to remote db');      
       fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'POST',
@@ -25,6 +32,7 @@ class RemoteDbTests extends React.Component {
         },
         body: JSON.stringify([
           {
+            "userId": userId,
             "syncId": "232-534-123",
             "obj": {
               "name": "colin"
@@ -52,7 +60,7 @@ class RemoteDbTests extends React.Component {
         },
       })
       .then((data) => {
-        console.log('<><><>data: ', data);
+        console.log('<><><>data: ', JSON.stringify(data));
         console.log('<><><>data.get: ', data.json());
       })
       .catch((error) => {
