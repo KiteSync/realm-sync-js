@@ -8,6 +8,7 @@ var realmSync = {};
 //https://realm.io/docs/react-native/latest/api/Realm.html#create
 realmSync.create = function(type, properties, update) {
   update = update || false;
+  properties.realmSyncId = scripts.generateGuid()
   try {
     let savedObject = realm.create(type, properties, update);
     scripts.addObjectToSyncQueue(type, savedObject);

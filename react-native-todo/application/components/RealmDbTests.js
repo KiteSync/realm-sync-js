@@ -20,7 +20,7 @@ class RealmDbTests extends React.Component {
     //
     addItemToDB() {
       realm.write(() => {
-        realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()})
+        realmSync.create('Dog', {name: scripts.randomName()})
       });
     }
 
@@ -28,7 +28,7 @@ class RealmDbTests extends React.Component {
     addItemToDB2() {
       realm.write(() => {
         try {
-          realm.create('Dof', {name: 'Phil', realmSyncId: scripts.generateGuid()});
+          realmSync.create('Dof', {name: 'Phil', realmSyncId: scripts.generateGuid()});
           console.log('success');
         } catch(error) {
           console.log(error);
@@ -39,7 +39,7 @@ class RealmDbTests extends React.Component {
 
     addThenRemoveFromDB() {
       realm.write(() => {
-        var dog = realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: scripts.generateGuid()})
+        var dog = realmSync.create('Dog', {name: scripts.randomName()})
         realmSync.delete(dog);
 
       });
