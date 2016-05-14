@@ -79,4 +79,3 @@ module.exports.conflictManager = function(realm, syncChunk, policy) {
       // Store the results in the resolved bucket based on guid
   // pass resolved bucket to localSyncFromServer
 };
-

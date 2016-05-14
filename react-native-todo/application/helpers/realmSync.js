@@ -156,9 +156,8 @@ var remoteFullSync = {
   }
 }
 
-realmSync.sync = function() {
+realmSync.testSync = function() {
   // if last sync date is never and USN is 0:
-
   realm.write(() => {
     for(key in remoteFullSync) {
       var type = remoteFullSync[key].type;
@@ -167,33 +166,36 @@ realmSync.sync = function() {
 
       var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
       let objToUpdate = realm.objects(type).filtered(filterText);
-        if(objToUpdate.length > 0) {
-          for(key in body) {
-            objToUpdate[0][key] = body[key];
-          }
-        } else {
-          realm.create(type, body)
+      if(objToUpdate.length > 0) {
+        for(key in body) {
+          objToUpdate[0][key] = body[key];
         }
+      } else {
+        realm.create(type, body)
       }
-    });
-  }
+    }
+  });
+}
 
+realmSync.Sync = function() {
+  // if last sync date is never and USN is 0:
+  realm.write(() => {
+    for(key in remoteFullSync) {
+      var type = remoteFullSync[key].type;
+      var body = remoteFullSync[key].body;
+      body.realmSyncId = remoteFullSync[key].realmSyncId;
 
-
-// realmSync.CreateSyncQueueTable = function() {
-//   class SyncQueue {}
-//   SyncQueue.schema = {
-//     name: 'SyncQueue',
-//     properties: {
-//       usn: Realm.Types.INT,
-//       realmSyncId: Realm.Types.STRING,
-//       type: Realm.Types.STRING,
-//       body: Realm.Types.STRING,
-//       modified: Realm.Types.INT,
-//     },
-//   };
-//
-//   return SyncQueue;
-// }
+      var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
+      let objToUpdate = realm.objects(type).filtered(filterText);
+      if(objToUpdate.length > 0) {
+        for(key in body) {
+          objToUpdate[0][key] = body[key];
+        }
+      } else {
+        realm.create(type, body)
+      }
+    }
+  });
+}
 
 module.exports = realmSync;
