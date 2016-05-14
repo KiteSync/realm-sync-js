@@ -83,6 +83,7 @@ class RemoteDbTests extends React.Component {
     getItemsFromRemoteDB() {
       var userId = '';
       console.log('get items from remote db')
+
       AsyncStorage.getItem('authData').then((authData) => {
         if(authData) {
           authData = JSON.parse(authData);

@@ -7,28 +7,27 @@ AWS.config.update({accessKeyId: '',
                    secretAccessKey:  ''});
                    
 var dynamo = new AWS.DynamoDB.DocumentClient();                   
-              
-var params = {
-    TableName : "RealmSync",
-    KeySchema: [       
-        { AttributeName: "syncId", KeyType: "HASH"},  //Partition key
-        { AttributeName: "usn", KeyType: "RANGE" },  //Sort key
-        { AttributeName: "obj" }
-    ],
-    AttributeDefinitions: [       
-        { AttributeName: "syncId", AttributeType: "S" },
-        { AttributeName: "usn", AttributeType: "N" },
-        { AttributeName: "obj", AttributeType: "M" }
-    ],
-    ProvisionedThroughput: {       
-        ReadCapacityUnits: 10, 
-        WriteCapacityUnits: 10
-    }
-};
-
+                   
 exports.handler = function(event, context) {
+    var params = {
+        TableName : "RealmSync",
+        AttributeDefinitions: [       
+            { AttributeName: "userId", AttributeType: "S" },
+            { AttributeName: "usn", AttributeType: "N" }
+        ],
+        KeySchema: [       
+            { AttributeName: "userId", KeyType: "HASH"},  //Partition key
+            { AttributeName: "usn", KeyType: "RANGE" }  //Sort key
+        ],
+        ProvisionedThroughput: {       
+            ReadCapacityUnits: 10, 
+            WriteCapacityUnits: 10
+        }
+    };
+
     //if table does not exist create RealmSync Table, described above in params
-    dynamodb.describeTable({TableName:"RealmSync"}, function(err,result) {
+    console.log("BeforeDescribe");
+    dynamodb.describeTable({TableName: "RealmSync"}, function(err,result) {
       if(err){
         console.log("err is "+err);
         dynamodb.createTable(params, function(err, data) {
@@ -36,6 +35,10 @@ exports.handler = function(event, context) {
                 console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
             } else {
                 console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+                event.logs.forEach(function(item){
+                    console.log(item);
+                    dynamo.put({TableName:event.userId, Item:item}, cb);
+                });
             }
         });
       }
@@ -57,7 +60,7 @@ exports.handler = function(event, context) {
     event.forEach(function(item){
         console.log(item);
 
-        dynamo.put({TableName:"RealmSync", Item:item}, cb);
+        dynamo.put({TableName: "RealmSync", Item:item}, cb);
     });
    
 };
