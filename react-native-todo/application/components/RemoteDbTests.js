@@ -21,8 +21,8 @@ class RemoteDbTests extends React.Component {
         }
         userId += authData.userId;
         console.log(userId, authData)
-
-        console.log('add item to remote db', userId);
+      
+        console.log('add item to remote db', userId);      
         fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
           method: 'POST',
           headers: {
@@ -41,9 +41,14 @@ class RemoteDbTests extends React.Component {
             }
           ])
         })
+        .then((res) => {
+          console.log('<><><>data: ', JSON.stringify(res));
+          // console.log('<><><>data.get: ', data.json());
+          data = res.json();
+          return data
+        })
         .then((data) => {
-          console.log('<><><>data: ', data);
-          console.log('<><><>data.get: ', data.json());
+          console.log(data)
         })
         .catch((error) => {
           console.error(error);
@@ -61,7 +66,7 @@ class RemoteDbTests extends React.Component {
         }
         userId += authData.userId;
         console.log(userId, authData)
-
+      
         console.log('add item to remote db', userId);
         fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=2&userId='+userId, {
           method: 'GET',
@@ -69,9 +74,14 @@ class RemoteDbTests extends React.Component {
             'Content-Type': 'application/json'
           },
         })
+        .then((res) => {
+          console.log('<><><>data: ', JSON.stringify(res));
+          // console.log('<><><>data.get: ', data.json());
+          data = res.json();
+          return data
+        })
         .then((data) => {
-          console.log('<><><>data: ', JSON.stringify(data));
-          console.log('<><><>data.get: ', data.json());
+          console.log(data)
         })
         .catch((error) => {
           console.error(error);
@@ -89,7 +99,7 @@ class RemoteDbTests extends React.Component {
         }
         userId += authData.userId;
         console.log(userId, authData)
-
+      
         console.log('add item to remote db', userId);
         fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1&userId='+userId, {
           method: 'GET',
@@ -97,9 +107,14 @@ class RemoteDbTests extends React.Component {
             'Content-Type': 'application/json'
           },
         })
+        .then((res) => {
+          console.log('<><><>data: ', JSON.stringify(res));
+          // console.log('<><><>data.get: ', data.json());
+          data = res.json();
+          return data
+        })
         .then((data) => {
-          console.log('<><><>data: ', data);
-          console.log('<><><>data.get: ', data.json());
+          console.log(data)
         })
         .catch((error) => {
           console.error(error);
@@ -114,7 +129,7 @@ class RemoteDbTests extends React.Component {
     deleteItemFromRemoteDB() {
       console.log('delete item from DB')
     }
-
+    
     listItemsInRemoteDB() {
       console.log('delete all items from DB')
     }

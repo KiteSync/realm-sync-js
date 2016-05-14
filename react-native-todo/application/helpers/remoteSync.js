@@ -1,6 +1,6 @@
 var remoteSync = {};
 
-remoteSync.getUpdatesFromRemoteDB = function(latestUsn, userId){
+remoteSync.getUpdatesFromRemoteDB = function(latestUsn, userId, cb){
   fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate='+latestUsn+'&userId='+userId, {
         method: 'GET',
         headers: {
@@ -8,15 +8,14 @@ remoteSync.getUpdatesFromRemoteDB = function(latestUsn, userId){
         },
       })
       .then((res) => {
-        console.log('<><><>data: ', res.json());
         var data = res.json();
         return data;
       })
       .then((data) => {
-        console.log(data);
+        cb(null, data);
       })
       .catch((error) => {
-        console.error(error);
+        cb(error, null);
       });
 };
 
