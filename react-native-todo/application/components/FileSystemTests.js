@@ -1,7 +1,6 @@
 'use strict';
 var styles = require('../styles/styles');
 var React = require('react-native');
-var ToDoListItem = require('./ToDoListItem');
 var RNFS = require('react-native-fs');
 var { View, TouchableHighlight, Text} = React;
 import { RNS3 } from 'react-native-aws3';
