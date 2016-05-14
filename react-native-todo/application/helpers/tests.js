@@ -1,6 +1,7 @@
 const Realm = require('realm');
 const schemas = require('./schemas');
 const realmSync = require('./realmSync');
+const remoteSync = require('./remoteSync');
 const sync = require('./Sync');
 var chai = require('chai');
 let expect = chai.expect;
@@ -33,6 +34,8 @@ module.exports.runTests = function() {
   var databaseTestResults = testDatabaseInteraction(realmLocal, realmLocalSync);
   clearDatabase(realmLocal, realmRemoteMock);
   var syncLocallyResults = testSyncLocally(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
+  clearDatabase(realmLocal, realmRemoteMock);
+  testRemoteSync(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
 };
 
 // TODO: Migrate over test cases
@@ -141,39 +144,12 @@ var testAuthenticationService = function() {
 };
 
 /**
- * Test synchronization with the remote AWS cloud store.
- */
-var testRemoteSync = function(realmLocal) {
-  // it('should receive data from remote database based on synchronization', function(done) {
-  var test1 = function() {
-    // done();
-  }();
-
-  // it('should ...', function(done) {
-  var test2 = function() {
-    //done();
-  }();
-};
-
-/**
  * 'Database restoration through synchronization with another database.
  */
 var testSyncLocally = function(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock) {
 
-  //it('should provide a 0 sync count for a newly initialized database', function(done) {
-  var test1 = function() {
-
-    //done();
-  }();
-
-  //it('should increment the sync count when data is passed to the external store', function(done) {
-  var test2 = function() {
-
-    // done();
-  }();
-
   // it('should sync local database from syncQueue data in remoteSync database', function(done) {
-  var test4 = function() {
+  var test1 = function() {
     // Add a person to the remote mock
     realmRemoteMock.write(() => {
       realmRemoteSyncMock.create(personType, {
@@ -206,12 +182,41 @@ var testSyncLocally = function(realmLocal, realmRemoteMock, realmLocalSync, real
   }();
 
   // it('should send data when the local store\'s sync is lower than the external\'s sync count', function(done) {
-  var test5 = function() {
+  var test2 = function() {
 
     // done();
   }();
 };
 
+/**
+ * Test synchronization with the remote AWS cloud store.
+ */
+var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock) {
+  //it('should provide a 0 sync count for a newly initialized database', function(done) {
+  var test1 = function() {
+    // get sync count from remote server
+
+    //done();
+  }();
+
+  //it('should increment the sync count when data is passed to the external store', function(done) {
+  var test2 = function() {
+    // add an item to the local database
+    // push the sync to remote server
+    // done();
+  }();
+
+  // it('should receive data from remote database based on synchronization', function(done) {
+  var test3 = function() {
+    // pull data from server to sync and load with remote chunk
+    // done();
+  }();
+
+  // it('should ...', function(done) {
+  var test4 = function() {
+    //done();
+  }();
+};
 
 /**
  * Conflict resolution.
