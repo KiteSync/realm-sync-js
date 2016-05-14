@@ -1,7 +1,7 @@
 var remoteSync = {};
 
 remoteSync.getUpdatesFromRemoteDB = function(latestUsn, userId){
-  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate='+userId+'&userId='+latestUsn, {
+  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate='+latestUsn+'&userId='+userId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
