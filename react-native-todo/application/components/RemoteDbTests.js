@@ -35,10 +35,10 @@ class RemoteDbTests extends React.Component {
             {
               "userId": userId,
               "obj": {
-                "name": "jonas",
+                "name": "kitesync",
                 "syncId": "232-534-1234",
               },
-              "usn": 3
+              "usn": 1
             }
           ])
         })
@@ -54,36 +54,56 @@ class RemoteDbTests extends React.Component {
 
     //https://github.com/johanneslumpe/react-native-fs#usage
     queryItemsFromRemoteDB() {
+      var userId = '';
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=0&userId=4535789080', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      .then((data) => {
-        console.log('<><><>data: ', JSON.stringify(data));
-        console.log('<><><>data.get: ', data.json());
-      })
-      .catch((error) => {
-        console.error(error);
+      AsyncStorage.getItem('authData').then((authData) => {
+        if(authData) {
+          authData = JSON.parse(authData);
+        }
+        userId += authData.userId;
+        console.log(userId, authData)
+      
+        console.log('add item to remote db', userId);
+        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=2&userId='+userId, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((data) => {
+          console.log('<><><>data: ', JSON.stringify(data));
+          console.log('<><><>data.get: ', data.json());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       });
     }
 
     getItemsFromRemoteDB() {
+      var userId = '';
       console.log('get items from remote db')
-      fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1&userId=4535789080', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      .then((data) => {
-        console.log('<><><>data: ', data);
-        console.log('<><><>data.get: ', data.json());
-      })
-      .catch((error) => {
-        console.error(error);
+      AsyncStorage.getItem('authData').then((authData) => {
+        if(authData) {
+          authData = JSON.parse(authData);
+        }
+        userId += authData.userId;
+        console.log(userId, authData)
+      
+        console.log('add item to remote db', userId);
+        fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate=1&userId='+userId, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((data) => {
+          console.log('<><><>data: ', data);
+          console.log('<><><>data.get: ', data.json());
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       });
     }
 
