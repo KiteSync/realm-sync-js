@@ -206,7 +206,6 @@ realmSync.Sync = function() {
           data.forEach((obj) => {
             var type = obj.type;
             var body = obj.body;
-            console.log(body)
             var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
             let objToUpdate = realm.objects(type).filtered(filterText);
             if(objToUpdate.length > 0) {
@@ -222,6 +221,22 @@ realmSync.Sync = function() {
         });
       }
     });
+
+    var syncQueue = realm.objects('SyncQueue');
+    // console.log(syncQueue);
+    var updates = syncQueue.slice();
+    console.log(JSON.stringify({
+          userId: userId,
+          logs: updates
+        }));
+    remoteSync.pushLocalUpdatesToDB(updates, userId, function(error, data){
+      if (error) {
+        console.log('Error', error);
+      } else {
+        console.log(data);
+      }
+    })
+
   });
 
 }

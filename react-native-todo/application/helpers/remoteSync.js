@@ -34,14 +34,17 @@ remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
     "usn": 3,
     "userId": "1333300703353223"
   } */
-remoteSync.pushLocalUpdatesToDB = function(updates, callback) {
+remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
   fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           // 'X-API-Key': ''
         },
-        body: JSON.stringify(updates)
+        body: JSON.stringify({
+          userId: userId,
+          logs: updates
+        })
       })
       .then((res) => {
         var data = res.json();
