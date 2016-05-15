@@ -1,26 +1,40 @@
 var remoteSync = {};
 
-remoteSync.getUpdatesFromRemoteDB = function(latestUsn, userId){
-  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate='+latestUsn+'&userId='+userId, {
+//getUpdatesFromRemoteDB method get the latest updates from the cloud (DynamoDB)
+//pass in the last update count and the userId of the user logged in
+//and callback to manipulate the response from DynamoDB
+remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
+  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate='+lastUpdate+'&userId='+userId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         },
       })
       .then((res) => {
-        console.log('<><><>data: ', res.json());
         var data = res.json();
         return data;
       })
-      .then(() => {
-        console.log(data);
+      .then((data) => {
+        callback(null, data);
       })
       .catch((error) => {
-        console.error(error);
+        callback(error, null);
       });
 };
 
-remoteSync.pushLocalUpdatesToDB = function(updates) {
+/*pushLocalUpdatesToDB method pushes any updates that are in the sync queue to the cloud (DynamoDB)
+  pass in the an array of updates and the userId of the user logged in
+  and callback to manipulate the response from DynamoDB
+  format of every update in the array, 
+  {
+    "body": {
+      "syncId": "232-534-1234",
+      "name": "jonas"
+    },
+    "usn": 3,
+    "userId": "1333300703353223"
+  } */
+remoteSync.pushLocalUpdatesToDB = function(updates, callback) {
   fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', {
         method: 'POST',
         headers: {
@@ -29,12 +43,15 @@ remoteSync.pushLocalUpdatesToDB = function(updates) {
         },
         body: JSON.stringify(updates)
       })
+      .then((res) => {
+        var data = res.json();
+        return data;
+      })
       .then((data) => {
-        console.log('<><><>data: ', data);
-        console.log('<><><>data.get: ', data.json());
+        callback(null, data);
       })
       .catch((error) => {
-        console.error(error);
+        callback(error, null);
       });
 };
 
