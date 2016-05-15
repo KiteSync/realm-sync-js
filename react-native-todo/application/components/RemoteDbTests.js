@@ -43,8 +43,8 @@ class RemoteDbTests extends React.Component {
         })
         .then((res) => {
           console.log('<><><>data: ', JSON.stringify(res));
-          // console.log('<><><>data.get: ', data.json());
-          data = res.json();
+          var data = res.json();
+          console.log(data);
           return data
         })
         .then((data) => {
@@ -76,8 +76,7 @@ class RemoteDbTests extends React.Component {
         })
         .then((res) => {
           console.log('<><><>data: ', JSON.stringify(res));
-          // console.log('<><><>data.get: ', data.json());
-          data = res.json();
+          var data = res.json();
           return data
         })
         .then((data) => {
@@ -109,8 +108,7 @@ class RemoteDbTests extends React.Component {
         })
         .then((res) => {
           console.log('<><><>data: ', JSON.stringify(res));
-          // console.log('<><><>data.get: ', data.json());
-          data = res.json();
+          var data = res.json();
           return data
         })
         .then((data) => {

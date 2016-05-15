@@ -193,9 +193,41 @@ realmSync.Sync = function() {
       authData = JSON.parse(authData);
     }
     userId += authData.userId;
-    var incomingItems = remoteSync.getUpdatesFromRemoteDB(0, userId);
-    debugger;
+    remoteSync.getUpdatesFromRemoteDB(0, userId, function(error, data){
+      if (error) {
+        console.log('Error', error);
+      } else {
+        console.log(data);
+        data.forEach((obj) => {
+          console.log(obj);
+        });
+        realm.write(() => {
+          console.log('Inside realm write')
+          data.forEach((obj) => {
+            var type = obj.type;
+            var body = obj.body;
+            console.log(body)
+            var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
+            let objToUpdate = realm.objects(type).filtered(filterText);
+            if(objToUpdate.length > 0) {
+              console.log('Realm update')
+              for(key in body) {
+                objToUpdate[0][key] = body[key];
+              }
+            } else {
+              console.log('create objects in realm')
+              realm.create(type, body)
+            }
+          });
+        });
+      }
+    });
   });
+
+}
+
+module.exports = realmSync;
+
 
   // realm.write(() => {
   //   for(key in remoteFullSync) {
@@ -214,6 +246,3 @@ realmSync.Sync = function() {
   //     }
   //   }
   // });
-}
-
-module.exports = realmSync;
