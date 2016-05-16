@@ -10,6 +10,25 @@ getSyncCount = function(realm) {
 };
 
 /**
+ * Converts data received from a remote service into a usn keyed object with
+ * sync'd objects as the body.
+ * @param data {[]} - array of sync'd data received from remote service.
+ * @returns {{usn: syncObject}} a sync chunk for syncing data to the local storage.
+ */
+convertRemoteDataToSyncChunk = function(data) {
+  var syncChunk = {};
+  data.forEach((obj) => {
+    var usn = obj.usn;
+    syncChunk[usn] = {};
+    syncChunk[usn].body = obj.body;
+    syncChunk[usn].modified = obj.modified;
+    syncChunk[usn].realmSyncId = obj.realmSyncId;
+    syncChunk[usn].type = obj.type;
+  });
+  return syncChunk;
+};
+
+/**
  * Synchronizes the data received from the remote storage to the local database.
  * @param realm {Realm} - an instance of realm
  * @param syncChunk {object} - contains all data from the remote storage that must be
@@ -23,32 +42,34 @@ localSyncFromServer = function(realm, syncChunk) {
   // Get the keys and sort them numerically
   var usnNumbers = Object.keys(syncChunk);
   usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
-  // For each usn apply object to database
-  usnNumbers.forEach(function(usn, index, collection) {
-    var realmSyncID = syncChunk[usn].realmSyncId;
-    var type = syncChunk[usn].type;
-    var object = syncChunk[usn].body;
-    var filteredText = 'realmSyncId = "' + realmSyncID + '"';
-    let objectToBeModified = realm.objects(type).filtered(filteredText);
-    if (objectToBeModified.length !== 0) {
-      objectToBeModified = syncChunk[usn].body;
-    } else {
-      realm.write(() => {
-        realm.create(type, JSON.parse(object));
-      });
-    }
+  realm.write(() => { // TODO: Determine if write should be moved up further
+    // For each usn apply object to database
+    usnNumbers.forEach(function (usn, index, collection) {
+      var realmSyncID = syncChunk[usn].realmSyncId;
+      var type = syncChunk[usn].type;
+      var object = JSON.parse(syncChunk[usn].body);
+      var filteredText = 'realmSyncId = "' + realmSyncID + '"';
+      let objectToBeModified = realm.objects(type).filtered(filteredText);
+      if (objectToBeModified.length !== 0) {
+        for (key in object) {
+          objectToBeModified[0][key] = object[key];
+        }
+      } else {
+        realm.create(type, object);
+      }
+    });
   });
 };
 
 /**
  * Creates a sync chunk to push the sync queue to remote storage.
  * @param realm {Realm} - an instance of realm
- * @return {JSON} contains objects to sync to remote storage
+ * @return {Array} contains objects to sync to remote storage
  */
 localSyncQueuePush = function(realm) {
   // Determine
   var syncQueue = realm.objects('SyncQueue');
-  return JSON.stringify(syncQueue.slice());
+  return syncQueue.slice();
 };
 
 /**
@@ -58,7 +79,7 @@ localSyncQueuePush = function(realm) {
  * @param policy {function(localObject, remoteObject)} - resolves conflicts between an
  *        item in the sync queue and the sync chunk
  */
-incrementalSyncFromServer = function(realm, syncChunk, policy) {
+incrementalSync = function(realm, syncChunk, policy) {
   // noConflict bucket
   var noConflictBucket = {};
   // conflict bucket
@@ -91,22 +112,41 @@ incrementalSyncFromServer = function(realm, syncChunk, policy) {
  * Handle conflict based on policy
  * @param realm {Realm} - an instance of realm
  * @param syncChunk {Object} - numerical keys that reference the usn and the sync object
- * @param policy {function(localObject, remoteObject)}
+ * @param remoteServiceWins {function(localObject, remoteObject)} returns true if remoteServiceWins, causing
+ *        the local object to be removed from the sync queue. Otherwise false.
  */
-conflictManager = function(realm, syncChunk, policy) {
+conflictManager = function(realm, syncChunk, remoteServiceWins) {
   // TODO: Implement
-  // Create an empty resolved bucket
-
+  // Create an empty resolved bucket, a bucket of changes to apply
+  var resolvedBucket = {};
+  var usnNumbers = Object.keys(syncChunk);
+  usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
   // For each item in the sync chunk
+  for (let usn of usnNumbers) {
+    // Get all records in sync queue with this guid
+    var realmSyncID = syncChunk[usn].realmSyncId;
+    var type = syncChunk[usn].type;
+    var object = syncChunk[usn].body;
+    var filteredText = 'realmSyncId = "' + realmSyncID + '"';
+    var syncObject = realm.objects(syncType).filtered(filteredText);
     // For each sync queue conflict
-      // TODO: Validate logic
-      // Apply the policy on the remote and local object
-      // Store the results in the resolved bucket based on guid
+    // Apply the policy on the remote and local object
+    // If the remote service wins
+    if (remoteServiceWins(item, syncChunk[usn])) {
+      // delete this from the sync queue
+      // The remote service wins all
+      resolvedBucket[usn] = syncChunk[usn];
+      // Store the results in the resolved bucket
+    }
+    // if the client service wins continue
+  }
   // pass resolved bucket to localSyncFromServer
+  localSyncFromServer(realm, resolvedBucket);
 };
 
 module.exports = {
-  incrementalSyncFromServer: incrementalSyncFromServer,
+  convertRemoteDataToSyncChunk: convertRemoteDataToSyncChunk,
+  incrementalSync: incrementalSync,
   localSyncFromServer: localSyncFromServer,
   localSyncQueuePush: localSyncQueuePush
 };

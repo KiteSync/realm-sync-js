@@ -35,7 +35,7 @@ module.exports.runTests = function() {
   clearDatabase(realmLocal, realmRemoteMock);
   var syncLocallyResults = testSyncLocally(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
   clearDatabase(realmLocal, realmRemoteMock);
-  // testRemoteSync(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
+  // var remoteSyncResults = testRemoteSync(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
 };
 
 // TODO: Migrate over test cases
@@ -200,17 +200,22 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
     });
     var syncQueue = sync.localSyncQueuePush(realmLocal);
     // push the sync to remote server
-    remoteSync.pushLocalUpdatesToDB('test1', syncQueue);
-    // check highest usn
-    // TODO: Check that remote server received the update
+    remoteSync.pushLocalUpdatesToDB(syncQueue, 'test1', function(err, data) {
+      // check highest usn
+      // TODO: Check that remote server received the update
+      test3();
+    });
     // done();
   }();
 
   // it('should receive data from remote database based on synchronization', function(done) {
   var test3 = function() {
     // pull data from server to sync and load with remote chunk
-    remoteSync.getUpdatesFromRemoteDB(0, 'test1',function(err, syncChunk) {
-      sync.incrementalSyncFromServer(realmRemoteMock, syncChunk, null);
+    // TODO: Only get last update send in test2
+    remoteSync.getUpdatesFromRemoteDB(0, 'test1',function(err, data) {
+      expect(Array.isArray(data)).to.be.true;
+      var syncChunk = sync.convertRemoteDataToSyncChunk(data);
+      sync.incrementalSync(realmRemoteMock, syncChunk, null);
       var person = realmRemoteMock.objects(personType);
       expect(person.length).to.be.above(0);
       expect(person[0].name).to.equal('LocalTest');
@@ -218,7 +223,7 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
       expect(person[0].married).to.be.false;
     });
     // done();
-  }();
+  };
 
   // it('should ...', function(done) {
   var test4 = function() {
