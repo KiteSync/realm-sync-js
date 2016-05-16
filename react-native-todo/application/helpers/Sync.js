@@ -43,12 +43,12 @@ localSyncFromServer = function(realm, syncChunk) {
 /**
  * Creates a sync chunk to push the sync queue to remote storage.
  * @param realm {Realm} - an instance of realm
- * @return {JSON} contains objects to sync to remote storage
+ * @return {Array} contains objects to sync to remote storage
  */
 localSyncQueuePush = function(realm) {
   // Determine
   var syncQueue = realm.objects('SyncQueue');
-  return JSON.stringify(syncQueue.slice());
+  return syncQueue.slice();
 };
 
 /**
