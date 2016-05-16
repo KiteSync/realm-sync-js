@@ -91,18 +91,25 @@ incrementalSyncFromServer = function(realm, syncChunk, policy) {
  * Handle conflict based on policy
  * @param realm {Realm} - an instance of realm
  * @param syncChunk {Object} - numerical keys that reference the usn and the sync object
- * @param policy {function(localObject, remoteObject)}
+ * @param remoteServiceWins {function(localObject, remoteObject)} returns true if remoteServiceWins
  */
-conflictManager = function(realm, syncChunk, policy) {
+conflictManager = function(realm, syncChunk, remoteServiceWins) {
   // TODO: Implement
-  // Create an empty resolved bucket
-
+  // Create an empty resolved bucket, a bucket of changes to apply
+  var resolvedBucket = {};
   // For each item in the sync chunk
+    // Get all records in sync queue with this guid
     // For each sync queue conflict
       // TODO: Validate logic
       // Apply the policy on the remote and local object
-      // Store the results in the resolved bucket based on guid
+      // If the remote service wins
+        // delete this from the sync queue
+      // if the client service wins
+        // break loop
+    // The remote service wins all
+      // Store the results in the resolved bucket
   // pass resolved bucket to localSyncFromServer
+  localSyncFromServer(realm, resolvedBucket);
 };
 
 module.exports = {
