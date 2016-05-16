@@ -35,7 +35,7 @@ module.exports.runTests = function() {
   clearDatabase(realmLocal, realmRemoteMock);
   var syncLocallyResults = testSyncLocally(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
   clearDatabase(realmLocal, realmRemoteMock);
-  var remoteSyncResults = testRemoteSync(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
+  // var remoteSyncResults = testRemoteSync(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
 };
 
 // TODO: Migrate over test cases
@@ -212,8 +212,10 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
   var test3 = function() {
     // pull data from server to sync and load with remote chunk
     // TODO: Only get last update send in test2
-    remoteSync.getUpdatesFromRemoteDB(0, '117165642031373',function(err, syncChunk) {
-      sync.incrementalSyncFromServer(realmRemoteMock, syncChunk, null);
+    remoteSync.getUpdatesFromRemoteDB(0, '117165642031373',function(err, data) {
+      expect(Array.isArray(data)).to.be.true;
+      var syncChunk = sync.convertRemoteDataToSyncChunk(data);
+      sync.incrementalSync(realmRemoteMock, syncChunk, null);
       var person = realmRemoteMock.objects(personType);
       expect(person.length).to.be.above(0);
       expect(person[0].name).to.equal('LocalTest');
