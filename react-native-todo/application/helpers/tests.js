@@ -200,7 +200,7 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
     });
     var syncQueue = sync.localSyncQueuePush(realmLocal);
     // push the sync to remote server
-    remoteSync.pushLocalUpdatesToDB(syncQueue, '117165642031373', function(err, data) {
+    remoteSync.pushLocalUpdatesToDB(syncQueue, 'test1', function(err, data) {
       // check highest usn
       // TODO: Check that remote server received the update
       test3();
@@ -212,7 +212,7 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
   var test3 = function() {
     // pull data from server to sync and load with remote chunk
     // TODO: Only get last update send in test2
-    remoteSync.getUpdatesFromRemoteDB(0, '117165642031373',function(err, data) {
+    remoteSync.getUpdatesFromRemoteDB(0, 'test1',function(err, data) {
       expect(Array.isArray(data)).to.be.true;
       var syncChunk = sync.convertRemoteDataToSyncChunk(data);
       sync.incrementalSync(realmRemoteMock, syncChunk, null);
