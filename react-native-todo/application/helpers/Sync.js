@@ -91,23 +91,34 @@ incrementalSyncFromServer = function(realm, syncChunk, policy) {
  * Handle conflict based on policy
  * @param realm {Realm} - an instance of realm
  * @param syncChunk {Object} - numerical keys that reference the usn and the sync object
- * @param remoteServiceWins {function(localObject, remoteObject)} returns true if remoteServiceWins
+ * @param remoteServiceWins {function(localObject, remoteObject)} returns true if remoteServiceWins, causing
+ *        the local object to be removed from the sync queue. Otherwise false.
  */
 conflictManager = function(realm, syncChunk, remoteServiceWins) {
   // TODO: Implement
   // Create an empty resolved bucket, a bucket of changes to apply
   var resolvedBucket = {};
+  var usnNumbers = Object.keys(syncChunk);
+  usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
   // For each item in the sync chunk
+  for (let usn of usnNumbers) {
     // Get all records in sync queue with this guid
+    var realmSyncID = syncChunk[usn].realmSyncId;
+    var type = syncChunk[usn].type;
+    var object = syncChunk[usn].body;
+    var filteredText = 'realmSyncId = "' + realmSyncID + '"';
+    var syncObject = realm.objects(syncType).filtered(filteredText);
     // For each sync queue conflict
-      // TODO: Validate logic
-      // Apply the policy on the remote and local object
-      // If the remote service wins
-        // delete this from the sync queue
-      // if the client service wins
-        // break loop
-    // The remote service wins all
+    // Apply the policy on the remote and local object
+    // If the remote service wins
+    if (remoteServiceWins(item, syncChunk[usn])) {
+      // delete this from the sync queue
+      // The remote service wins all
+      resolvedBucket[usn] = syncChunk[usn];
       // Store the results in the resolved bucket
+    }
+    // if the client service wins continue
+  }
   // pass resolved bucket to localSyncFromServer
   localSyncFromServer(realm, resolvedBucket);
 };
