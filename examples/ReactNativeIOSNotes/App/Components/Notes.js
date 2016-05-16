@@ -14,15 +14,18 @@ var {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+    padding: 10,
     marginTop: 20,
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#503f59'
   },
-  exampleText: {
+  syncBar: {
+    padding: 10,
+    marginTop: 55,
     fontSize: 18,
-    color: 'black'
+    backgroundColor: '#928699',
+    borderRadius: 6
   },
   buttonText: {
     fontSize: 18,
@@ -124,6 +127,10 @@ class Notes extends React.Component{
   render() {
     return(
       <View style={styles.container}>
+        <View
+        style={styles.syncBar}>
+          <Text>(Last Synced Never)</Text>
+        </View>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow} />
