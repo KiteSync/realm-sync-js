@@ -223,7 +223,6 @@ realmSync.Sync = function() {
     });
 
     var syncQueue = realm.objects('SyncQueue');
-    // console.log(syncQueue);
     var updates = syncQueue.slice();
     console.log(JSON.stringify({
           userId: userId,
