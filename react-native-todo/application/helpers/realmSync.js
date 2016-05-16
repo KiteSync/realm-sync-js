@@ -1,7 +1,8 @@
 import realm from '../components/realm';
 import scripts from './scripts';
 const Realm = require('realm');
-import remoteSync from './remoteSync'
+import remoteSync from './remoteSync';
+import sync from './Sync';
 
 //this is for dynamoDb sync.
 var React = require('react-native');
@@ -198,47 +199,21 @@ realmSync.Sync = function() {
         console.log('Error', error);
       } else {
         console.log(data);
-        data.forEach((obj) => {
-          console.log(obj);
-        });
-        realm.write(() => {
-          console.log('Inside realm write')
-          data.forEach((obj) => {
-            var type = obj.type;
-            var body = obj.body;
-            var filterText = 'realmSyncId = "' + body.realmSyncId + '"'
-            let objToUpdate = realm.objects(type).filtered(filterText);
-            if(objToUpdate.length > 0) {
-              console.log('Realm update')
-              for(key in body) {
-                objToUpdate[0][key] = body[key];
-              }
-            } else {
-              console.log('create objects in realm')
-              realm.create(type, body)
-            }
-          });
-        });
+        var syncChunk = sync.convertRemoteDataToSyncChunk(data);
+        sync.localSyncFromServer(realm, syncChunk);
       }
     });
 
-    var syncQueue = realm.objects('SyncQueue');
-    var updates = syncQueue.slice();
-    console.log(JSON.stringify({
-          userId: userId,
-          logs: updates
-        }));
+    var updates = sync.localSyncQueuePush(realm);
     remoteSync.pushLocalUpdatesToDB(updates, userId, function(error, data){
       if (error) {
         console.log('Error', error);
       } else {
         console.log(data);
       }
-    })
-
+    });
   });
-
-}
+};
 
 module.exports = realmSync;
 
