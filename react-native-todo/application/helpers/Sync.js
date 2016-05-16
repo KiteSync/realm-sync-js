@@ -10,6 +10,25 @@ getSyncCount = function(realm) {
 };
 
 /**
+ * Converts data received from a remote service into a usn keyed object with
+ * sync'd objects as the body.
+ * @param data {[]} - array of sync'd data received from remote service.
+ * @returns {{usn: syncObject}} a sync chunk for syncing data to the local storage.
+ */
+convertRemoteDataToSyncChunk = function(data) {
+  var syncChunk = {};
+  data.forEach((obj) => {
+    var usn = obj.usn;
+    syncChunk[usn] = {};
+    syncChunk[usn].body = obj.body;
+    syncChunk[usn].modified = obj.modified;
+    syncChunk[usn].realmSyncId = obj.realmSyncId;
+    syncChunk[usn].type = obj.type;
+  });
+  return syncChunk;
+};
+
+/**
  * Synchronizes the data received from the remote storage to the local database.
  * @param realm {Realm} - an instance of realm
  * @param syncChunk {object} - contains all data from the remote storage that must be
@@ -23,20 +42,22 @@ localSyncFromServer = function(realm, syncChunk) {
   // Get the keys and sort them numerically
   var usnNumbers = Object.keys(syncChunk);
   usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
-  // For each usn apply object to database
-  usnNumbers.forEach(function(usn, index, collection) {
-    var realmSyncID = syncChunk[usn].realmSyncId;
-    var type = syncChunk[usn].type;
-    var object = syncChunk[usn].body;
-    var filteredText = 'realmSyncId = "' + realmSyncID + '"';
-    let objectToBeModified = realm.objects(type).filtered(filteredText);
-    if (objectToBeModified.length !== 0) {
-      objectToBeModified = syncChunk[usn].body;
-    } else {
-      realm.write(() => {
-        realm.create(type, JSON.parse(object));
-      });
-    }
+  realm.write(() => { // TODO: Determine if write should be moved up further
+    // For each usn apply object to database
+    usnNumbers.forEach(function (usn, index, collection) {
+      var realmSyncID = syncChunk[usn].realmSyncId;
+      var type = syncChunk[usn].type;
+      var object = JSON.parse(syncChunk[usn].body);
+      var filteredText = 'realmSyncId = "' + realmSyncID + '"';
+      let objectToBeModified = realm.objects(type).filtered(filteredText);
+      if (objectToBeModified.length !== 0) {
+        for (key in object) {
+          objectToBeModified[0][key] = object[key];
+        }
+      } else {
+        realm.create(type, object);
+      }
+    });
   });
 };
 
@@ -58,7 +79,7 @@ localSyncQueuePush = function(realm) {
  * @param policy {function(localObject, remoteObject)} - resolves conflicts between an
  *        item in the sync queue and the sync chunk
  */
-incrementalSyncFromServer = function(realm, syncChunk, policy) {
+incrementalSync = function(realm, syncChunk, policy) {
   // noConflict bucket
   var noConflictBucket = {};
   // conflict bucket
@@ -124,7 +145,8 @@ conflictManager = function(realm, syncChunk, remoteServiceWins) {
 };
 
 module.exports = {
-  incrementalSyncFromServer: incrementalSyncFromServer,
+  convertRemoteDataToSyncChunk: convertRemoteDataToSyncChunk,
+  incrementalSync: incrementalSync,
   localSyncFromServer: localSyncFromServer,
   localSyncQueuePush: localSyncQueuePush
 };
