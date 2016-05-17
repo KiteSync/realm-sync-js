@@ -239,6 +239,10 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
 var testConflictResolution = function() {
   // it('should resolve a conflict with same guid', function(done) {
   var test1 = function() {
+    // create an item for local database
+    // get the sync id #
+    // create a slightly different item in the remote local
+    //
     //done();
   }();
 
