@@ -84,14 +84,40 @@ class RealmSync {
     }
   }
 
-  sync() {
-    // if last sync date is never and USN is 0:
+  sync(/* callback(err, success), [serviceWinsPolicy] */) {
+    // TODO: Determine if a callback should be passed to not when syncing is finished
+    // TODO: Possible refactor get user id to a method
     var userId = '';
     AsyncStorage.getItem('authData').then((authData) => {
       if(authData) {
         authData = JSON.parse(authData);
       }
       userId += authData.userId;
+      // Get local sync count
+
+      // Get highest sync count from server
+
+      // if local sync count equals highest from remote service
+        // continue
+      // else if local count is 0
+        // full sync
+        // in callback:
+          // convert sync data to sync chunk
+          //call full sync
+      // else
+        // incremental sync
+        // call get updates from remote with current local usn
+        // in callback:
+          // convert sync data to sync chunk
+          // call incremental sync with sync chunk & policy
+      // when sync from remote is done
+        // get data from sync queue
+        // push local update to remote service
+        // in callback:
+        // get highest number ???
+        // update local number
+        // call callback
+        // if last sync date is never and USN is 0:
       remoteSync.getUpdatesFromRemoteDB(0, userId, function(error, data){
         if (error) {
           console.log('Error', error);
