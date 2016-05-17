@@ -94,47 +94,63 @@ class RealmSync {
       }
       userId += authData.userId;
       // Get local sync count
+      sync.getLastSyncCount(function(localSyncCount) {
+        // Get highest sync count from server
+        remoteSync.getHighestUSN(userId, function(err, remoteServiceCount) {
+          // if local sync count equals highest from remote service
+          if (localSyncCount === remoteServiceCount) {
+            // continue
+          } else if (localSyncCount === 0) {// else if local count is 0
+            // full sync
+            // in callback:
+            // convert sync data to sync chunk
+            //call full sync
+            remoteSync.getUpdatesFromRemoteDB(localSyncCount, userId, function(error, data){
+              if (error) {
+                console.log('Error', error);
+              } else {
+                var syncChunk = sync.convertRemoteDataToSyncChunk(data);
+                sync.localSyncFromServer(this.realm, syncChunk);
+              }
+            });
 
-      // Get highest sync count from server
-
-      // if local sync count equals highest from remote service
-        // continue
-      // else if local count is 0
-        // full sync
-        // in callback:
-          // convert sync data to sync chunk
-          //call full sync
-      // else
-        // incremental sync
-        // call get updates from remote with current local usn
-        // in callback:
-          // convert sync data to sync chunk
-          // call incremental sync with sync chunk & policy
-      // when sync from remote is done
-        // get data from sync queue
-        // push local update to remote service
-        // in callback:
-        // get highest number ???
-        // update local number
-        // call callback
-        // if last sync date is never and USN is 0:
-      remoteSync.getUpdatesFromRemoteDB(0, userId, function(error, data){
-        if (error) {
-          console.log('Error', error);
-        } else {
-          console.log(data);
-          var syncChunk = sync.convertRemoteDataToSyncChunk(data);
-          sync.localSyncFromServer(this.realm, syncChunk);
-        }
-      });
-
-      var updates = sync.localSyncQueuePush(this.realm);
-      remoteSync.pushLocalUpdatesToDB(updates, userId, function(error, data){
-        if (error) {
-          console.log('Error', error);
-        } else {
-          console.log(data);
-        }
+            // when sync from remote is done
+              // get data from sync queue
+              // push local update to remote service
+            var updates = sync.localSyncQueuePush(this.realm);
+            remoteSync.pushLocalUpdatesToDB(updates, userId, function(error, data){
+              if (error) {
+                console.log('Error', error);
+                callback(error, null);
+              } else {
+                  // in callback:
+                  // get highest number ???
+                // TODO: should be a number
+                if (!isNaN(data)) {
+                  var highest = Number.parseInt(data);
+                  // update local number
+                  sync.setLastSyncCount(highest, callback);
+                  // call callback
+                  // if last sync date is never and USN is 0
+                }
+              }
+            });
+          } else {// else incremental sync
+            // incremental sync
+            // call get updates from remote with current local usn
+            // in callback:
+              // convert sync data to sync chunk
+              // call incremental sync with sync chunk & policy
+          }
+          // when sync from remote is done
+            // get data from sync queue
+            // push local update to remote service
+            // in callback:
+            // get highest number ???
+            // update local number
+            // call callback
+            // if last sync date is never and USN is 0:
+        });
       });
     });
   };
