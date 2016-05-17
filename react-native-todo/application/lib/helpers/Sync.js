@@ -1,13 +1,36 @@
 let syncType = 'SyncQueue';
+var React = require('react-native');
+var {AsyncStorage} = React;
+
+var syncCountKey = 'lastSyncCount'
+/**
+ * Set to the latest highest Sync Count
+ * @param callback with current syncCount
+ */
+setLastSyncCount = function(newCount, callback) {
+  AsyncStorage.setItem(syncCountKey, newCount).then(() => {
+    callback(newCount);
+  });
+}
 
 /**
- * Get the count from the local storage for last sync.
- * @param realm {Realm} - an instance of realm
- * @return remote storage's last sync count.
+ * get the latest highest sync count
+ * if no sync count is found, intiialize to 0;
+ * @param callback with current syncCount
  */
-getSyncCount = function(realm) {
-  // TODO: Implement and determine if implementation needed
+getLastSyncCount = function(callback) {
+  AsyncStorage.getItem(syncCountKey).then(syncCount => {
+    if(syncCount) {
+      callback(syncCount);
+    } else {
+      AsyncStorage.setItem(syncCountKey, '0').then(() => {
+        callback('0');
+      });
+    }
+  });
 };
+
+
 
 /**
  * Converts data received from a remote service into a usn keyed object with
@@ -148,5 +171,7 @@ module.exports = {
   convertRemoteDataToSyncChunk: convertRemoteDataToSyncChunk,
   incrementalSync: incrementalSync,
   localSyncFromServer: localSyncFromServer,
-  localSyncQueuePush: localSyncQueuePush
+  localSyncQueuePush: localSyncQueuePush,
+  getLastSyncCount: getLastSyncCount,
+  setLastSyncCount: setLastSyncCount
 };
