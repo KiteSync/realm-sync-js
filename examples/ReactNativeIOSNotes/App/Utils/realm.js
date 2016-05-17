@@ -1,6 +1,8 @@
 'use strict';
 
 import Realm from 'realm';
+var RealmSync = require('../lib/realmSync')
+
 
 class Note {}
 Note.schema = {
@@ -11,4 +13,6 @@ Note.schema = {
   },
 };
 
-export default new Realm({schema: [Note]});
+// export default new Realm({schema: [Note]});
+
+module.exports.realmSync = new RealmSync([Note]);
