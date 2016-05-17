@@ -232,13 +232,26 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
 /**
  * Conflict resolution.
  */
-var testConflictResolution = function() {
+var testConflictResolution = function(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock) {
   // it('should resolve a conflict with same guid', function(done) {
   var test1 = function() {
     // create an item for local database
-    // get the sync id #
-    // create a slightly different item in the remote local
-    //
+    realmLocal.write(() => {
+      realmLocalSync.create(personType, {name: 'Local Test', age: 35, married: false});
+    });
+    // Get a sync chunk
+    var syncQueue = sync.localSyncQueuePush(realmLocal);
+    // Full sync in the remote
+    var syncChunk = convertRemoteDataToSyncChunk(syncQueue);
+    sync.localSyncFromServer(realmRemoteSyncMock, syncChunk);
+    // Change the local
+    realmLocal.write(() => {
+      realmLocalSync.create(personType, {})
+    });
+    // Change the remote
+    // Get remote sync chunk
+    // perform an incremental sync in the local database
+    // check values
     //done();
   }();
 
