@@ -20,13 +20,18 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#503f59'
   },
+  syncBarText: {
+    fontSize: 18,
+    color: 'white',
+    marginLeft: 25
+  },
   syncBar: {
     padding: 10,
     marginTop: 55,
     fontSize: 18,
     backgroundColor: '#928699',
     borderRadius: 6
-  },
+  },  
   buttonText: {
     fontSize: 18,
     color: 'black'
@@ -127,10 +132,10 @@ class Notes extends React.Component{
   render() {
     return(
       <View style={styles.container}>
-        <View
+        <TouchableHighlight
         style={styles.syncBar}>
-          <Text>(Last Synced Never)</Text>
-        </View>
+          <Text style={styles.syncBarText}>(Last Synced Never)</Text>
+        </TouchableHighlight>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow} />
