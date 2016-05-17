@@ -58,6 +58,7 @@ remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
       });
 };
 
+//getHighestUSN gets the highest USN count from DynamoDB for user passed in.
 remoteSync.getHighestUSN = function(userId, callback) {
   fetch(' https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync/count',
     {
