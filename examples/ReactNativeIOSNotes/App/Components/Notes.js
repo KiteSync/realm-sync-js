@@ -1,7 +1,10 @@
 var React = require('react-native');
 var api = require('../Utils/api');
 var Separator = require('./Helpers/Separator');
-var Realm = require('../Utils/realm')
+
+import Realm from '../Utils/realm';
+let realmSync = Realm.realmSync;
+let realm = realmSync.getRealmInstance();
 
 var {
   View,
@@ -70,18 +73,23 @@ var styles = StyleSheet.create({
 
 class Notes extends React.Component{
   constructor(props) {
-    super(props)
+    super(props);
+    let note = realm.objects('Note');
 
-    let note = Realm.objects('Note');
+    // console.log('NOTE: ', note);
+    // debugger;
+    notesArray = note.slice();
+    // var notesArray = 
 
-    if (note.length < 1) {
-        realm.write(() => {
-            realm.create('Name', {name: 'Name'});
-        });
-    }
+    // if (note.length < 1) {
+    //     realm.write(() => {
+    //         realmSync.create('Note', {name: 'Note'});
+    //     });
+    // }
+
 
 //     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-//     this.state = {
+    this.state = {
 // //       dataSource: this.ds.cloneWithRows(this.props.notes),
 // //       dataSource: this.ds.cloneWithRows(Realm.defaultPath),
 // // FIX THIS DATA SOURCE!
@@ -90,9 +98,11 @@ class Notes extends React.Component{
 //       //   realmPath: this.state.Realm.defaultPath
 //       // },
 //       dataSource: this.ds.cloneWithRows(['hello', 'world', 'this', 'is', 'a', 'test', 'sgkjndgnkejgjaebjgensjgvz,xdnfkadgjhdrbgjhadzkjvnkjdgjdsbgjsfksjnsfksgkjsgfkjb']),
-//       note: '',
-//       error: ''
-//     }
+      note: note,
+      dataSource: notesArray,
+      // dataSource: notesArray,
+      error: ''
+    }
   }
   handleChange(e) {
     this.setState({
@@ -104,19 +114,11 @@ class Notes extends React.Component{
     this.setState({
       note: ''
     })
-//FIX FETCH REQUEST HERE    
-    // api.addNote(this.props.userInfo.login, note)
-    //   .then((data) => {
-    //     api.getNotes(this.props.userInfo.login)
-    //       .then((data) => {
-    //         this.setState({
-    //           dataSource: this.ds.cloneWithRows(data)
-    //         })
-    //       })
-    //   }).catch((err) => {
-    //     console.log('request failed', err);
-    //     this.setState({error})
-    //   })
+    realm.write(() => {
+      realmSync.create('Note', {name: note});
+    })
+
+
   }
   renderRow(rowData) {
     return(
@@ -146,6 +148,7 @@ class Notes extends React.Component{
     )
   }
   render() {
+
     return(
       <View style={styles.container}>
         <TouchableHighlight
@@ -153,7 +156,7 @@ class Notes extends React.Component{
           <Text style={styles.syncBarText}>(Last Synced Never)</Text>
         </TouchableHighlight>
         <ListView
-          dataSource={this.state.dataSource}
+          dataSource={this.state.note}
           renderRow={this.renderRow} />
         {this.footer()}
       </View>
@@ -161,10 +164,6 @@ class Notes extends React.Component{
   }
 };
 
-// Notes.propTypes = {
-//   userInfo: React.PropTypes.object.isRequired,
-//   notes: React.PropTypes.object.isRequired
-// }
 
 module.exports = Notes;
 
