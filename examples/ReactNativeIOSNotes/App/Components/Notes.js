@@ -1,15 +1,17 @@
 var React = require('react-native');
 var api = require('../Utils/api');
 var Separator = require('./Helpers/Separator');
+var Realm = require('../Utils/realm')
 
 var {
   View,
   Text,
-  ListView,
   TextInput,
   StyleSheet,
   TouchableHighlight
 } = React;
+
+import { ListView } from 'realm/react-native';
 
 var styles = StyleSheet.create({
   container: {
@@ -69,14 +71,28 @@ var styles = StyleSheet.create({
 class Notes extends React.Component{
   constructor(props) {
     super(props)
-    this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-    this.state = {
-      // dataSource: this.ds.cloneWithRows(this.props.notes),
-// FIX THIS DATA SOURCE!
-      dataSource: this.ds.cloneWithRows(['hello', 'world', 'this', 'is', 'a', 'test', 'sgkjndgnkejgjaebjgensjgvz,xdnfkadgjhdrbgjhadzkjvnkjdgjdsbgjsfksjnsfksgkjsgfkjb']),
-      note: '',
-      error: ''
+
+    let note = Realm.objects('Note');
+
+    if (note.length < 1) {
+        realm.write(() => {
+            realm.create('Name', {name: 'Name'});
+        });
     }
+
+//     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+//     this.state = {
+// //       dataSource: this.ds.cloneWithRows(this.props.notes),
+// //       dataSource: this.ds.cloneWithRows(Realm.defaultPath),
+// // FIX THIS DATA SOURCE!
+//       // realmPath: Realm.defaultPath,
+//       // dataSource: {
+//       //   realmPath: this.state.Realm.defaultPath
+//       // },
+//       dataSource: this.ds.cloneWithRows(['hello', 'world', 'this', 'is', 'a', 'test', 'sgkjndgnkejgjaebjgensjgvz,xdnfkadgjhdrbgjhadzkjvnkjdgjdsbgjsfksjnsfksgkjsgfkjb']),
+//       note: '',
+//       error: ''
+//     }
   }
   handleChange(e) {
     this.setState({
@@ -145,10 +161,10 @@ class Notes extends React.Component{
   }
 };
 
-Notes.propTypes = {
-  userInfo: React.PropTypes.object.isRequired,
-  notes: React.PropTypes.object.isRequired
-}
+// Notes.propTypes = {
+//   userInfo: React.PropTypes.object.isRequired,
+//   notes: React.PropTypes.object.isRequired
+// }
 
 module.exports = Notes;
 

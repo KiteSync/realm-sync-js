@@ -7,7 +7,7 @@ Note.schema = {
   name: 'Note',
   properties: {
     name: Realm.Types.STRING,
-    realmSyncId: Realm.Types.STRING,
+    realmSyncId: Realm.Types.STRING
   },
 };
 
