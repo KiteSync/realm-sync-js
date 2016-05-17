@@ -112,6 +112,7 @@ class RealmSync {
       });
     });
   };
+
 }
 
 class SyncQueue {}
