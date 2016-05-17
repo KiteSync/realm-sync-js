@@ -167,6 +167,17 @@ conflictManager = function(realm, syncChunk, remoteServiceWins) {
   localSyncFromServer(realm, resolvedBucket);
 };
 
+/**
+ * Determines if the remote object wins a sync conflict based on modified time.
+ * @param localObject {Object} - a local object stored in the local library
+ * @param remoteObject {Object} - a remote object stored in the remote service
+ * @returns {boolean} true if the remote service object will is the most recent object,
+ *          otherwise false.
+ */
+timeRemoteServiceWinsPolicy = function(localObject, remoteObject) {
+  return (remoteObject.modified >= localObject.modified);
+};
+
 module.exports = {
   convertRemoteDataToSyncChunk: convertRemoteDataToSyncChunk,
   incrementalSync: incrementalSync,
