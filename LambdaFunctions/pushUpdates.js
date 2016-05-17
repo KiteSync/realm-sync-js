@@ -1,8 +1,8 @@
 var AWS = require('aws-sdk');
 var dynamodb = new AWS.DynamoDB();
 
-AWS.config.update({accessKeyId: 'AKIAJA42RE5SATXJHMFA',
-                   secretAccessKey:  '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'});
+AWS.config.update({accessKeyId: '',
+                   secretAccessKey:  ''});
                    
 var dynamo = new AWS.DynamoDB.DocumentClient();   
 var params = {

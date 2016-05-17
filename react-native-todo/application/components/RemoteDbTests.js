@@ -30,16 +30,18 @@ class RemoteDbTests extends React.Component {
             'Content-Type': 'application/json',
             'X-API-Key': ''
           },
-          body: JSON.stringify([
-            {
-              "userId": userId,
-              "obj": {
-                "name": "kitesync",
-                "syncId": "232-534-1234",
-              },
-              "usn": 1
-            }
-          ])
+          body: JSON.stringify({
+            "userId": userId,
+            "logs":  [
+                {
+                  "obj": {
+                    "name": "kitesync",
+                    "syncId": "232-534-1234",
+                  },
+                  "usn": 1
+                }
+              ]
+          })
         })
         .then((res) => {
           console.log('<><><>data: ', JSON.stringify(res));
