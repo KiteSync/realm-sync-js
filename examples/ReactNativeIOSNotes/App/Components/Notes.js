@@ -72,38 +72,23 @@ var styles = StyleSheet.create({
 });
 
 class Notes extends React.Component{
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     let note = realm.objects('Note');
 
-    // console.log('NOTE: ', note);
-    // debugger;
+    var notesArray = [];
     notesArray = note.slice();
-    // var notesArray = 
 
-    // if (note.length < 1) {
-    //     realm.write(() => {
-    //         realmSync.create('Note', {name: 'Note'});
-    //     });
-    // }
-
-
-//     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+    this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+    debugger;
     this.state = {
-// //       dataSource: this.ds.cloneWithRows(this.props.notes),
-// //       dataSource: this.ds.cloneWithRows(Realm.defaultPath),
-// // FIX THIS DATA SOURCE!
-//       // realmPath: Realm.defaultPath,
-//       // dataSource: {
-//       //   realmPath: this.state.Realm.defaultPath
-//       // },
-//       dataSource: this.ds.cloneWithRows(['hello', 'world', 'this', 'is', 'a', 'test', 'sgkjndgnkejgjaebjgensjgvz,xdnfkadgjhdrbgjhadzkjvnkjdgjdsbgjsfksjnsfksgkjsgfkjb']),
-      note: note,
-      dataSource: notesArray,
-      // dataSource: notesArray,
+      dataSource: this.ds.cloneWithRows(notesArray),
+      note: '',
       error: ''
     }
-  }
+  }    
+
+  
   handleChange(e) {
     this.setState({
       note: e.nativeEvent.text
@@ -121,6 +106,7 @@ class Notes extends React.Component{
 
   }
   renderRow(rowData) {
+    rowData = JSON.stringify(rowData.name);
     return(
       <View>
         <View style={styles.rowContainer}>
@@ -156,7 +142,7 @@ class Notes extends React.Component{
           <Text style={styles.syncBarText}>(Last Synced Never)</Text>
         </TouchableHighlight>
         <ListView
-          dataSource={this.state.note}
+          dataSource={this.state.dataSource}
           renderRow={this.renderRow} />
         {this.footer()}
       </View>
