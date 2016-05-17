@@ -93,7 +93,6 @@ class RealmDbTests extends React.Component {
 
     listItemsInDB() {
       let syncQueue = realm.objects('SyncQueue')
-      debugger;
       for(var i = 0; i < syncQueue.length; i++) {
         console.log(JSON.stringify(syncQueue[i]));
       }
