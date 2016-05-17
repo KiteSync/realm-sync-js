@@ -1,4 +1,4 @@
-import realm from '../../components/realm';
+// import realm from '../../components/realm';
 import usnHandler from './usnHandler';
 
 /**
@@ -7,7 +7,8 @@ import usnHandler from './usnHandler';
  * @post
  * @return something here
 */
-var addObjectToSyncQueue = function(type, obj, realmParam) {
+
+var addObjectToSyncQueue = function(realm, type, obj, realmParam) {
   var returnObj = {}
   returnObj.usn = usnHandler.incrementAndReturnUsn();
   returnObj.realmSyncId = obj.realmSyncId;
@@ -32,7 +33,7 @@ var addObjectToSyncQueue = function(type, obj, realmParam) {
 
 
 
-var deleteObjFromLocalChanges = function(realmSyncId) {
+var deleteObjFromLocalChanges = function(realm, realmSyncId) {
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
 
