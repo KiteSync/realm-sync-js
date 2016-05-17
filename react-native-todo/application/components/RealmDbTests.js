@@ -1,7 +1,7 @@
 'use strict';
 var styles = require('../styles/styles');
-var scripts = require('../helpers/scripts');
-var realmSync = require('../helpers/realmSync');
+var scripts = require('../lib/helpers/scripts');
+var realmSync = require('../lib/realmSync');
 var React = require('react-native');
 var { View, TouchableHighlight, Text} = React;
 import realm from './realm';

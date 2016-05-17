@@ -1,8 +1,8 @@
 import realm from '../components/realm';
-import scripts from './scripts';
+import scripts from './helpers/scripts';
 const Realm = require('realm');
-import remoteSync from './remoteSync';
-import sync from './Sync';
+import remoteSync from './helpers/remoteSync'
+import sync from './helpers/Sync';
 
 //this is for dynamoDb sync.
 var React = require('react-native');
@@ -184,7 +184,7 @@ realmSync.testSync = function() {
 
 
 // Handling fullsync from dynamo db.
-// The logic (and imports at top) will need 
+// The logic (and imports at top) will need
 // to be put in sync.js component
 realmSync.Sync = function() {
   // if last sync date is never and USN is 0:

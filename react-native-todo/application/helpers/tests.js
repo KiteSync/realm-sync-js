@@ -1,12 +1,14 @@
 const Realm = require('realm');
 const schemas = require('./schemas');
-const realmSync = require('./realmSync');
-const remoteSync = require('./remoteSync');
-const sync = require('./Sync');
 var chai = require('chai');
 let expect = chai.expect;
 let personType = 'PersonObject';
 let syncType = 'SyncQueue';
+
+//These will be in the node module
+const realmSync = require('../lib/realmSync');
+const remoteSync = require('../lib/helpers/remoteSync');
+const sync = require('../lib/helpers/Sync');
 
 module.exports.runTests = function() {
   var realm; // = new Realm();
