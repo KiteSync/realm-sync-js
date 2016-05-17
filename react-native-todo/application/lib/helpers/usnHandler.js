@@ -1,4 +1,4 @@
-import realm from '../components/realm';
+import realm from '../../components/realm';
 var usn;
 
 
