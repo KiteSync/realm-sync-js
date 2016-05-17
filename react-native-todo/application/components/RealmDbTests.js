@@ -1,12 +1,13 @@
 'use strict';
 var styles = require('../styles/styles');
 var scripts = require('../lib/helpers/scripts');
-var realmSync = require('../lib/realmSync');
 var React = require('react-native');
 var { View, TouchableHighlight, Text} = React;
-import realm from './realm';
-
-
+// import Realm from 'realm';
+// let realm = new Realm();
+import Realm from './realm';
+let realmSync = Realm.realmSync;
+let realm = realmSync.getRealmInstance();;
 class RealmDbTests extends React.Component {
 
     constructor() {
@@ -92,7 +93,6 @@ class RealmDbTests extends React.Component {
 
     listItemsInDB() {
       let syncQueue = realm.objects('SyncQueue')
-      debugger;
       for(var i = 0; i < syncQueue.length; i++) {
         console.log(JSON.stringify(syncQueue[i]));
       }
