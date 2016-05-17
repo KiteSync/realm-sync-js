@@ -1,0 +1,23 @@
+{
+  "name": "my-awesome-package",
+  "version": "1.0.0",
+  "description": "Offline syncing project - will pick less ridiculous names a little later",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.3.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alamuv/ProjectInterNOT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alamuv/ProjectInterNOT/issues"
+  },
+  "homepage": "https://github.com/alamuv/ProjectInterNOT#readme"
+}
