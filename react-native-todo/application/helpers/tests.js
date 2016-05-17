@@ -6,12 +6,12 @@ let personType = 'PersonObject';
 let syncType = 'SyncQueue';
 
 //These will be in the node module
-const realmSync = require('../lib/realmSync');
+const RealmSync = require('../lib/realmSync');
 const remoteSync = require('../lib/helpers/remoteSync');
 const sync = require('../lib/helpers/Sync');
 
 module.exports.runTests = function() {
-  var realm; // = new Realm();
+  var realm;
   var basePath = Realm.defaultPath.split('/');
   basePath.splice(basePath.length - 1, 1);
   basePath = basePath.join('/');
@@ -19,14 +19,10 @@ module.exports.runTests = function() {
   var realmRemoteMockPath = 'realmRemoteMock.realm';
   // Create the realm database
   // Add a test schema to the database
-  let realmLocalSync = new realmSync.RealmSync(realmLocalPath, [schemas.PersonObject]);
-  let realmRemoteSyncMock = new realmSync.RealmSync(realmRemoteMockPath, [schemas.PersonObject]);
-  let realmLocal = new Realm({
-    path: realmLocalPath
-  });
-  let realmRemoteMock = new Realm({
-    path: realmRemoteMockPath
-  });
+  let realmLocalSync = new RealmSync([schemas.PersonObject], realmLocalPath);
+  let realmRemoteSyncMock = new RealmSync([schemas.PersonObject], realmRemoteMockPath);
+  let realmLocal = realmLocalSync.getRealmInstance();
+  let realmRemoteMock = realmRemoteSyncMock.getRealmInstance();
   // Delete any existing test databases
   clearDatabase(realmLocal, realmRemoteMock);
 
