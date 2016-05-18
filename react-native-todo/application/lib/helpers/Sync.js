@@ -8,6 +8,9 @@ var syncCountKey = 'lastSyncCount'
  * @param callback with current syncCount
  */
 setLastSyncCount = function(newCount, callback) {
+  if (typeof newCount === 'number') {
+    newCount = newCount.toString()
+  }
   AsyncStorage.setItem(syncCountKey, newCount).then(() => {
     callback(newCount);
   });
@@ -65,6 +68,7 @@ localSyncFromServer = function(realm, syncChunk) {
   // Get the keys and sort them numerically
   var usnNumbers = Object.keys(syncChunk);
   usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
+  // debugger;
   realm.write(() => { // TODO: Determine if write should be moved up further
     // For each usn apply object to database
     usnNumbers.forEach(function (usn, index, collection) {
