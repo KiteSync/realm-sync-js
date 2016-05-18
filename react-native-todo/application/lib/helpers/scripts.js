@@ -2,16 +2,15 @@
 import usnHandler from './usnHandler';
 
 /**
- * description here
- * @param  something here
- * @post
- * @return something here
-*/
-
+ * Adds or updates an object in the syncQueue when
+ * an object is added to the database
+ * @param realm: database object
+ * @param {string} database class
+ * @param {obj} database class updates
+ */
 var addObjectToSyncQueue = function(realm, type, obj) {
-  // object to put in sync queue
+  // TODO: Only search syncQueue for object to update for updates
 
-  //Check if object already exists:
   var filterText = 'realmSyncId = "' + obj.realmSyncId + '"'
   let objToUpdate = realm.objects('SyncQueue').filtered(filterText);
 
@@ -22,9 +21,6 @@ var addObjectToSyncQueue = function(realm, type, obj) {
     modified: Date.now(),
     body: JSON.stringify(obj)
   }
-  console.log(obj);
-  console.log(JSON.parse(JSON.stringify(objToUpdate)));
-
 
   try {
     if(objToUpdate.length === 0) {
@@ -46,7 +42,7 @@ var addObjectToSyncQueue = function(realm, type, obj) {
  * @param realm database object
  * @param {string} realm sync id
  */
-var deleteObjFromSyncQueue = function(realm, realmSyncId) {
+var markSyncQueueObjectAsDeleted = function(realm, realmSyncId) {
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
 
@@ -76,6 +72,6 @@ var generateGuid = function() {
 
 module.exports = {
   addObjectToSyncQueue: addObjectToSyncQueue,
-  deleteObjFromSyncQueue: deleteObjFromSyncQueue,
+  markSyncQueueObjectAsDeleted: markSyncQueueObjectAsDeleted,
   generateGuid: generateGuid,
 }
