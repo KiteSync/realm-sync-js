@@ -34,6 +34,8 @@ module.exports.runTests = function() {
   var syncLocallyResults = testSyncLocally(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
   clearDatabase(realmLocal, realmRemoteMock);
   // var remoteSyncResults = testRemoteSync(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
+  clearDatabase(realmLocal, realmRemoteMock);
+  testConflictResolution(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
 };
 
 // TODO: Migrate over test cases
@@ -236,22 +238,38 @@ var testConflictResolution = function(realmLocal, realmRemoteMock, realmLocalSyn
   // it('should resolve a conflict with same guid', function(done) {
   var test1 = function() {
     // create an item for local database
+    var localPerson = null;
     realmLocal.write(() => {
-      realmLocalSync.create(personType, {name: 'Local Test', age: 35, married: false});
+      localPerson = realmLocalSync.create(personType, {name: 'Local Test', age: 35, married: false});
     });
     // Get a sync chunk
-    var syncQueue = sync.localSyncQueuePush(realmLocal);
+    var localSyncQueue = sync.localSyncQueuePush(realmLocal);
     // Full sync in the remote
-    var syncChunk = convertRemoteDataToSyncChunk(syncQueue);
-    sync.localSyncFromServer(realmRemoteSyncMock, syncChunk);
+    var localSyncChunk = sync.convertRemoteDataToSyncChunk(localSyncQueue);
+    sync.localSyncFromServer(realmRemoteMock, localSyncChunk);
     // Change the local
     realmLocal.write(() => {
-      realmLocalSync.create(personType, {})
+      localPerson.name = 'Changed Test Locally';
+      realmLocalSync.create(personType, localPerson, true);
     });
     // Change the remote
+    var remotePerson = realmRemoteMock.objects(personType)[0];
+    expect(localPerson.realmSyncId).to.equals(remotePerson.realmSyncId);
+    realmRemoteMock.write(() => {
+      remotePerson.name = 'Changed Test Remotely';
+      realmRemoteSyncMock.create(personType, remotePerson, true);
+    });
     // Get remote sync chunk
+    var remoteSyncQueue = sync.localSyncQueuePush(realmRemoteMock);
+    // Full sync in the remote
+    var remoteSyncChunk = sync.convertRemoteDataToSyncChunk(remoteSyncQueue);
     // perform an incremental sync in the local database
+    sync.incrementalSync(realmLocal, remoteSyncChunk, sync.timeRemoteServiceWinsPolicy);
     // check values
+    expect(localPerson.name).to.equals(remotePerson.name);
+    expect(localPerson.age).to.equals(remotePerson.age);
+    expect(localPerson.married).to.equals(remotePerson.married);
+    expect(localPerson.realmSyncId).to.equals(remotePerson.realmSyncId);
     //done();
   }();
 
