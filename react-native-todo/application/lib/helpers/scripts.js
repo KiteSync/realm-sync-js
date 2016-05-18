@@ -4,7 +4,40 @@ import usnHandler from './usnHandler';
 /**
  * Adds or updates an object in the syncQueue when
  * an object is added to the database
- * @param realm: database object
+ * @param realm database object
+ * @param {string} database class
+ * @param {obj} database class updates
+ */
+var addObjectToSyncQueue = function(realm, type, obj) {
+  // TODO: Only search syncQueue for object to update for updates
+
+  var filterText = 'realmSyncId = "' + obj.realmSyncId + '"'
+  let objToUpdate = realm.objects('SyncQueue').filtered(filterText);
+
+  var returnObj = {
+    usn: usnHandler.incrementAndReturnUsn(),
+    realmSyncId: obj.realmSyncId,
+    type: type,
+    modified: Date.now(),
+    body: JSON.stringify(obj)
+  }
+
+  try {
+    if(objToUpdate.length === 0) {
+      realm.create('SyncQueue', returnObj);
+    } else {
+      for(key in returnObj) {
+        objToUpdate[0][key] = returnObj[key];
+      }
+    }
+  } catch(error) {
+    console.log("ERROR in syncQueue write", error);
+  }
+}
+
+/**
+ * Remove objects from syncQueue (after successful sync)
+ * @param realm database object
  * @param {string} database class
  * @param {obj} database class updates
  */
