@@ -151,11 +151,10 @@ conflictManager = function(realm, syncChunk, remoteServiceWins) {
     var filteredText = 'realmSyncId = "' + realmSyncID + '"';
     var localObject = realm.objects(syncType).filtered(filteredText)[0];
     // If the remote service wins
-    if (remoteServiceWins(localObject, remoteObject)) {
+    if (remoteServiceWins(localObject, syncChunk[usn])) {
       // delete this from the sync queue
-      // TODO: Delete from queue
       realm.write(() => {
-        realm.delete(localObject[0]);
+        realm.delete(localObject);
       });
       // The remote service wins all
       resolvedBucket[usn] = syncChunk[usn];
