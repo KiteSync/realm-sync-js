@@ -184,5 +184,6 @@ module.exports = {
   localSyncFromServer: localSyncFromServer,
   localSyncQueuePush: localSyncQueuePush,
   getLastSyncCount: getLastSyncCount,
-  setLastSyncCount: setLastSyncCount
+  setLastSyncCount: setLastSyncCount,
+  timeRemoteServiceWinsPolicy: timeRemoteServiceWinsPolicy
 };
