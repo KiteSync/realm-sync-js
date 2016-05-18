@@ -4,7 +4,8 @@
   "description": "Offline syncing project - will pick less ridiculous names a little later",
   "main": "index.js",
   "dependencies": {
-    "aws-sdk": "^2.3.7"
+    "aws-sdk": "^2.3.7",
+    "react-native-facebook-login": "^1.0.3"
   },
   "devDependencies": {},
   "scripts": {
