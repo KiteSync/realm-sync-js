@@ -1,6 +1,8 @@
 var React = require('react-native');
 var api = require('../Utils/api');
 var Separator = require('./Helpers/Separator');
+var FBAccount = require('./FBAccount');
+
 
 import Realm from '../Utils/realm';
 let realmSync = Realm.realmSync;
@@ -33,7 +35,6 @@ var styles = StyleSheet.create({
   syncBar: {
     padding: 10,
     marginTop: 55,
-    fontSize: 18,
     backgroundColor: '#928699',
     borderRadius: 6
   },  
@@ -56,9 +57,11 @@ var styles = StyleSheet.create({
     color: '#111',
     flex: 10
   },
+  rowText: {
+    fontSize: 18
+  },
   rowContainer: {
     padding: 10,
-    fontSize: 18,
     backgroundColor: 'white',
     borderRadius: 6
   },
@@ -104,13 +107,23 @@ class Notes extends React.Component{
   syncRemoteDB() {
     console.log('Inside Remote DB Sync Method')
   }
+
+  navigateToAccount() {
+    this.props.navigator.push({
+      title: 'Account Page',
+      component: FBAccount,
+      passProps: {realmPath: this.state.realmPath}
+    })
+  }
+
+
   renderRow(rowData) {
     rowData = JSON.stringify(rowData.name);
 
     return(
       <View>
         <View style={styles.rowContainer}>
-          <Text> {rowData} </Text>
+          <Text style={styles.rowText}> {rowData} </Text>
         </View>
         <Separator />
       </View>
@@ -141,8 +154,16 @@ class Notes extends React.Component{
         style={styles.syncBar}
         onPress={this.syncRemoteDB.bind(this)}
         underlayColor="red">
-          <Text style={styles.syncBarText}>(Last Synced Never)</Text>
+          <Text style={styles.syncBarText}>(This is the sync button)</Text>
         </TouchableHighlight>
+       
+        <TouchableHighlight
+        style={styles.syncBar}
+        onPress={this.navigateToAccount.bind(this)}
+        underlayColor="red">
+          <Text style={styles.syncBarText}>Temporary button to navigate to account</Text>
+        </TouchableHighlight>
+       
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow} />
