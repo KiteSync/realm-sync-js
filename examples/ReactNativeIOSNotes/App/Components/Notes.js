@@ -66,7 +66,6 @@ var styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: 'white',
     borderRadius: 6
   }
 });
@@ -80,7 +79,6 @@ class Notes extends React.Component{
     notesArray = note.slice();
 
     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-    debugger;
     this.state = {
       dataSource: this.ds.cloneWithRows(notesArray),
       note: '',
@@ -102,11 +100,13 @@ class Notes extends React.Component{
     realm.write(() => {
       realmSync.create('Note', {name: note});
     })
-
-
+  }
+  syncRemoteDB() {
+    console.log('Inside Remote DB Sync Method')
   }
   renderRow(rowData) {
     rowData = JSON.stringify(rowData.name);
+
     return(
       <View>
         <View style={styles.rowContainer}>
@@ -138,7 +138,9 @@ class Notes extends React.Component{
     return(
       <View style={styles.container}>
         <TouchableHighlight
-        style={styles.syncBar}>
+        style={styles.syncBar}
+        onPress={this.syncRemoteDB.bind(this)}
+        underlayColor="red">
           <Text style={styles.syncBarText}>(Last Synced Never)</Text>
         </TouchableHighlight>
         <ListView
