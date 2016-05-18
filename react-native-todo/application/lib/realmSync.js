@@ -43,10 +43,28 @@ class RealmSync {
    */
   create(type, properties, update) {
     update = update || false;
-    properties.realmSyncId = scripts.generateGuid();
+    var objToUpdate;
+
+    //If update === true and passed in object has a realmSyncId
+    if (update && properties.realmSyncId) {
+      var filterText = 'realmSyncId = "' + properties.realmSyncId + '"';
+      let filteredObjects = this.realm.objects(type).filtered(filterText);
+      if (filteredObjects.length > 0) {
+        objToUpdate = filteredObjects[0]
+        for (key in properties) {
+          objToUpdate[key] = properties[key];
+        }
+      }
+    } else {
+      properties.realmSyncId = scripts.generateGuid();
+      if (update === true) {
+        console.log("Can't find object in " + type + " with id " + properties.realmSyncId + ". Creating a new object" );
+      }
+    }
+
     try {
-      // TODO: Check that the assigned guid is unique
-      let savedObject = this.realm.create(type, properties, update);
+      // TODO: Check that the assigned guid is unique (1 / 1,000,000,000,000 chance)
+      let savedObject = objToUpdate || this.realm.create(type, properties, update);
       scripts.addObjectToSyncQueue(this.realm, type, savedObject);
       return savedObject;
     } catch(error) {
