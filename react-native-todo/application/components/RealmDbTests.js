@@ -62,7 +62,10 @@ class RealmDbTests extends React.Component {
     }
 
     syncDbReal() {
-      realmSync.Sync();
+      realmSync.sync((err, res) => {
+        console.log("Error: ", err);
+        console.log("Result: ", res);
+      });
     }
 
     deleteAllItemsFromSyncQueue() {
@@ -139,16 +142,10 @@ class RealmDbTests extends React.Component {
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
                   underlayColor='#99d9f4'
-                  onPress={this.syncDbTest.bind(this)}>
-                  <Text style={styles.buttonText}>Sync realm DB (local test object)</Text>
+                  onPress={this.syncDbReal.bind(this)}>
+                  <Text style={styles.buttonText}>Sync realm DB</Text>
               </TouchableHighlight>
 
-              <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
-                  underlayColor='#99d9f4'
-                  onPress={this.syncDbReal.bind(this)}>
-                  <Text style={styles.buttonText}>Sync realm DB (from dynamo)</Text>
-              </TouchableHighlight>
 
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
