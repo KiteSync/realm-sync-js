@@ -6,12 +6,12 @@ let personType = 'PersonObject';
 let syncType = 'SyncQueue';
 
 //These will be in the node module
-const realmSync = require('../lib/realmSync');
+const RealmSync = require('../lib/realmSync');
 const remoteSync = require('../lib/helpers/remoteSync');
 const sync = require('../lib/helpers/Sync');
 
 module.exports.runTests = function() {
-  var realm; // = new Realm();
+  var realm;
   var basePath = Realm.defaultPath.split('/');
   basePath.splice(basePath.length - 1, 1);
   basePath = basePath.join('/');
@@ -19,14 +19,10 @@ module.exports.runTests = function() {
   var realmRemoteMockPath = 'realmRemoteMock.realm';
   // Create the realm database
   // Add a test schema to the database
-  let realmLocalSync = new realmSync.RealmSync(realmLocalPath, [schemas.PersonObject]);
-  let realmRemoteSyncMock = new realmSync.RealmSync(realmRemoteMockPath, [schemas.PersonObject]);
-  let realmLocal = new Realm({
-    path: realmLocalPath
-  });
-  let realmRemoteMock = new Realm({
-    path: realmRemoteMockPath
-  });
+  let realmLocalSync = new RealmSync([schemas.PersonObject], realmLocalPath);
+  let realmRemoteSyncMock = new RealmSync([schemas.PersonObject], realmRemoteMockPath);
+  let realmLocal = realmLocalSync.getRealmInstance();
+  let realmRemoteMock = realmRemoteSyncMock.getRealmInstance();
   // Delete any existing test databases
   clearDatabase(realmLocal, realmRemoteMock);
 
@@ -236,9 +232,26 @@ var testRemoteSync = function(realmLocal, realmRemoteMock, realmLocalSync, realm
 /**
  * Conflict resolution.
  */
-var testConflictResolution = function() {
+var testConflictResolution = function(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock) {
   // it('should resolve a conflict with same guid', function(done) {
   var test1 = function() {
+    // create an item for local database
+    realmLocal.write(() => {
+      realmLocalSync.create(personType, {name: 'Local Test', age: 35, married: false});
+    });
+    // Get a sync chunk
+    var syncQueue = sync.localSyncQueuePush(realmLocal);
+    // Full sync in the remote
+    var syncChunk = convertRemoteDataToSyncChunk(syncQueue);
+    sync.localSyncFromServer(realmRemoteSyncMock, syncChunk);
+    // Change the local
+    realmLocal.write(() => {
+      realmLocalSync.create(personType, {})
+    });
+    // Change the remote
+    // Get remote sync chunk
+    // perform an incremental sync in the local database
+    // check values
     //done();
   }();
 
