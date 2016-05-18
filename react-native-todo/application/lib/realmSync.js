@@ -146,21 +146,23 @@ class RealmSync {
       // get data from sync queue
       // push local update to remote service
       var updates = sync.localSyncQueuePush(that.realm);
-      remoteSync.pushLocalUpdatesToDB(updates, userId, function (error, highestUsn) {
+      remoteSync.pushLocalUpdatesToDB(updates, userId, function (error, data) {
         if (error) {
           callback(error, null);
         } else {
           // in callback:
           // get highest number ???
           // TODO: should be a number
-          if (!isNaN(highestUsn)) {
-            // var highestUsn = Number.parseInt(data);
-            // update local number
-            sync.setLastSyncCount(highestUsn, function(newCount) {
-              // TODO: Clear sync queue
-              callback(null, true);
-            });
-          }
+          remoteSync.getHighestUSN(userId, function(error, highestUsn) {
+            if (!isNaN(highestUsn)) {
+              // var highestUsn = Number.parseInt(data);
+              // update local number
+              sync.setLastSyncCount(highestUsn, function(newCount) {
+                // TODO: Clear sync queue
+                callback(null, true);
+              });
+            }
+          });
         }
       });
     }
