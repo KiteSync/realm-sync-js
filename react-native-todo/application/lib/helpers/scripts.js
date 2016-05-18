@@ -40,8 +40,13 @@ var addObjectToSyncQueue = function(realm, type, obj) {
 }
 
 
-
-var deleteObjFromLocalChanges = function(realm, realmSyncId) {
+/**
+ * Updates USN and Removes the body from item in syncQueue \
+ * to indicate its been deleted.
+ * @param realm database object
+ * @param {string} realm sync id
+ */
+var deleteObjFromSyncQueue = function(realm, realmSyncId) {
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
 
@@ -51,11 +56,15 @@ var deleteObjFromLocalChanges = function(realm, realmSyncId) {
 }
 
 
-
+/**
+ * Generates a 'unique' id.
+ * Used for initalizing a new db object with a realmSyncId
+ * @returns {string} eg: "1A2EE1F7-45F7-E5F4-244C"
+ */
 var generateGuid = function() {
   var result, i, j;
   result = '';
-  for(j=0; j<16; j++) {
+  for(j=0; j<20; j++) {
     if( j == 8 || j == 12|| j == 16|| j == 20)
       result = result + '-';
     i = Math.floor(Math.random()*16).toString(16).toUpperCase();
@@ -63,16 +72,10 @@ var generateGuid = function() {
   }
   return result;
 }
-var names = ["Afghanistan", "Åland Islands", "Albania", "Algeria", "American Samoa", "AndorrA", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, The Democratic Republic of the", "Cook Islands", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia"];
 
-var randomName = function() {
-  var randomIndex = Math.floor(Math.random() * names.length);
-  return names[randomIndex];
-}
 
 module.exports = {
   addObjectToSyncQueue: addObjectToSyncQueue,
-  deleteObjFromLocalChanges: deleteObjFromLocalChanges,
+  deleteObjFromSyncQueue: deleteObjFromSyncQueue,
   generateGuid: generateGuid,
-  randomName: randomName
 }
