@@ -8,27 +8,35 @@ import usnHandler from './usnHandler';
  * @return something here
 */
 
-var addObjectToSyncQueue = function(realm, type, obj, realmParam) {
-  var returnObj = {}
-  returnObj.usn = usnHandler.incrementAndReturnUsn();
-  returnObj.realmSyncId = obj.realmSyncId;
-  returnObj.type = type;
-  returnObj.modified = Date.now();
-  var body = {}
-  for(var key in obj) {
-    body[key] = obj[key];
+var addObjectToSyncQueue = function(realm, type, obj) {
+  // object to put in sync queue
+
+  //Check if object already exists:
+  var filterText = 'realmSyncId = "' + obj.realmSyncId + '"'
+  let objToUpdate = realm.objects('SyncQueue').filtered(filterText);
+
+  var returnObj = {
+    usn: usnHandler.incrementAndReturnUsn(),
+    realmSyncId: obj.realmSyncId,
+    type: type,
+    modified: Date.now(),
+    body: JSON.stringify(obj)
   }
-  returnObj.body = JSON.stringify(body);
-    try {
-      // Added to work with RealmSync class
-      if (realmParam) {
-        let syncQueue = realmParam.create('SyncQueue', returnObj);
-      } else {
-        let syncQueue = realm.create('SyncQueue', returnObj);
+  console.log(obj);
+  console.log(JSON.parse(JSON.stringify(objToUpdate)));
+
+
+  try {
+    if(objToUpdate.length === 0) {
+      realm.create('SyncQueue', returnObj);
+    } else {
+      for(key in returnObj) {
+        objToUpdate[0][key] = returnObj[key];
       }
-    } catch(error) {
-      console.log("ERROR in syncQueue write", error);
     }
+  } catch(error) {
+    console.log("ERROR in syncQueue write", error);
+  }
 }
 
 

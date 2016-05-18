@@ -29,14 +29,6 @@ class RealmDbTests extends React.Component {
     addItemToDB2() {
       realm.write(() => {
         realmSync.create('Dog', {nafme: 'Phil'});
-
-
-        // try {
-        //   realmSync.create('Dof', {name: 'Phil', realmSyncId: scripts.generateGuid()});
-        //   console.log('success');
-        // } catch(error) {
-        //   console.log(error);
-        // }
       });
 
     }
@@ -45,13 +37,13 @@ class RealmDbTests extends React.Component {
       realm.write(() => {
         var dog = realmSync.create('Dog', {name: scripts.randomName()})
         realmSync.delete(dog);
-
       });
-
     }
 
     modifyItemInDB() {
-
+      realm.write(() => {
+        realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: "62B4C6E1-AB8E-66B0"}, true);
+      });
     }
 
     deleteItemFromDB() {
@@ -70,7 +62,10 @@ class RealmDbTests extends React.Component {
     }
 
     syncDbReal() {
-      realmSync.Sync();
+      realmSync.sync((err, res) => {
+        console.log("Error: ", err);
+        console.log("Result: ", res);
+      });
     }
 
     deleteAllItemsFromSyncQueue() {
@@ -124,7 +119,7 @@ class RealmDbTests extends React.Component {
               </TouchableHighlight>
 
               <TouchableHighlight
-                  style={[styles.button, styles.newButton, styles.buttonUnimplemented]}
+                  style={[styles.button, styles.newButton]}
                   underlayColor='#99d9f4'
                   onPress={this.modifyItemInDB.bind(this)}>
                   <Text style={styles.buttonText}>Modify item in DB</Text>
@@ -147,16 +142,10 @@ class RealmDbTests extends React.Component {
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
                   underlayColor='#99d9f4'
-                  onPress={this.syncDbTest.bind(this)}>
-                  <Text style={styles.buttonText}>Sync realm DB (local test object)</Text>
+                  onPress={this.syncDbReal.bind(this)}>
+                  <Text style={styles.buttonText}>Sync realm DB</Text>
               </TouchableHighlight>
 
-              <TouchableHighlight
-                  style={[styles.button, styles.newButton]}
-                  underlayColor='#99d9f4'
-                  onPress={this.syncDbReal.bind(this)}>
-                  <Text style={styles.buttonText}>Sync realm DB (from dynamo)</Text>
-              </TouchableHighlight>
 
               <TouchableHighlight
                   style={[styles.button, styles.newButton]}
