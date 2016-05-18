@@ -25,7 +25,7 @@ remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
 /*pushLocalUpdatesToDB method takes in updates that are in the sync queue to the cloud (DynamoDB)
   pass in the an array of updates (not JSON) and the userId of the user logged in
   and callback to manipulate the response from DynamoDB
-  format of every update in the array, 
+  format of every update in the array,
   {
     "body": {
       "syncId": "232-534-1234",
@@ -34,7 +34,7 @@ remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
     "usn": 3,
   } */
 remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
-  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync', 
+  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync',
       {
         method: 'POST',
         headers: {
@@ -60,15 +60,12 @@ remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
 
 //getHighestUSN gets the highest USN count from DynamoDB for user passed in.
 remoteSync.getHighestUSN = function(userId, callback) {
-  fetch(' https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync/count',
+  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync/count?userId='+userId,
     {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: userId,
-        })
+        }
       })
       .then((res) => {
         var data = res.json();
@@ -78,6 +75,7 @@ remoteSync.getHighestUSN = function(userId, callback) {
         callback(null, data);
       })
       .catch((error) => {
+        console.log("getHighestUSN ", error);
         callback(error, null);
       });
 };
