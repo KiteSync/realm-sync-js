@@ -32,7 +32,7 @@ module.exports.runTests = function() {
   var databaseTestResults = testDatabaseInteraction(realmLocal, realmLocalSync);
   clearDatabase(realmLocal, realmRemoteMock);
   var syncLocallyResults = testSyncLocally(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
-  clearDatabase(realmLocal, realmRemoteMock);
+  //clearDatabase(realmLocal, realmRemoteMock);
   // var remoteSyncResults = testRemoteSync(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
   clearDatabase(realmLocal, realmRemoteMock);
   testConflictResolution(realmLocal, realmRemoteMock, realmLocalSync, realmRemoteSyncMock);
