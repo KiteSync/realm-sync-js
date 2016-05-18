@@ -159,7 +159,7 @@ conflictManager = function(realm, syncChunk, remoteServiceWins) {
     // For each sync queue conflict
     // Apply the policy on the remote and local object
     // If the remote service wins
-    if (remoteServiceWins(item, syncChunk[usn])) {
+    if (remoteServiceWins(syncObject[0], object)) {
       // delete this from the sync queue
       // The remote service wins all
       resolvedBucket[usn] = syncChunk[usn];

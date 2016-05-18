@@ -95,7 +95,7 @@ class RealmSync {
       this.realm.delete(realmObject);
       //After deleting, update syncQueue
       allRealmSyncIds.forEach((id) => {
-        scripts.deleteObjFromLocalChanges(this.realm, id);
+        scripts.markSyncQueueObjectAsDeleted(this.realm, id);
       });
     } catch(error) {
       console.log(error);
