@@ -105,7 +105,11 @@ class Notes extends React.Component{
     })
   }
   syncRemoteDB() {
-    console.log('Inside Remote DB Sync Method')
+    console.log('Inside Remote DB Sync Method');
+    realmSync.sync((err, res) => {
+      console.log("Error: ", err);
+      console.log("Result: ", res);
+    })
   }
 
   navigateToAccount() {
