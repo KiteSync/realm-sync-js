@@ -43,10 +43,28 @@ class RealmSync {
    */
   create(type, properties, update) {
     update = update || false;
-    properties.realmSyncId = scripts.generateGuid();
+    var objToUpdate;
+
+    //If update === true and passed in object has a realmSyncId
+    if (update && properties.realmSyncId) {
+      var filterText = 'realmSyncId = "' + properties.realmSyncId + '"';
+      let filteredObjects = this.realm.objects(type).filtered(filterText);
+      if (filteredObjects.length > 0) {
+        objToUpdate = filteredObjects[0]
+        for (key in properties) {
+          objToUpdate[key] = properties[key];
+        }
+      }
+    } else {
+      properties.realmSyncId = scripts.generateGuid();
+      if (update === true) {
+        console.log("Can't find object in " + type + " with id " + properties.realmSyncId + ". Creating a new object" );
+      }
+    }
+
     try {
-      // TODO: Check that the assigned guid is unique
-      let savedObject = this.realm.create(type, properties, update);
+      // TODO: Check that the assigned guid is unique (1 / 1,000,000,000,000 chance)
+      let savedObject = objToUpdate || this.realm.create(type, properties, update);
       scripts.addObjectToSyncQueue(this.realm, type, savedObject);
       return savedObject;
     } catch(error) {
@@ -96,15 +114,15 @@ class RealmSync {
     AsyncStorage.getItem('authData')
       .then((authData) => {
         if(authData) {
-          var userId = JSON.parse(authData);
+          var userId = JSON.parse(authData).userId;
           // Get local sync count
           sync.getLastSyncCount(function (localSyncCount) {
             // Get highest sync count from server
             remoteSync.getHighestUSN(userId, function (error, remoteServiceCount) {
               // if local sync count equals highest from remote service
-              if (localSyncCount === remoteServiceCount) {
+              if (localSyncCount == remoteServiceCount) {
                 sendSyncQueueToRemoteService(userId);
-              } else if (localSyncCount === 0) {// else if local count is 0 full sync
+              } else if (localSyncCount == 0) {// else if local count is 0 full sync
                 remoteSync.getUpdatesFromRemoteDB(localSyncCount, userId, function (error, data) {
                   if (error) {
                     callback(error, null);
