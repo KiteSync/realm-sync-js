@@ -27,7 +27,7 @@ Upcoming versions of KiteSync will likely provide additional services:
 - __Event Notification__ -- provides notification when syncing is initialized, in progress, and completed.
 - __Backend Expansion__ -- an API/protocol to create custom backend solution.
 
-## Why Horizon?
+## Why KiteSync?
 
 An explanation about why KiteSync was developed and is an excellent solution for
 developers.
