@@ -4,7 +4,7 @@ import usnHandler from './usnHandler';
 /**
  * Adds or updates an object in the syncQueue when
  * an object is added to the database
- * @param realm: database object
+ * @param realm database object
  * @param {string} database class
  * @param {obj} database class updates
  */
@@ -35,6 +35,19 @@ var addObjectToSyncQueue = function(realm, type, obj) {
   }
 }
 
+/**
+ * Delete objects from syncQueue (after successful sync)
+ * @param realm database object
+ * @param {string} database class
+ * @param {obj} database class updates
+ */
+var deleteObjectFromSyncQueue = function(realm) {
+  let objects = realm.objects('SyncQueue');
+  realm.write(() => {
+    realm.delete(objects);
+  });
+}
+
 
 /**
  * Updates USN and Removes the body from item in syncQueue \
@@ -45,10 +58,12 @@ var addObjectToSyncQueue = function(realm, type, obj) {
 var markSyncQueueObjectAsDeleted = function(realm, realmSyncId) {
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
-
-  objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
-  objToDelete[0].modified = Date.now();
-  objToDelete[0].body = "";
+  if(objToDelete[0]) {
+    objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
+    objToDelete[0].modified = Date.now();
+    objToDelete[0].body = "";
+  }
+  // else object isn't in syncQueue, do nothing
 }
 
 
@@ -72,6 +87,7 @@ var generateGuid = function() {
 
 module.exports = {
   addObjectToSyncQueue: addObjectToSyncQueue,
+  deleteObjectFromSyncQueue: deleteObjectFromSyncQueue,
   markSyncQueueObjectAsDeleted: markSyncQueueObjectAsDeleted,
   generateGuid: generateGuid,
 }
