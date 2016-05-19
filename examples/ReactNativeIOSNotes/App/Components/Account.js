@@ -1,5 +1,4 @@
 var React = require('react-native');
-var api = require('../Utils/api');
 var Separator = require('./Helpers/Separator');
 const Realm = require('realm');
 

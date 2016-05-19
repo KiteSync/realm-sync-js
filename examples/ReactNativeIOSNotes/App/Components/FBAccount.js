@@ -1,5 +1,4 @@
 var React = require('react-native');
-var api = require('../Utils/api');
 var Separator = require('./Helpers/Separator');
 var Login = require('./Helpers/Login')
 
