@@ -17,68 +17,12 @@ var {
 
 import { ListView } from 'realm/react-native';
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    marginTop: 20,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#503f59'
-  },
-  syncBarText: {
-    fontSize: 18,
-    color: 'white',
-    marginLeft: 25
-  },
-  syncBar: {
-    padding: 10,
-    marginTop: 55,
-    backgroundColor: '#928699',
-    borderRadius: 6
-  },  
-  buttonText: {
-    fontSize: 18,
-    color: 'black'
-  },
-  button: {
-    height: 60,
-    backgroundColor: '#c1dfb5',
-    flex: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 6
-  },
-  searchInput: {
-    height: 60,
-    padding: 10,
-    fontSize: 18,
-    color: '#111',
-    flex: 10
-  },
-  rowText: {
-    fontSize: 18
-  },
-  rowContainer: {
-    padding: 10,
-    backgroundColor: 'white',
-    borderRadius: 6
-  },
-  footerContainer: {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderRadius: 6
-  }
-});
-
 class Notes extends React.Component{
   constructor() {
     super();
     let note = realm.objects('Note');
-
     var notesArray = [];
-    notesArray = note.slice();
+    notesArray = note.slice().reverse();
 
     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     this.state = {
@@ -86,9 +30,18 @@ class Notes extends React.Component{
       note: '',
       error: ''
     }
-  }    
 
-  
+    realm.addListener('change', () => {
+      let note = realm.objects('Note');
+      var notesArray = [];
+      notesArray = note.slice().reverse();
+      this.setState({
+        dataSource: this.ds.cloneWithRows(notesArray)
+      })
+    });
+
+  }
+
   handleChange(e) {
     this.setState({
       note: e.nativeEvent.text
@@ -159,14 +112,14 @@ class Notes extends React.Component{
         underlayColor="red">
           <Text style={styles.syncBarText}>(This is the sync button)</Text>
         </TouchableHighlight>
-       
+
         <TouchableHighlight
         style={styles.syncBar}
         onPress={this.navigateToAccount.bind(this)}
         underlayColor="red">
           <Text style={styles.syncBarText}>Temporary button to navigate to account</Text>
         </TouchableHighlight>
-       
+
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow} />
@@ -177,12 +130,60 @@ class Notes extends React.Component{
 };
 
 
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    marginTop: 20,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#503f59'
+  },
+  syncBarText: {
+    fontSize: 18,
+    color: 'white',
+    marginLeft: 25
+  },
+  syncBar: {
+    padding: 10,
+    marginTop: 55,
+    backgroundColor: '#928699',
+    borderRadius: 6
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'black'
+  },
+  button: {
+    height: 60,
+    backgroundColor: '#c1dfb5',
+    flex: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 6
+  },
+  searchInput: {
+    height: 60,
+    padding: 10,
+    fontSize: 18,
+    color: '#111',
+    flex: 10
+  },
+  rowText: {
+    fontSize: 18
+  },
+  rowContainer: {
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 6
+  },
+  footerContainer: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderRadius: 6
+  }
+});
+
+
 module.exports = Notes;
-
-
-
-
-
-
-
-
