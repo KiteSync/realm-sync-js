@@ -67,6 +67,7 @@ class Notes extends React.Component{
       component: FBAccount,
       passProps: {realmPath: this.state.realmPath}
     })
+    console.log('<><><>account nav method: ', this.props.navigator);
   }
 
 
@@ -97,7 +98,7 @@ class Notes extends React.Component{
     )
   }
   render() {
-    console.log(realm.path)
+    // console.log(realm.path)
 
     return(
       <View style={styles.container}>
