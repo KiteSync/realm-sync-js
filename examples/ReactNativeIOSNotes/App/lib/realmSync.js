@@ -110,20 +110,30 @@ class RealmSync {
   sync(callback, policy) {
     // TODO: Determine if a callback should be passed to not when syncing is finished
     // TODO: Possible refactor get user id to a method
+    var dateInit = Date.now();
+    console.log("1. Beginning of sync: " + (Date.now() - dateInit));
     var that = this;
     AsyncStorage.getItem('authData')
       .then((authData) => {
+        console.log("2. inside .then(authData): " + (Date.now() - dateInit));
         if(authData) {
           var userId = JSON.parse(authData).userId;
           // Get local sync count
           sync.getLastSyncCount(function (localSyncCount) {
+            console.log("3. inside sync.getLastSyncCount " + (Date.now() - dateInit));
+
             // Get highest sync count from server
             remoteSync.getHighestUSN(userId, function (error, remoteServiceCount) {
+              console.log("4. inside getHighestUSN " + (Date.now() - dateInit));
+
               // if local sync count equals highest from remote service
               if (localSyncCount == remoteServiceCount) {
+                console.log("5. iocalSyncCount == remoteServiceCount" + (Date.now() - dateInit));
                 sendSyncQueueToRemoteService(userId);
               } else if (localSyncCount == 0) {// else if local count is 0 full sync
                 remoteSync.getUpdatesFromRemoteDB(localSyncCount, userId, function (error, data) {
+                  console.log("5. inside remoteSync.getUpdatesFromRemoteDB" + (Date.now() - dateInit));
+
                   if (error) {
                     callback(error, null);
                   } else {
@@ -137,6 +147,8 @@ class RealmSync {
                 // call get updates from remote with current local usn
                 remoteSync.getUpdatesFromRemoteDB(localSyncCount, userId, function (error, data) {
                   // in callback:
+                  console.log("5. inside getUpdatesFromRemoteDB" + (Date.now() - dateInit));
+
                   if (error) {
                     callback(error, null);
                   } else {
@@ -176,7 +188,7 @@ class RealmSync {
               // var highestUsn = Number.parseInt(data);
               // update local number
               sync.setLastSyncCount(highestUsn, function(newCount) {
-                // TODO: Clear sync queue
+                scripts.deleteObjectFromSyncQueue(that.realm);
                 callback(null, true);
               });
             }

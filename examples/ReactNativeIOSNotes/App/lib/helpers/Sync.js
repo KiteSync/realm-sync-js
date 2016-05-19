@@ -1,8 +1,8 @@
 let syncType = 'SyncQueue';
 var React = require('react-native');
 var {AsyncStorage} = React;
+var syncCountKey = 'lastSyncCount';
 
-var syncCountKey = 'lastSyncCount'
 /**
  * Set to the latest highest Sync Count
  * @param callback with current syncCount
@@ -14,7 +14,7 @@ setLastSyncCount = function(newCount, callback) {
   AsyncStorage.setItem(syncCountKey, newCount).then(() => {
     callback(newCount);
   });
-}
+};
 
 /**
  * get the latest highest sync count
@@ -107,11 +107,9 @@ localSyncQueuePush = function(realm) {
  *        item in the sync queue and the sync chunk
  */
 incrementalSync = function(realm, syncChunk, policy) {
-  // noConflict bucket
   var noConflictBucket = {};
-  // conflict bucket
   var conflictBucket = {};
-  // For each item in the chunk
+  // Sift through sync chunk and divide between conflict and non conflict updates
   var usnNumbers = Object.keys(syncChunk);
   usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
   usnNumbers.forEach(function(usn) {
@@ -120,18 +118,16 @@ incrementalSync = function(realm, syncChunk, policy) {
     var object = syncChunk[usn].body;
     var filteredText = 'realmSyncId = "' + realmSyncID + '"';
     var syncObject = realm.objects(syncType).filtered(filteredText);
-    // if the sync queue does not have this guid
+    // if the sync queue does not have this guid, no conflict is detected
     if (syncObject.length === 0) {
-      // add to noConflict bucket
       noConflictBucket[usn] = syncChunk[usn];
-    } else { // else a possible conflict
-      // add to conflict bucket
+    } else {
       conflictBucket[usn] = syncChunk[usn];
     }
   });
-  // pass no conflict bucket to localSyncFromServer
+  // do a full sync on no conflict bucket
   localSyncFromServer(realm, noConflictBucket);
-  // pass conflict bucket to conflict manager
+  // pass conflict bucket to conflict manager for resolution
   conflictManager(realm, conflictBucket, policy);
 };
 
@@ -143,7 +139,6 @@ incrementalSync = function(realm, syncChunk, policy) {
  *        the local object to be removed from the sync queue. Otherwise false.
  */
 conflictManager = function(realm, syncChunk, remoteServiceWins) {
-  // TODO: Implement
   // Create an empty resolved bucket, a bucket of changes to apply
   var resolvedBucket = {};
   var usnNumbers = Object.keys(syncChunk);
@@ -152,15 +147,15 @@ conflictManager = function(realm, syncChunk, remoteServiceWins) {
   for (let usn of usnNumbers) {
     // Get all records in sync queue with this guid
     var realmSyncID = syncChunk[usn].realmSyncId;
-    var type = syncChunk[usn].type;
-    var object = syncChunk[usn].body;
+    var remoteObject = syncChunk[usn].body;
     var filteredText = 'realmSyncId = "' + realmSyncID + '"';
-    var syncObject = realm.objects(syncType).filtered(filteredText);
-    // For each sync queue conflict
-    // Apply the policy on the remote and local object
+    var localObject = realm.objects(syncType).filtered(filteredText)[0];
     // If the remote service wins
-    if (remoteServiceWins(syncObject[0], object)) {
+    if (remoteServiceWins(localObject, syncChunk[usn])) {
       // delete this from the sync queue
+      realm.write(() => {
+        realm.delete(localObject);
+      });
       // The remote service wins all
       resolvedBucket[usn] = syncChunk[usn];
       // Store the results in the resolved bucket
