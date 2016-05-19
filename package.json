@@ -1,24 +1,42 @@
 {
-  "name": "my-awesome-package",
-  "version": "1.0.0",
-  "description": "Offline syncing project - will pick less ridiculous names a little later",
-  "main": "index.js",
-  "dependencies": {
-    "aws-sdk": "^2.3.7",
-    "react-native-facebook-login": "^1.0.3"
-  },
-  "devDependencies": {},
+  "name": "realm-sync-js",
+  "version": "0.0.1",
+  "description": "Offline syncing library for realm-js",
+  "bin": "./lib",
   "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {},
+  "main": "react-native-todo/application/lib/realmSync.js",
+  "files": [
+  	"react-native-todo/application/lib"
+  ],
+  "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alamuv/ProjectInterNOT.git"
+    "url": "https://github.com/GenericCreativeName/ProjectInterNOT.git#example"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/alamuv/ProjectInterNOT/issues"
+    "url": "https://github.com/GenericCreativeName/ProjectInterNOT/issues"
   },
-  "homepage": "https://github.com/alamuv/ProjectInterNOT#readme"
+  "keywords": [
+    "realm",
+    "sync",
+    "dynamodb",
+    "realmdb",
+    "realm.io",
+    "database",
+    "db",
+    "react-native",
+    "persistence",
+    "localstorage"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
+  "author": "KiteSync (http://kitesync.io)",
+  "homepage": "http://kitesync.io",
+  "license": "ISC",
+  "homepage": "https://github.com/GenericCreativeName/ProjectInterNOT"
 }
