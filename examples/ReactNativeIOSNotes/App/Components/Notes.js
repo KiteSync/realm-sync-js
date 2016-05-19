@@ -61,16 +61,6 @@ class Notes extends React.Component{
     })
   }
 
-  navigateToAccount() {
-    this.props.navigator.push({
-      title: 'Account Page',
-      component: FBAccount,
-      passProps: {realmPath: this.state.realmPath}
-    })
-    console.log('<><><>account nav method: ', this.props.navigator);
-  }
-
-
   renderRow(rowData) {
     rowData = rowData;
 
@@ -106,14 +96,7 @@ class Notes extends React.Component{
         style={styles.syncBar}
         onPress={this.syncRemoteDB.bind(this)}
         underlayColor="red">
-          <Text style={styles.syncBarText}>(This is the sync button)</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-        style={styles.syncBar}
-        onPress={this.navigateToAccount.bind(this)}
-        underlayColor="red">
-          <Text style={styles.syncBarText}>Temporary button to navigate to account</Text>
+          <Text style={styles.syncBarText}>Sync Notes</Text>
         </TouchableHighlight>
 
         <ListView
@@ -137,17 +120,17 @@ var styles = StyleSheet.create({
   },
   syncBarText: {
     fontSize: 18,
-    color: 'white',
-    marginLeft: 25
+    color: 'white'
   },
   syncBar: {
     padding: 10,
     marginTop: 55,
     backgroundColor: '#928699',
-    borderRadius: 6
+    borderRadius: 6,
+    alignItems: 'center'
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'black'
   },
   button: {
