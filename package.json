@@ -2,7 +2,6 @@
   "name": "realm-sync-js",
   "version": "0.0.1",
   "description": "Offline syncing library for realm-js",
-  "bin": "./lib",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +14,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/GenericCreativeName/ProjectInterNOT.git#example"
+    "url": "https://github.com/GenericCreativeName/ProjectInterNOT.git"
   },
   "bugs": {
     "url": "https://github.com/GenericCreativeName/ProjectInterNOT/issues"
