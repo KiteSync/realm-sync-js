@@ -36,36 +36,16 @@ var addObjectToSyncQueue = function(realm, type, obj) {
 }
 
 /**
- * Remove objects from syncQueue (after successful sync)
+ * Delete objects from syncQueue (after successful sync)
  * @param realm database object
  * @param {string} database class
  * @param {obj} database class updates
  */
-var addObjectToSyncQueue = function(realm, type, obj) {
-  // TODO: Only search syncQueue for object to update for updates
-
-  var filterText = 'realmSyncId = "' + obj.realmSyncId + '"'
-  let objToUpdate = realm.objects('SyncQueue').filtered(filterText);
-
-  var returnObj = {
-    usn: usnHandler.incrementAndReturnUsn(),
-    realmSyncId: obj.realmSyncId,
-    type: type,
-    modified: Date.now(),
-    body: JSON.stringify(obj)
-  }
-
-  try {
-    if(objToUpdate.length === 0) {
-      realm.create('SyncQueue', returnObj);
-    } else {
-      for(key in returnObj) {
-        objToUpdate[0][key] = returnObj[key];
-      }
-    }
-  } catch(error) {
-    console.log("ERROR in syncQueue write", error);
-  }
+var deleteObjectFromSyncQueue = function(realm) {
+  let objects = realm.objects('SyncQueue');
+  realm.write(() => {
+    realm.delete(objects);
+  });
 }
 
 
@@ -78,10 +58,12 @@ var addObjectToSyncQueue = function(realm, type, obj) {
 var markSyncQueueObjectAsDeleted = function(realm, realmSyncId) {
   var filterText = 'realmSyncId = "' + realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
-
-  objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
-  objToDelete[0].modified = Date.now();
-  objToDelete[0].body = "";
+  if(objToDelete[0]) {
+    objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
+    objToDelete[0].modified = Date.now();
+    objToDelete[0].body = "";
+  }
+  // else object isn't in syncQueue, do nothing
 }
 
 
@@ -105,6 +87,7 @@ var generateGuid = function() {
 
 module.exports = {
   addObjectToSyncQueue: addObjectToSyncQueue,
+  deleteObjectFromSyncQueue: deleteObjectFromSyncQueue,
   markSyncQueueObjectAsDeleted: markSyncQueueObjectAsDeleted,
   generateGuid: generateGuid,
 }
