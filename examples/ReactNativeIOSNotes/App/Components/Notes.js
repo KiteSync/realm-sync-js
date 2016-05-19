@@ -74,7 +74,7 @@ class Notes extends React.Component{
     return(
       <View style={styles.footerContainer}>
         <TextInput
-          style={styles.searchInput}
+          style={styles.newNoteInput}
           value={this.state.note}
           onChange={this.handleChange.bind(this)}
           placeholder="New Note" />
@@ -101,7 +101,8 @@ class Notes extends React.Component{
 
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={this.renderRow} />
+          renderRow={this.renderRow}
+          automaticallyAdjustContentInsets={false} />
         {this.footer()}
       </View>
     )
@@ -119,12 +120,13 @@ var styles = StyleSheet.create({
     backgroundColor: '#503f59'
   },
   syncBarText: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'white'
   },
   syncBar: {
     padding: 10,
-    marginTop: 55,
+    marginTop: 45,
+    marginBottom: 10,
     backgroundColor: '#928699',
     borderRadius: 6,
     alignItems: 'center'
@@ -141,7 +143,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 6
   },
-  searchInput: {
+  newNoteInput: {
     height: 60,
     padding: 10,
     fontSize: 18,
@@ -150,6 +152,7 @@ var styles = StyleSheet.create({
   },
   footerContainer: {
     backgroundColor: 'white',
+    marginTop: 10,
     alignItems: 'center',
     flexDirection: 'row',
     borderRadius: 6

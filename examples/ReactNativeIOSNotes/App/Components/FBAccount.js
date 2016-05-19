@@ -15,31 +15,6 @@ var {
 } = React;
 
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    marginTop: 60,
-    flexDirection: 'column',
-    backgroundColor: '#D3D3D3'
-  },
-  headerText: {
-    color: 'black',
-    fontSize: 20
-  },
-  buttonText: {
-    fontSize: 20,
-    color: 'white'
-  },
-  button: {
-    height: 60,
-    backgroundColor: '#3B5998',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 6
-  }
-});
-
 class FBAccount extends React.Component{
   constructor() {
     super();
@@ -71,8 +46,10 @@ class FBAccount extends React.Component{
     return(
       <View style={styles.container}>
 
-        <Text style={styles.headerText}>Connect with Facebook</Text>
-
+        <View>
+          <Text style={styles.headerText}>Connect with Facebook</Text>
+          <Separator />
+        </View>
         {(this.state.loggedIn
 
           ? ( <TouchableHighlight
@@ -95,7 +72,30 @@ class FBAccount extends React.Component{
   }
 };
 
-
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    marginTop: 60,
+    flexDirection: 'column',
+    backgroundColor: '#D3D3D3'
+  },
+  headerText: {
+    color: 'black',
+    fontSize: 20
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white'
+  },
+  button: {
+    height: 60,
+    backgroundColor: '#3B5998',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 6
+  }
+});
 
 module.exports = FBAccount;
 

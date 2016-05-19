@@ -41,6 +41,10 @@ class SingleNote extends React.Component {
     this.setState({editing: false});
   }
 
+  // cancelChange() {
+  //   this.setState({editing: false});
+  // }
+
 
   renderSingleNote() {
     if(this.state.editing) {
@@ -51,13 +55,19 @@ class SingleNote extends React.Component {
             style={styles.noteEditForm}
             value={this.state.noteName}
             onChangeText={(noteName) => this.setState({noteName})}/>
+
             <TouchableHighlight
+              style={styles.updateButton}
               onPress={this.updateNote.bind(this)}>
-              <Text>Update</Text>
+              <Text style={styles.updateText}>Update</Text>
             </TouchableHighlight>
+
+
+
             <TouchableHighlight
+              style={styles.deleteButton}
               onPress={this.deleteNote.bind(this)}>
-              <Text>Delete</Text>
+              <Text style={styles.deleteText}>Delete</Text>
             </TouchableHighlight>
 
         </View>
@@ -84,27 +94,65 @@ class SingleNote extends React.Component {
 }
 
 var styles = StyleSheet.create({
-  separator: {
-    height: 1,
-    padding: 5,
-    flex: 1,
-    marginLeft: 15
-  },
+
   rowContainer: {
     padding: 10,
     backgroundColor: 'white',
     borderRadius: 6
   },
   rowText: {
-    fontSize: 18
+    fontSize: 16
   },
   noteEditForm: {
     height: 60,
     padding: 10,
     fontSize: 18,
     color: '#111',
+    flexDirection: 'row',
     flex: 10
   },
+  updateButton: {
+    backgroundColor: 'blue'
+  },
+  updateText: {
+  
+  },
+  deleteButton: {
+   backgroundColor: 'red'
+  },
+  deleteText: {
+
+  },
+  // cancelButton: {
+  //  backgroundColor: 'yellow'
+  // },
+  // cancelText: {
+  // },
+
+
 });
 
 module.exports = SingleNote;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
