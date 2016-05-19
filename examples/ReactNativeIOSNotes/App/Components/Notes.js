@@ -71,11 +71,11 @@ class Notes extends React.Component{
 
 
   renderRow(rowData) {
-    rowData = rowData.name;
+    rowData = rowData;
 
 
     return(
-      <SingleNote rowData={rowData} />
+      <SingleNote rowData={rowData} realm={realm} />
 
     )
   }
