@@ -1,13 +1,39 @@
 let syncType = 'SyncQueue';
+var React = require('react-native');
+var {AsyncStorage} = React;
+
+var syncCountKey = 'lastSyncCount'
+/**
+ * Set to the latest highest Sync Count
+ * @param callback with current syncCount
+ */
+setLastSyncCount = function(newCount, callback) {
+  if (typeof newCount === 'number') {
+    newCount = newCount.toString()
+  }
+  AsyncStorage.setItem(syncCountKey, newCount).then(() => {
+    callback(newCount);
+  });
+}
 
 /**
- * Get the count from the local storage for last sync.
- * @param realm {Realm} - an instance of realm
- * @return remote storage's last sync count.
+ * get the latest highest sync count
+ * if no sync count is found, intiialize to 0;
+ * @param callback with current syncCount
  */
-getSyncCount = function(realm) {
-  // TODO: Implement and determine if implementation needed
+getLastSyncCount = function(callback) {
+  AsyncStorage.getItem(syncCountKey).then(syncCount => {
+    if(syncCount) {
+      callback(syncCount);
+    } else {
+      AsyncStorage.setItem(syncCountKey, '0').then(() => {
+        callback('0');
+      });
+    }
+  });
 };
+
+
 
 /**
  * Converts data received from a remote service into a usn keyed object with
@@ -42,6 +68,7 @@ localSyncFromServer = function(realm, syncChunk) {
   // Get the keys and sort them numerically
   var usnNumbers = Object.keys(syncChunk);
   usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
+  // debugger;
   realm.write(() => { // TODO: Determine if write should be moved up further
     // For each usn apply object to database
     usnNumbers.forEach(function (usn, index, collection) {
@@ -132,7 +159,7 @@ conflictManager = function(realm, syncChunk, remoteServiceWins) {
     // For each sync queue conflict
     // Apply the policy on the remote and local object
     // If the remote service wins
-    if (remoteServiceWins(item, syncChunk[usn])) {
+    if (remoteServiceWins(syncObject[0], object)) {
       // delete this from the sync queue
       // The remote service wins all
       resolvedBucket[usn] = syncChunk[usn];
@@ -144,9 +171,23 @@ conflictManager = function(realm, syncChunk, remoteServiceWins) {
   localSyncFromServer(realm, resolvedBucket);
 };
 
+/**
+ * Determines if the remote object wins a sync conflict based on modified time.
+ * @param localObject {Object} - a local object stored in the local library
+ * @param remoteObject {Object} - a remote object stored in the remote service
+ * @returns {boolean} true if the remote service object will is the most recent object,
+ *          otherwise false.
+ */
+timeRemoteServiceWinsPolicy = function(localObject, remoteObject) {
+  return (remoteObject.modified >= localObject.modified);
+};
+
 module.exports = {
   convertRemoteDataToSyncChunk: convertRemoteDataToSyncChunk,
   incrementalSync: incrementalSync,
   localSyncFromServer: localSyncFromServer,
-  localSyncQueuePush: localSyncQueuePush
+  localSyncQueuePush: localSyncQueuePush,
+  getLastSyncCount: getLastSyncCount,
+  setLastSyncCount: setLastSyncCount,
+  timeRemoteServiceWinsPolicy: timeRemoteServiceWinsPolicy
 };

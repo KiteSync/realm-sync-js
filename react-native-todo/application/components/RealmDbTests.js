@@ -7,7 +7,12 @@ var { View, TouchableHighlight, Text} = React;
 // let realm = new Realm();
 import Realm from './realm';
 let realmSync = Realm.realmSync;
-let realm = realmSync.getRealmInstance();;
+let realm = realmSync.getRealmInstance();
+
+
+const randomNames = ["Afghanistan", "Åland Islands", "Albania", "Algeria", "American Samoa", "AndorrA", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, The Democratic Republic of the", "Cook Islands", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia"];
+
+
 class RealmDbTests extends React.Component {
 
     constructor() {
@@ -18,10 +23,14 @@ class RealmDbTests extends React.Component {
 
     }
 
-    //
+    randomName() {
+      var randomIndex = Math.floor(Math.random() * randomNames.length);
+      return randomNames[randomIndex];
+    }
+
     addItemToDB() {
       realm.write(() => {
-        realmSync.create('Dog', {name: scripts.randomName()})
+        realmSync.create('Dog', {name: this.randomName()})
       });
     }
 
@@ -35,14 +44,14 @@ class RealmDbTests extends React.Component {
 
     addThenRemoveFromDB() {
       realm.write(() => {
-        var dog = realmSync.create('Dog', {name: scripts.randomName()})
+        var dog = realmSync.create('Dog', {name: this.randomName()})
         realmSync.delete(dog);
       });
     }
 
     modifyItemInDB() {
       realm.write(() => {
-        realmSync.create('Dog', {name: scripts.randomName(), realmSyncId: "62B4C6E1-AB8E-66B0"}, true);
+        realmSync.create('Dog', {name: this.randomName(), realmSyncId: "BCA5465E-F199-AECB"}, true);
       });
     }
 
