@@ -1,5 +1,8 @@
 var React = require('react-native');
 var Separator = require('./Helpers/Separator');
+import Realm from '../Utils/realm';
+let realmSync = Realm.realmSync;
+let realm = realmSync.getRealmInstance();
 
 var {
   View,
@@ -11,26 +14,34 @@ var {
 
 class SingleNote extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     // this is where the row data is coming from.
     // But it's not loading in the component
     // this.props.rowData
     this.state = {
       editing: false,
-      noteText: ''
+      noteName: this.props.rowData.name
     }
   }
 
   updateNote() {
-    console.log('updateNote')
+    realm.write(() => {
+      this.props.rowData.name = this.state.noteName;
+      realmSync.create('Note', this.props.rowData, true);
+    });
     this.setState({editing: false});
   }
 
   deleteNote() {
-    console.log('deleteNote')
+    objToDelete = this.props.rowData;
+    realm.write(() => {
+      debugger;
+      realmSync.delete(objToDelete);
+    });
     this.setState({editing: false});
   }
+
 
   renderSingleNote() {
     if(this.state.editing) {
@@ -39,7 +50,8 @@ class SingleNote extends React.Component {
           style={styles.rowContainer}>
           <TextInput
             style={styles.noteEditForm}
-            value={this.props.rowData} />
+            value={this.state.noteName}
+            onChangeText={(noteName) => this.setState({noteName})}/>
             <TouchableHighlight
               onPress={this.updateNote.bind(this)}>
               <Text>Update</Text>
@@ -56,8 +68,7 @@ class SingleNote extends React.Component {
         <TouchableHighlight
           style={styles.rowContainer}
           onPress={() => {this.setState({editing: true})}} >
-          <Text style={styles.rowText}> {this.props.rowData} </Text>
-          {/*<Text style={styles.rowText}> {this.state.noteText} </Text>*/}
+          <Text style={styles.rowText}> {this.state.noteName} </Text>
         </TouchableHighlight>
       )
     }
