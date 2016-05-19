@@ -81,22 +81,18 @@ class RealmSync {
   // TODO: Determine if delete keyword can be used as a method in a class
   delete(realmObject) {
     let allRealmSyncIds = [];
-
     //Add realmSyncId's of deleted items to array
+    //TODO: This logic shold go after deleting original object
     if(realmObject.constructor.name === "Results") {
       realmObject.forEach(object => {
-        allRealmSyncIds.push(object.realmSyncId);
+        scripts.markSyncQueueObjectAsDeleted(this.realm, object);
       });
     } else {
-      allRealmSyncIds.push(realmObject.realmSyncId);
+      scripts.markSyncQueueObjectAsDeleted(this.realm, realmObject);
     }
 
     try {
       this.realm.delete(realmObject);
-      //After deleting, update syncQueue
-      allRealmSyncIds.forEach((id) => {
-        scripts.markSyncQueueObjectAsDeleted(this.realm, id);
-      });
     } catch(error) {
       console.log(error);
     }

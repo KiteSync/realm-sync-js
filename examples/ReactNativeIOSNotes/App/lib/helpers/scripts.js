@@ -55,13 +55,22 @@ var deleteObjectFromSyncQueue = function(realm) {
  * @param realm database object
  * @param {string} realm sync id
  */
-var markSyncQueueObjectAsDeleted = function(realm, realmSyncId) {
-  var filterText = 'realmSyncId = "' + realmSyncId + '"'
+var markSyncQueueObjectAsDeleted = function(realm, deletedObject) {
+  debugger;
+  var filterText = 'realmSyncId = "' + deletedObject.realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
   if(objToDelete[0]) {
     objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
     objToDelete[0].modified = Date.now();
     objToDelete[0].body = "";
+  } else {
+    realm.create('SyncQueue', {
+      usn: usnHandler.incrementAndReturnUsn(),
+      realmSyncId: deletedObject.realmSyncId,
+      modified: Date.now(),
+      type: deletedObject.constructor.name,
+      body: ""
+    });
   }
   // else object isn't in syncQueue, do nothing
 }

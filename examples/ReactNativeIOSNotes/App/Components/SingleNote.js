@@ -36,7 +36,6 @@ class SingleNote extends React.Component {
   deleteNote() {
     objToDelete = this.props.rowData;
     realm.write(() => {
-      debugger;
       realmSync.delete(objToDelete);
     });
     this.setState({editing: false});
