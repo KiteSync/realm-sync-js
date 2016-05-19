@@ -6,6 +6,7 @@ var remoteSync = {};
 //pass in the last update count and the userId of the user logged in
 //and callback to manipulate the response from DynamoDB
 remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
+  console.log(remoteDB.getUpdates)
   fetch(remoteDB.getUpdates+'lastUpdate='+lastUpdate+'&userId='+userId, 
       {
         method: 'GET',
