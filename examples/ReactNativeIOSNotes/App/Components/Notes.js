@@ -1,5 +1,5 @@
 var React = require('react-native');
-var Separator = require('./Helpers/Separator');
+var SingleNote = require('./SingleNote');
 var FBAccount = require('./FBAccount');
 
 
@@ -23,7 +23,6 @@ class Notes extends React.Component{
     let note = realm.objects('Note');
     var notesArray = [];
     notesArray = note.slice().reverse();
-
     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     this.state = {
       dataSource: this.ds.cloneWithRows(notesArray),
@@ -32,8 +31,6 @@ class Notes extends React.Component{
     }
 
     realm.addListener('change', () => {
-      let note = realm.objects('Note');
-      var notesArray = [];
       notesArray = note.slice().reverse();
       this.setState({
         dataSource: this.ds.cloneWithRows(notesArray)
@@ -74,15 +71,12 @@ class Notes extends React.Component{
 
 
   renderRow(rowData) {
-    rowData = JSON.stringify(rowData.name);
+    rowData = rowData.name;
+
 
     return(
-      <View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.rowText}> {rowData} </Text>
-        </View>
-        <Separator />
-      </View>
+      <SingleNote rowData={rowData} />
+
     )
   }
   footer() {
@@ -103,6 +97,7 @@ class Notes extends React.Component{
     )
   }
   render() {
+    console.log(realm.path)
 
     return(
       <View style={styles.container}>
@@ -168,14 +163,6 @@ var styles = StyleSheet.create({
     fontSize: 18,
     color: '#111',
     flex: 10
-  },
-  rowText: {
-    fontSize: 18
-  },
-  rowContainer: {
-    padding: 10,
-    backgroundColor: 'white',
-    borderRadius: 6
   },
   footerContainer: {
     backgroundColor: 'white',
