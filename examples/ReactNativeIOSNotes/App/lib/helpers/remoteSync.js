@@ -1,10 +1,14 @@
+var remoteDB = require('./remoteDB.js');
+
 var remoteSync = {};
 
 //getUpdatesFromRemoteDB method get the latest updates from the cloud (DynamoDB)
 //pass in the last update count and the userId of the user logged in
 //and callback to manipulate the response from DynamoDB
 remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
-  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync?lastUpdate='+lastUpdate+'&userId='+userId, {
+  console.log(remoteDB.getUpdates)
+  fetch(remoteDB.getUpdates+'lastUpdate='+lastUpdate+'&userId='+userId, 
+      {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -34,7 +38,7 @@ remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
     "usn": 3,
   } */
 remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
-  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync',
+  fetch(remoteDB.postUpdates,
       {
         method: 'POST',
         headers: {
@@ -60,7 +64,7 @@ remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
 
 //getHighestUSN gets the highest USN count from DynamoDB for user passed in.
 remoteSync.getHighestUSN = function(userId, callback) {
-  fetch('https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync/count?userId='+userId,
+  fetch(remoteDB.getHighestCount+userId,
     {
         method: 'GET',
         headers: {
