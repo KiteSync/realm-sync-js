@@ -1,5 +1,4 @@
 var React = require('react-native');
-// var api = require('../Utils/api');
 var Separator = require('./Helpers/Separator');
 var Login = require('./Helpers/Login')
 
@@ -19,36 +18,24 @@ var {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    marginTop: 20,
+    padding: 20,
+    marginTop: 60,
     flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#503f59'
+    backgroundColor: '#D3D3D3'
+  },
+  headerText: {
+    color: 'black',
+    fontSize: 20
   },
   buttonText: {
-    fontSize: 18,
-    color: 'black'
+    fontSize: 20,
+    color: 'white'
   },
   button: {
     height: 60,
-    backgroundColor: '#c1dfb5',
-    flex: 3,
+    backgroundColor: '#3B5998',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 6
-  },
-  formInput: {
-    height: 60,
-    padding: 10,
-    fontSize: 18,
-    color: '#111',
-    flex: 10
-  },
-  formContainer: {
-    backgroundColor: 'white',
-    alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: 'white',
     borderRadius: 6
   }
 });
@@ -56,9 +43,7 @@ var styles = StyleSheet.create({
 class FBAccount extends React.Component{
   constructor() {
     super();
-
     this.state = {
-
       loggedIn: false
     };
   }
@@ -86,15 +71,19 @@ class FBAccount extends React.Component{
     return(
       <View style={styles.container}>
 
+        <Text style={styles.headerText}>Connect with Facebook</Text>
+
         {(this.state.loggedIn
+
           ? ( <TouchableHighlight
-            style={[styles.button, styles.newButton]}
+            style={styles.button}
             underlayColor='#99d94f'
             onPress={this.onLogin.bind(this)}>
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableHighlight> )
+
           : (<TouchableHighlight
-            style={[styles.button, styles.newButton]}
+            style={styles.button}
             underlayColor='#99d94f'
             onPress={this.onLogin.bind(this)}>
             <Text style={styles.buttonText}>Login</Text>
