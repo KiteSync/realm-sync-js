@@ -8,6 +8,7 @@
   "dependencies": {
     "react": "^0.14.8",
     "react-native": "^0.25.1",
+    "react-native-facebook-login": "^1.0.3",
     "realm": "^0.12.0"
   }
 }
