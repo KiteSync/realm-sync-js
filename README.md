@@ -47,18 +47,23 @@ $ npm install kitesync
 You can use KiteSync methods in a similar manner to how you would use realm CRUD methods.
 
 __new RealmSync(schema[, path])__
+
 Instantiate an instance of realm and realm sync.
 
 __.create(type, properties[, update])__
+
 Create an object that can be synchronized.
 
 __.delete(realmObject)__
+
 Delete an object from the local realm storage database. 
 
 __.getRealmInstance()__
+
 Provides an instantiated instance of the Realm library.
 
 __.sync(callback [,serviceWinsPolicy])__
+
 Synchronizes changes with remote service based on . Node style callback that return true for success.
 
 ##Example
