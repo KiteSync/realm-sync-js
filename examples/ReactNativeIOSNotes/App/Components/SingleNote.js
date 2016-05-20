@@ -25,6 +25,13 @@ class SingleNote extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.state = {
+      editing: false,
+      noteName: nextProps.rowData.name
+    }
+  }
+
   updateNote() {
     realm.write(() => {
       this.props.rowData.name = this.state.noteName;
@@ -99,11 +106,11 @@ var styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 6
   },
-  
+
   rowText: {
     fontSize: 16
   },
-  
+
   noteEditForm: {
     backgroundColor: '#D3D3D3',
     borderRadius: 6,
@@ -130,12 +137,12 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 8,
   },
-  
+
   updateText: {
     fontSize: 14,
     color: 'white',
   },
-  
+
   deleteButton: {
     backgroundColor: '#FF6347',
     borderRadius: 6,
@@ -154,26 +161,3 @@ var styles = StyleSheet.create({
 });
 
 module.exports = SingleNote;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
