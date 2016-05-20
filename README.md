@@ -7,7 +7,7 @@
 
 #### KiteSync enables your local realm database to sync
 
-We beleive that offline-first applications make for the best user experience: 
+We believe that offline-first applications make for the best user experience: 
 - Applications should work offline as seamlessly as possible with little or no disruption to the user.
 - Once a user is authenticated and online, his/her data should be synchronized and persistant on the device.
 - Apps should provide synonziation across multiple devices.
