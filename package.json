@@ -1,9 +1,8 @@
 {
   "name": "realm-sync-js",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Offline first syncing library for realm-js",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -37,8 +36,13 @@
   "engines": {
     "node": ">=4"
   },
-  "contributors": [],
   "author": "KiteSync (http://kitesync.io)",
+  "contributors": [
+    "Alamu Palaniappan (https://github.com/alamuv)",
+    "Colin Goltra (https://github.com/gltr)",
+    "David Ogor (https://github.com/doctown)",
+    "Mike Jonas (https://github.com/mikejonas)"
+  ],
   "homepage": "http://kitesync.io",
   "license": "MIT"
 }
