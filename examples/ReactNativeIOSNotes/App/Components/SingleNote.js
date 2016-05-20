@@ -56,19 +56,21 @@ class SingleNote extends React.Component {
             value={this.state.noteName}
             onChangeText={(noteName) => this.setState({noteName})}/>
 
-            <TouchableHighlight
-              style={styles.updateButton}
-              onPress={this.updateNote.bind(this)}>
-              <Text style={styles.updateText}>Update</Text>
-            </TouchableHighlight>
+            <View style={styles.buttonHolder}>
 
+              <TouchableHighlight
+                style={styles.updateButton}
+                onPress={this.updateNote.bind(this)}>
+                <Text style={styles.updateText}>Update</Text>
+              </TouchableHighlight>
 
+              <TouchableHighlight
+                style={styles.deleteButton}
+                onPress={this.deleteNote.bind(this)}>
+                <Text style={styles.deleteText}>Delete</Text>
+              </TouchableHighlight>
 
-            <TouchableHighlight
-              style={styles.deleteButton}
-              onPress={this.deleteNote.bind(this)}>
-              <Text style={styles.deleteText}>Delete</Text>
-            </TouchableHighlight>
+            </View>
 
         </View>
       )
@@ -100,9 +102,11 @@ var styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 6
   },
+  
   rowText: {
     fontSize: 16
   },
+  
   noteEditForm: {
     height: 60,
     padding: 10,
@@ -111,17 +115,39 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 10
   },
-  updateButton: {
-    backgroundColor: 'blue'
-  },
-  updateText: {
-  
-  },
-  deleteButton: {
-   backgroundColor: 'red'
-  },
-  deleteText: {
 
+  buttonHolder: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: 'yellow'
+  },
+
+  updateButton: {
+    backgroundColor: 'blue',
+    borderRadius: 6,
+    height: 40,
+    width: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+  
+  updateText: {
+    fontSize: 12,
+  },
+  
+  deleteButton: {
+    backgroundColor: 'red',
+    borderRadius: 6,
+    height: 40,
+    width: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+  },
+
+  deleteText: {
+    fontSize: 12,
   },
   // cancelButton: {
   //  backgroundColor: 'yellow'
