@@ -41,9 +41,6 @@ class SingleNote extends React.Component {
     this.setState({editing: false});
   }
 
-  // cancelChange() {
-  //   this.setState({editing: false});
-  // }
 
 
   renderSingleNote() {
@@ -108,7 +105,10 @@ var styles = StyleSheet.create({
   },
   
   noteEditForm: {
-    height: 60,
+    backgroundColor: '#D3D3D3',
+    borderRadius: 6,
+    marginBottom: 10,
+    height: 40,
     padding: 10,
     fontSize: 18,
     color: '#111',
@@ -119,42 +119,37 @@ var styles = StyleSheet.create({
   buttonHolder: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: 'yellow'
   },
 
   updateButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#4DBD33',
     borderRadius: 6,
     height: 40,
-    width: 80,
+    width: 200,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 10,
+    marginRight: 8,
   },
   
   updateText: {
-    fontSize: 12,
+    fontSize: 14,
+    color: 'white',
   },
   
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: '#FF6347',
     borderRadius: 6,
     height: 40,
-    width: 80,
+    width: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 10,
+    marginLeft: 8,
   },
 
   deleteText: {
-    fontSize: 12,
+    fontSize: 14,
+    color: 'white',
   },
-  // cancelButton: {
-  //  backgroundColor: 'yellow'
-  // },
-  // cancelText: {
-  // },
-
 
 });
 
