@@ -3,9 +3,9 @@
 # [KiteSync](http://kitesync.io)
 
 
-## About Kite Sync
+## About KiteSync
 
-#### Kite Sync enables your local realm database to sync
+#### KiteSync enables your local realm database to sync
 
 We beleive that offline-first applications make for the best user experience: 
 - Applications should work offline as seamlessly as possible with little or no disruption to the user.
