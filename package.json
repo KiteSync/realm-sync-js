@@ -16,10 +16,10 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/GenericCreativeName/ProjectInterNOT.git"
+    "url": "https://github.com/KiteSync/realm-sync-js.git"
   },
   "bugs": {
-    "url": "https://github.com/GenericCreativeName/ProjectInterNOT/issues"
+    "url": "https://github.com/KiteSync/realm-sync-js/issues"
   },
   "keywords": [
     "realm",
