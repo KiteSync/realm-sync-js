@@ -1,4 +1,4 @@
-var remoteDB = require('./remoteDB.js');
+var remoteDB = require('../../../remoteDB.js');
 
 var remoteSync = {};
 
