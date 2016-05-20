@@ -120,7 +120,6 @@ check out our [Contributing guide](/CONTRIBUTING.md).
 
 Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 
-![](/assets/Lets-go.png)
 
 ### Git Workflow
 
