@@ -32,6 +32,12 @@ class SingleNote extends React.Component {
     this.props.realm.write(() => {
       this.props.rowData.name = this.state.noteName;
       this.props.realmSync.create('Note', this.props.rowData, true);
+
+      this.props.realmSync.sync((err, res) => {
+        console.log("Error: ", err);
+        console.log("Result: ", res);
+      })
+
     });
     this.setState({editing: false});
   }
@@ -40,6 +46,11 @@ class SingleNote extends React.Component {
     objToDelete = this.props.rowData;
     this.props.realm.write(() => {
       this.props.realmSync.delete(objToDelete);
+
+      this.props.realmSync.sync((err, res) => {
+        console.log("Error: ", err);
+        console.log("Result: ", res);
+      })
     });
     this.setState({editing: false});
   }
