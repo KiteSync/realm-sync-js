@@ -33,33 +33,35 @@ An explanation about why KiteSync was developed and is an excellent solution for
 developers.
 [RethinkDB](http://www.rethinkdb.com) and
 
-## Get Involved
+## Getting Started
+###Requirements
+- realm
+- react-native
 
-This library was made possible by the creative efforts of developers like you and
-we would be happy to have you contribute to KiteSync's future success. If you'd like to be a contributor,
-check out our [Contributing guide](/CONTRIBUTING.md).
-
-Also, checkout out [KiteSync.io](https://KiteSync.io) periodically for updates.
-
-![](/assets/Lets-go.png)
-
-## FAQ
-
-### How do you start KiteSync?
-
-This first step is to install the KiteSync command line tool.
-
+###Installation
 ```sh
 $ npm install kitesync
-# require 'kitesync' in your files
 ```
 
-Check out the [Getting Started](/GETTING-STARTED.md) guide for a complete walkthrough.
+###API Documentation
+You can use KiteSync methods in a similar manner to how you would use realm CRUD methods.
 
-### What does the code look like?
+__new RealmSync(schema[, path])__
+Instantiate an instance of realm and realm sync.
 
-Here is currently what you'd write on the front-end for a simple todo list application:
+__.create(type, properties[, update])__
+Create an object that can be synchronized.
 
+__.delete(realmObject)__
+Delete an object from the local realm storage database. 
+
+__.getRealmInstance()__
+Provides an instantiated instance of the Realm library.
+
+__.sync(callback [,serviceWinsPolicy])__
+Synchronizes changes with remote service based on . Node style callback that return true for success.
+
+##Example
 ```js
 const Realm = require('realm');
 const RealmSync = require('kitesync');
@@ -90,32 +92,38 @@ realmSync.sync(function(error, success) {
   console.log(success);
 });
 ```
-***Want to see more?*** Check out [our README for the KiteSync api library](https://github.com/rethinkdb/horizon/tree/next/client#horizon-client-library), we have an initial set of docs as well as a expanded getting started guide to get you started with using Horizon.
 
-### How do I get it?
+## About / Philosophy
+#### Kite Sync enables your local realm database to sync
+We beleive that offline-first applications make for the best user experience: 
+- Applications should work offline as seamlessly as possible with little or no disruption to the user.
+- Once a user is authenticated and online, his/her data should be synchronized and persistant on the device.
+- Apps should provide synonziation across multiple devices.
 
-You have two options:
+Products like _Evernote, Google Keep,_ and _Kindle_ have syncing solutions that highlight the merits of ensuring user data is available across devices and thus raised users expectation of how they interact with their mobile apps. Unfortunately syncing is a challenging technical problem and many businesses that solve it use their proprietary syncing technology as a competitive advantage. KiteSync’s goal is to make syncing an easy experienc both for developers and users alike.
 
-1. `npm install kitesync`
-1. Move into the `/src` folder here and run `./setupDev.sh` which will install it on your system using this repo.
-
-Refer to the the [CLI README](/cli/README.md) for the most up-to-date public install instructions.
-
-### Where do I start?
-
-Check out our [Getting Started guide](/GETTING-STARTED.md). If you have more questions, feel free to tweet Colin at [@kitesyncjs](https://twitter.com/kitesyncjs).
-
-![](/assets/how-is-horizon-different.png)
-
-### How is KiteSync different from []?
-
-There are a few major differences:
-
-- Difference.
-- Another difference.
-- Other difference.
+Realm provides an exciting mobile database with a low memory and space footprint. We built an API wrapper over Realm to give full remote syncing functionality for react-native apps.
 
 
-### How will KiteSync be licensed?
+## Get Involved
 
-The KiteSync api, example and remote-service are available under the ??? license
+This library was made possible by the creative efforts of developers like you and
+we would be happy to have you contribute to KiteSync's future success. If you'd like to be a contributor,
+check out our [Contributing guide](/CONTRIBUTING.md).
+
+Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
+
+![](/assets/Lets-go.png)
+
+## External Resources
+- [Kite Sync Site](http://KiteSync.io)
+- [Realm Site](https://realm.io/)
+- [Realm Github](https://github.com/realm/realm-js)
+- [About Offline-First Development](https://github.com/pazguille/offline-first)
+
+
+## License
+
+  [MIT](LICENSE)
+
+
