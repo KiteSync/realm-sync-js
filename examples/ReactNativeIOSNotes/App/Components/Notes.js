@@ -18,6 +18,7 @@ var {
 import { ListView } from 'realm/react-native';
 
 class Notes extends React.Component{
+
   constructor() {
     super();
     console.log(realm.path);
@@ -50,6 +51,10 @@ class Notes extends React.Component{
     })
     realm.write(() => {
       realmSync.create('Note', {name: note});
+      realmSync.sync((err, res) => {
+        console.log("Error: ", err);
+        console.log("Result: ", res);
+      })
     })
   }
   syncRemoteDB() {
