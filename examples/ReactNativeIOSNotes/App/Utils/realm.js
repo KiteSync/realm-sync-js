@@ -7,6 +7,7 @@ var remoteDBPath = 'https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/
 class Note {}
 Note.schema = {
   name: 'Note',
+  primaryKey: 'realmSyncId',
   properties: {
     name: Realm.Types.STRING,
     realmSyncId: Realm.Types.STRING

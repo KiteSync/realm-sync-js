@@ -72,6 +72,8 @@ localSyncFromServer = function(realm, syncChunk) {
   realm.write(() => { // TODO: Determine if write should be moved up further
     // For each usn apply object to database
     usnNumbers.forEach(function (usn, index, collection) {
+      console.log("localSyncFromServer (usn): " + usn);
+
       if(syncChunk[usn].body === "DELETED") {
         var realmSyncID = syncChunk[usn].realmSyncId;
         var type = syncChunk[usn].type;
@@ -79,18 +81,9 @@ localSyncFromServer = function(realm, syncChunk) {
         let objectToBeDeleted = realm.objects(type).filtered(filteredText);
         realm.delete(objectToBeDeleted);
       } else {
-        var realmSyncID = syncChunk[usn].realmSyncId;
         var type = syncChunk[usn].type;
         var object = JSON.parse(syncChunk[usn].body);
-        var filteredText = 'realmSyncId = "' + realmSyncID + '"';
-        let objectToBeModified = realm.objects(type).filtered(filteredText);
-        if (objectToBeModified.length !== 0) {
-          for (key in object) {
-            objectToBeModified[0][key] = object[key];
-          }
-        } else {
-          realm.create(type, object);
-        }
+        realm.create(type, object, true);
       }
     });
   });
@@ -121,6 +114,7 @@ incrementalSync = function(realm, syncChunk, policy) {
   var usnNumbers = Object.keys(syncChunk);
   usnNumbers.sort(function(num, otherNum) {return num - otherNum;});
   usnNumbers.forEach(function(usn) {
+    console.log("incrementalSync (usn): " + usn);
     var realmSyncID = syncChunk[usn].realmSyncId;
     var type = syncChunk[usn].type;
     var object = syncChunk[usn].body;

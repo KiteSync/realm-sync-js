@@ -1,8 +1,4 @@
 var React = require('react-native');
-var Separator = require('./Helpers/Separator');
-import Realm from '../Utils/realm';
-let realmSync = Realm.realmSync;
-let realm = realmSync.getRealmInstance();
 
 var {
   View,
@@ -33,17 +29,28 @@ class SingleNote extends React.Component {
   }
 
   updateNote() {
-    realm.write(() => {
+    this.props.realm.write(() => {
       this.props.rowData.name = this.state.noteName;
-      realmSync.create('Note', this.props.rowData, true);
+      this.props.realmSync.create('Note', this.props.rowData, true);
+
+      this.props.realmSync.sync((err, res) => {
+        console.log("Error: ", err);
+        console.log("Result: ", res);
+      })
+
     });
     this.setState({editing: false});
   }
 
   deleteNote() {
     objToDelete = this.props.rowData;
-    realm.write(() => {
-      realmSync.delete(objToDelete);
+    this.props.realm.write(() => {
+      this.props.realmSync.delete(objToDelete);
+
+      this.props.realmSync.sync((err, res) => {
+        console.log("Error: ", err);
+        console.log("Result: ", res);
+      })
     });
     this.setState({editing: false});
   }
@@ -93,7 +100,6 @@ class SingleNote extends React.Component {
     return (
       <View>
         {this.renderSingleNote()}
-        <Separator />
       </View>
     )
   }
@@ -104,7 +110,8 @@ var styles = StyleSheet.create({
   rowContainer: {
     padding: 10,
     backgroundColor: 'white',
-    borderRadius: 6
+    borderRadius: 6,
+    marginBottom: 10
   },
 
   rowText: {
