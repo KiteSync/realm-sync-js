@@ -1,18 +1,17 @@
 {
   "name": "realm-sync-js",
   "version": "0.0.1",
-  "description": "Offline syncing library for realm-js",
+  "description": "Offline first syncing library for realm-js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "react-native": "^0.24.1",
     "realm": "^0.12.0"
   },
-  "main": "react-native-todo/application/lib/realmSync.js",
+  "main": "lib/realmSync.js",
   "files": [
-  	"react-native-todo/application/lib"
+  	"lib"
   ],
   "devDependencies": {},
   "repository": {
@@ -32,12 +31,14 @@
     "db",
     "react-native",
     "persistence",
-    "localstorage"
+    "localstorage",
+    "kitesync"
   ],
   "engines": {
     "node": ">=4"
   },
+  "contributors": [],
   "author": "KiteSync (http://kitesync.io)",
   "homepage": "http://kitesync.io",
-  "license": "ISC"
+  "license": "MIT"
 }
