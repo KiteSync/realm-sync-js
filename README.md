@@ -151,7 +151,7 @@ Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 
 MIT License
 
-Copyright (c) 2016 KiteSync Team (Alamelu Palaniappan, Colin Goltra, David Ogor, Mike Jonas)
+Copyright (c) 2016 KiteSync Team (Alamu Palaniappan, Colin Goltra, David Ogor, Mike Jonas)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
