@@ -171,6 +171,7 @@ class RealmSync {
       // when sync from remote is done
       // get data from sync queue
       // push local update to remote service
+      // debugger;
       var updates = sync.localSyncQueuePush(that.realm);
       remoteSync.pushLocalUpdatesToDB(updates, userId, function (error, data) {
         if (error) {
