@@ -10,9 +10,9 @@ KiteSync is built on top of [Realm.io](https://realm.io/) and consists of
 two components:
 
 - [__KiteSync Api__](/api) -- a JavaScript library that allows syncing by using create, delete, update, and delete methods.     Syncing is initiated via the sync method coordinating synchronization with the remote service.
-- [__KiteSync Example__](/example) -- an notes react-native application that demonstrates how easy KiteSync allows developers    to add syncing to their react-native apps.
 - [__KiteSync Remote-Service__](/remote-service) -- a cloud-based solution for adding
   applications.
+
 
 KiteSync provides the following service to developers:
 
@@ -20,8 +20,9 @@ KiteSync provides the following service to developers:
 - __Auth__ -- an authentication API that connects to common auth providers (Facebook).
 - __Incremental Sync__ -- only synchronizes changes since the users last sync reducing the amount of data transferred.
 - __Conflict Management__ -- resolves conflicts between identical objects on the client's device.
+- [__Proof-of-Concept Application__](/examples/ReactNativeIOSNotes) -- a production notes application that leverages the node module.
 
-Upcoming versions of KiteSync will likely provide additional services:
+Upcoming versions of KiteSync will focus on providing additional services:
 
 - __Public/Private Routing__ -- allows developers to choose which data is privately synced per user and data synced to all mobile users.
 - __Event Notification__ -- provides notification when syncing is initialized, in progress, and completed.
@@ -40,7 +41,7 @@ developers.
 
 ###Installation
 ```sh
-$ npm install kitesync
+$ npm install realm-sync-js
 ```
 
 ###API Documentation
@@ -98,8 +99,10 @@ realmSync.sync(function(error, success) {
 });
 ```
 
-## About / Philosophy
+## About Kite Sync
+
 #### Kite Sync enables your local realm database to sync
+
 We beleive that offline-first applications make for the best user experience: 
 - Applications should work offline as seamlessly as possible with little or no disruption to the user.
 - Once a user is authenticated and online, his/her data should be synchronized and persistant on the device.
@@ -120,15 +123,52 @@ Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 
 ![](/assets/Lets-go.png)
 
-## External Resources
+
+## Additional
+
+### External Resources
 - [Kite Sync Site](http://KiteSync.io)
 - [Realm Site](https://realm.io/)
 - [Realm Github](https://github.com/realm/realm-js)
 - [About Offline-First Development](https://github.com/pazguille/offline-first)
 
+### Community
+
+- [KiteSync on Twitter](www.twitter.com/kitesync)
+
+
+### Team
+
+- [Alamelu Palaniappan](https://github.com/alamuv)
+- [Colin Goltra](https://github.com/gltr)
+- [David Ogor](https://github.com/doctown)
+- [Mike Jonas](https://github.com/mikejonas)
+
+
+
 
 ## License
 
-  [MIT](LICENSE)
+MIT License
+
+Copyright (c) 2016 KiteSync Team (Alamelu Palaniappan, Colin Goltra, David Ogor, Mike Jonas)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
