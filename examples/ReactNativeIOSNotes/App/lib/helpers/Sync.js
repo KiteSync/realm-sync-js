@@ -81,7 +81,6 @@ localSyncFromServer = function(realm, syncChunk) {
         let objectToBeDeleted = realm.objects(type).filtered(filteredText);
         realm.delete(objectToBeDeleted);
       } else {
-        var realmSyncID = syncChunk[usn].realmSyncId;
         var type = syncChunk[usn].type;
         var object = JSON.parse(syncChunk[usn].body);
         realm.create(type, object, true);
