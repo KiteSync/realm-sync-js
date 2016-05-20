@@ -20,8 +20,8 @@ import { ListView } from 'realm/react-native';
 class Notes extends React.Component{
   constructor() {
     super();
+    console.log(realm.path);
     let note = realm.objects('Note');
-
     var notesArray = note.slice().reverse();
     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     this.state = {
@@ -65,7 +65,7 @@ class Notes extends React.Component{
 
 
     return(
-      <SingleNote rowData={rowData} realm={realm} />
+      <SingleNote rowData={rowData} realm={realm} realmSync={realmSync} />
 
     )
   }
