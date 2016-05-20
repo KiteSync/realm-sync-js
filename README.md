@@ -39,11 +39,6 @@ KiteSync provides the following service to developers:
 - [__Proof-of-Concept Application__](/examples/ReactNativeIOSNotes) -- a production notes application that leverages the node module.
 
 
-## Why KiteSync?
-
-An explanation about why KiteSync was developed and is an excellent solution for
-developers.
-[RethinkDB](http://www.rethinkdb.com) and
 
 ## Getting Started
 ###Requirements
@@ -178,3 +173,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+
+ _       __________________ _______  _______           _        _______ 
+| \    /\\__   __/\__   __/(  ____ \(  ____ \|\     /|( (    /|(  ____ \
+|  \  / /   ) (      ) (   | (    \/| (    \/( \   / )|  \  ( || (    \/
+|  (_/ /    | |      | |   | (__    | (_____  \ (_) / |   \ | || |      
+|   _ (     | |      | |   |  __)   (_____  )  \   /  | (\ \) || |      
+|  ( \ \    | |      | |   | (            ) |   ) (   | | \   || |      
+|  /  \ \___) (___   | |   | (____/\/\____) |   | |   | )  \  || (____/\
+|_/    \/\_______/   )_(   (_______/\_______)   \_/   |/    )_)(_______/
+                                                                        
