@@ -1,4 +1,4 @@
-<img style="width:100%;" src="/github-banner.png">
+<img style="width:100%;" src="http://i.imgur.com/a4LdPQn.png">
 
 # [KiteSync](http://kitesync.io)
 
