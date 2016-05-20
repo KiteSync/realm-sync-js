@@ -1,4 +1,4 @@
-<img style="width:100%;" src="http://i.imgur.com/a4LdPQn.png">
+<img style="width:100%;" src="/media/github-banner.png">
 
 # [KiteSync](http://kitesync.io)
 
@@ -9,8 +9,8 @@
 
 We believe that offline-first applications make for the best user experience: 
 - Applications should work offline as seamlessly as possible with little or no disruption to the user.
-- Once a user is authenticated and online, his/her data should be synchronized and persistant on the device.
-- Apps should provide synonziation across multiple devices.
+- Once a user is authenticated and online, his/her data should be synchronized and persistent on the device.
+- Apps should provide syncronization across multiple devices.
 
 Products like _Evernote, Google Keep,_ and _Kindle_ have syncing solutions that highlight the merits of ensuring user data is available across devices and thus raised users expectation of how they interact with their mobile apps. Unfortunately syncing is a challenging technical problem and many businesses that solve it use their proprietary syncing technology as a competitive advantage. KiteSync’s goal is to make syncing an easy experienc both for developers and users alike.
 
@@ -24,8 +24,8 @@ KiteSync is an open-source solution to syncing realm.io react-native databases b
 KiteSync is built on top of [Realm.io](https://realm.io/) and consists of
 two components:
 
-- [__KiteSync Api__](/api) -- a JavaScript library that allows syncing by using create, delete, update, and delete methods.     Syncing is initiated via the sync method coordinating synchronization with the remote service.
-- [__KiteSync Remote-Service__](/remote-service) -- a cloud-based solution for adding
+- [__KiteSync Api__](/lib) -- a JavaScript library that allows syncing by using create, delete, update, and delete methods.     Syncing is initiated via the sync method coordinating synchronization with the remote service.
+- [__KiteSync Remote-Service__](/lib) -- a cloud-based solution for adding
   applications.
 
 
@@ -132,7 +132,7 @@ Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 ## Additional
 
 ### External Resources
-- [Kite Sync Site](http://KiteSync.io)
+- [KiteSync Site](http://KiteSync.io)
 - [Realm Site](https://realm.io/)
 - [Realm Github](https://github.com/realm/realm-js)
 - [About Offline-First Development](https://github.com/pazguille/offline-first)
