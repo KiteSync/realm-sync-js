@@ -38,7 +38,6 @@ remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
     "usn": 3,
   } */
 remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
-  debugger;
   fetch(remoteDB.postUpdates,
       {
         method: 'POST',
