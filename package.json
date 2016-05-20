@@ -6,7 +6,10 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react-native": "^0.24.1",
+    "realm": "^0.12.0"
+  },
   "main": "react-native-todo/application/lib/realmSync.js",
   "files": [
   	"react-native-todo/application/lib"
@@ -36,6 +39,5 @@
   },
   "author": "KiteSync (http://kitesync.io)",
   "homepage": "http://kitesync.io",
-  "license": "ISC",
-  "homepage": "https://github.com/GenericCreativeName/ProjectInterNOT"
+  "license": "ISC"
 }
