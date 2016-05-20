@@ -7,7 +7,7 @@ var remoteSync = {};
 //and callback to manipulate the response from DynamoDB
 remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
   console.log(remoteDB.getUpdates)
-  fetch(remoteDB.getUpdates+'lastUpdate='+lastUpdate+'&userId='+userId, 
+  fetch(remoteDB.getUpdates+'lastUpdate='+lastUpdate+'&userId='+userId,
       {
         method: 'GET',
         headers: {
@@ -38,6 +38,7 @@ remoteSync.getUpdatesFromRemoteDB = function(lastUpdate, userId, callback){
     "usn": 3,
   } */
 remoteSync.pushLocalUpdatesToDB = function(updates, userId, callback) {
+  debugger;
   fetch(remoteDB.postUpdates,
       {
         method: 'POST',
