@@ -2,6 +2,21 @@
 
 # [KiteSync](http://kitesync.io)
 
+
+## About Kite Sync
+
+#### Kite Sync enables your local realm database to sync
+
+We beleive that offline-first applications make for the best user experience: 
+- Applications should work offline as seamlessly as possible with little or no disruption to the user.
+- Once a user is authenticated and online, his/her data should be synchronized and persistant on the device.
+- Apps should provide synonziation across multiple devices.
+
+Products like _Evernote, Google Keep,_ and _Kindle_ have syncing solutions that highlight the merits of ensuring user data is available across devices and thus raised users expectation of how they interact with their mobile apps. Unfortunately syncing is a challenging technical problem and many businesses that solve it use their proprietary syncing technology as a competitive advantage. KiteSync’s goal is to make syncing an easy experienc both for developers and users alike.
+
+Realm provides an exciting mobile database with a low memory and space footprint. We built an API wrapper over Realm to give full remote syncing functionality for react-native apps.
+
+
 ## What is KiteSync?
 
 KiteSync is an open-source solution to syncing realm.io react-native databases by using an external remote service. This library empowers developers to focus on offline first functionality in their mobile apps.
@@ -20,13 +35,9 @@ KiteSync provides the following service to developers:
 - __Auth__ -- an authentication API that connects to common auth providers (Facebook).
 - __Incremental Sync__ -- only synchronizes changes since the users last sync reducing the amount of data transferred.
 - __Conflict Management__ -- resolves conflicts between identical objects on the client's device.
+- __Testing__ -- automated testing suite and sample test app to interface with the both databases.
 - [__Proof-of-Concept Application__](/examples/ReactNativeIOSNotes) -- a production notes application that leverages the node module.
 
-Upcoming versions of KiteSync will focus on providing additional services:
-
-- __Public/Private Routing__ -- allows developers to choose which data is privately synced per user and data synced to all mobile users.
-- __Event Notification__ -- provides notification when syncing is initialized, in progress, and completed.
-- __Backend Expansion__ -- an API/protocol to create custom backend solution.
 
 ## Why KiteSync?
 
@@ -99,21 +110,9 @@ realmSync.sync(function(error, success) {
 });
 ```
 
-## About Kite Sync
+## Development & Contributing
 
-#### Kite Sync enables your local realm database to sync
-
-We beleive that offline-first applications make for the best user experience: 
-- Applications should work offline as seamlessly as possible with little or no disruption to the user.
-- Once a user is authenticated and online, his/her data should be synchronized and persistant on the device.
-- Apps should provide synonziation across multiple devices.
-
-Products like _Evernote, Google Keep,_ and _Kindle_ have syncing solutions that highlight the merits of ensuring user data is available across devices and thus raised users expectation of how they interact with their mobile apps. Unfortunately syncing is a challenging technical problem and many businesses that solve it use their proprietary syncing technology as a competitive advantage. KiteSync’s goal is to make syncing an easy experienc both for developers and users alike.
-
-Realm provides an exciting mobile database with a low memory and space footprint. We built an API wrapper over Realm to give full remote syncing functionality for react-native apps.
-
-
-## Get Involved
+### Get Involved
 
 This library was made possible by the creative efforts of developers like you and
 we would be happy to have you contribute to KiteSync's future success. If you'd like to be a contributor,
@@ -122,6 +121,18 @@ check out our [Contributing guide](/CONTRIBUTING.md).
 Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 
 ![](/assets/Lets-go.png)
+
+### Git Workflow
+
+### Testing
+
+### Style Guide
+
+### Roadmap & Wishlist
+- __Public/Private Routing__ -- allows developers to choose which data is privately synced per user and data synced to all mobile users.
+- __Event Notification__ -- provides notification when syncing is initialized, in progress, and completed.
+- __Backend Expansion__ -- an API/protocol to create custom backend solution.
+
 
 
 ## Additional
@@ -133,18 +144,13 @@ Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 - [About Offline-First Development](https://github.com/pazguille/offline-first)
 
 ### Community
-
 - [KiteSync on Twitter](www.twitter.com/kitesync)
 
-
-### Team
-
+### Founding Team
 - [Alamelu Palaniappan](https://github.com/alamuv)
 - [Colin Goltra](https://github.com/gltr)
 - [David Ogor](https://github.com/doctown)
 - [Mike Jonas](https://github.com/mikejonas)
-
-
 
 
 ## License
