@@ -5,14 +5,14 @@
 
 ## About KiteSync
 
-#### KiteSync enables your local realm database to sync
+#### KiteSync Enables Developers to Sync Offline-First Applications Using Realm
 
 We believe that offline-first applications make for the best user experience: 
 - Applications should work offline as seamlessly as possible with little or no disruption to the user.
 - Once a user is authenticated and online, his/her data should be synchronized and persistent on the device.
 - Apps should provide syncronization across multiple devices.
 
-Products like _Evernote, Google Keep,_ and _Kindle_ have syncing solutions that highlight the merits of ensuring user data is available across devices and thus raised users expectation of how they interact with their mobile apps. Unfortunately syncing is a challenging technical problem and many businesses that solve it use their proprietary syncing technology as a competitive advantage. KiteSync’s goal is to make syncing an easy experienc both for developers and users alike.
+Products like _Evernote, Google Keep,_ and _Kindle_ have syncing solutions that highlight the merits of ensuring user data is available across devices and have thus raised users' expectations of how they interact with their mobile apps. Syncing is a challenging technical problem and many businesses have developed proprietary syncing technology that can be used as a competitive advantage. KiteSync’s goal is to make syncing an easy experience both for developers and users alike.
 
 Realm provides an exciting mobile database with a low memory and space footprint. We built an API wrapper over Realm to give full remote syncing functionality for react-native apps.
 
@@ -141,7 +141,7 @@ Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 - [KiteSync on Twitter](www.twitter.com/kitesync)
 
 ### Founding Team
-- [Alamelu Palaniappan](https://github.com/alamuv)
+- [Alamu Palaniappan](https://github.com/alamuv)
 - [Colin Goltra](https://github.com/gltr)
 - [David Ogor](https://github.com/doctown)
 - [Mike Jonas](https://github.com/mikejonas)
