@@ -22,7 +22,8 @@ class Notes extends React.Component{
     super();
     let note = realm.objects('Note');
     var notesArray = [];
-    notesArray = note.slice().reverse();
+    notesArray = note.slice();
+
     this.ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
     this.state = {
       dataSource: this.ds.cloneWithRows(notesArray),
@@ -31,12 +32,12 @@ class Notes extends React.Component{
     }
 
     realm.addListener('change', () => {
-      notesArray = note.slice().reverse();
+      var notesArray = [];
+      notesArray = note.slice();
       this.setState({
         dataSource: this.ds.cloneWithRows(notesArray)
       })
     });
-
   }
 
   handleChange(e) {
