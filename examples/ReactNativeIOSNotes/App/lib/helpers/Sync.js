@@ -72,17 +72,25 @@ localSyncFromServer = function(realm, syncChunk) {
   realm.write(() => { // TODO: Determine if write should be moved up further
     // For each usn apply object to database
     usnNumbers.forEach(function (usn, index, collection) {
-      var realmSyncID = syncChunk[usn].realmSyncId;
-      var type = syncChunk[usn].type;
-      var object = JSON.parse(syncChunk[usn].body);
-      var filteredText = 'realmSyncId = "' + realmSyncID + '"';
-      let objectToBeModified = realm.objects(type).filtered(filteredText);
-      if (objectToBeModified.length !== 0) {
-        for (key in object) {
-          objectToBeModified[0][key] = object[key];
-        }
+      if(syncChunk[usn].body === "DELETED") {
+        var realmSyncID = syncChunk[usn].realmSyncId;
+        var type = syncChunk[usn].type;
+        var filteredText = 'realmSyncId = "' + realmSyncID + '"';
+        let objectToBeDeleted = realm.objects(type).filtered(filteredText);
+        realm.delete(objectToBeDeleted);
       } else {
-        realm.create(type, object);
+        var realmSyncID = syncChunk[usn].realmSyncId;
+        var type = syncChunk[usn].type;
+        var object = JSON.parse(syncChunk[usn].body);
+        var filteredText = 'realmSyncId = "' + realmSyncID + '"';
+        let objectToBeModified = realm.objects(type).filtered(filteredText);
+        if (objectToBeModified.length !== 0) {
+          for (key in object) {
+            objectToBeModified[0][key] = object[key];
+          }
+        } else {
+          realm.create(type, object);
+        }
       }
     });
   });
