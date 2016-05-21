@@ -1,6 +1,2 @@
-config/config.json
-config/config.js
-awsTests/config.js
-s3update.zip
-dynamoUpdate.zip
+.DS_Store
 node_modules
