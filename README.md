@@ -142,10 +142,10 @@ Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 - [KiteSync on Twitter](www.twitter.com/kitesync)
 
 ### Founding Team
-- [Alamu Palaniappan](https://github.com/alamuv)
-- [Colin Goltra](https://github.com/gltr)
-- [David Ogor](https://github.com/doctown)
-- [Mike Jonas](https://github.com/mikejonas)
+- Alamu Palaniappan - ([Github](https://github.com/alamuv), [LinkedIn](https://www.linkedin.com/in/alamu))
+- Colin Goltra - ([Github](https://github.com/gltr), [Twitter](https://twitter.com/goltra), [LinkedIn](https://www.linkedin.com/in/goltra), [AngelList](https://angel.co/goltra))
+- David Ogor - ([Github](https://github.com/doctown), [LinkedIn](https://www.linkedin.com/in/ogorda))
+- Mike Jonas - ([Github](https://github.com/mikejonas), [LinkedIn](https://www.linkedin.com/in/mikejonas))
 
 
 ## License
