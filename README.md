@@ -141,7 +141,7 @@ Also, checkout out [KiteSync.io](http://KiteSync.io) periodically for updates.
 - [About Offline-First Development](https://github.com/pazguille/offline-first)
 
 ### Community
-- [KiteSync on Twitter](www.twitter.com/kitesync)
+- [KiteSync on Twitter](https://twitter.com/kitesync)
 
 ### Founding Team
 - Alamu Palaniappan - ([Github](https://github.com/alamuv), [LinkedIn](https://www.linkedin.com/in/alamu))
