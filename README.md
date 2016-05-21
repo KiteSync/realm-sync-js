@@ -38,6 +38,7 @@ KiteSync provides the following service to developers:
 - __Testing__ -- automated testing suite and sample test app to interface with the both databases.
 - [__Proof-of-Concept Application__](/examples/ReactNativeIOSNotes) -- a production notes application that leverages the node module.
 
+KiteSync was first built by [Alamu Palaniappan](https://github.com/alamuv), [Colin Goltra](https://github.com/gltr), [David Ogor](https://github.com/doctown), and [Mike Jonas](https://github.com/mikejonas)
 
 
 ## Getting Started
