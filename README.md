@@ -51,6 +51,8 @@ KiteSync was first built by [Alamu Palaniappan](https://github.com/alamuv), [Col
 $ npm install realm-sync-js
 ```
 
+(Link to realm-sync-js on NPM)[https://www.npmjs.com/package/realm-sync-js]
+
 ###API Documentation
 You can use KiteSync methods in a similar manner to how you would use realm CRUD methods.
 
