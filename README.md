@@ -24,7 +24,7 @@ KiteSync is an open-source solution to syncing realm.io react-native databases b
 KiteSync is built on top of [Realm.io](https://realm.io/) and consists of
 two components:
 
-- [__KiteSync Api__](/lib) -- a JavaScript library that allows syncing by using create, delete, update, and delete methods.     Syncing is initiated via the sync method coordinating synchronization with the remote service.
+- [__KiteSync API__](/lib) -- a JavaScript library that allows syncing by using create, delete, update, and delete methods.     Syncing is initiated via the sync method coordinating synchronization with the remote service.
 - [__KiteSync Remote-Service__](/lib) -- a cloud-based solution for adding
   applications.
 
@@ -41,7 +41,7 @@ KiteSync provides the following service to developers:
 KiteSync was first built by [Alamu Palaniappan](https://github.com/alamuv), [Colin Goltra](https://github.com/gltr), [David Ogor](https://github.com/doctown), and [Mike Jonas](https://github.com/mikejonas)
 
 
-## Getting Started
+## Getting Starteda
 ###Requirements
 - realm
 - react-native
