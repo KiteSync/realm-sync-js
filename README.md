@@ -41,7 +41,7 @@ KiteSync provides the following service to developers:
 KiteSync was first built by [Alamu Palaniappan](https://github.com/alamuv), [Colin Goltra](https://github.com/gltr), [David Ogor](https://github.com/doctown), and [Mike Jonas](https://github.com/mikejonas)
 
 
-## Getting Starteda
+## Getting Started
 ###Requirements
 - realm
 - react-native
