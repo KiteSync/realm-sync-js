@@ -3,6 +3,8 @@
 import RealmSync from '../lib/realmSync';
 import SyncSchema from '../helpers/SyncSchema';
 import Realm from 'realm';
+var remoteDBPath = 'https://4jqibux547.execute-api.us-west-2.amazonaws.com/test/sync';
+
 class Dog {}
 Dog.schema = {
   name: 'Dog',
@@ -12,7 +14,7 @@ Dog.schema = {
   },
 };
 
-module.exports.realmSync = new RealmSync([Dog]);
+module.exports.realmSync = new RealmSync([Dog], remoteDBPath);
 //module.exports.realm = new Realm();
 
 
