@@ -1,6 +1,6 @@
 {
   "name": "realm-sync-js",
-  "version": "0.0.0b",
+  "version": "0.0.0c",
   "description": "Offline first syncing library for realm-js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
