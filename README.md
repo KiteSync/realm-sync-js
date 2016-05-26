@@ -79,33 +79,45 @@ Synchronizes changes with remote service based on . Node style callback that ret
 ##Example
 ```js
 const Realm = require('realm');
-const RealmSync = require('kitesync');
-// Create your schema
-var PersonSchema = {}
-PersonSchema.schema = {
-  name: 'Person',
-  properties: {
-    name: String,
-    address: String
-  }
-}
-// Instantiate KiteSync
+const RealmSync = require('realm-sync-js');
 
-const realmSync = RealmSync([PersonSchema]);
-const realm = realmSync.getRealmInstance();
+const remoteDBPath = 'REMOTE_DATABASE_PATH';
+const localDBPath = 'sample.realm';
 
-// Function used to create a person in realm
-realm.write(() => {
-  realmSync.create('Person', {
-    name: 'Brian Smith',
-    address: '123 Main St'
+module.exports.sample = function() {
+  // Create your schema
+  class Person {}
+
+  Person.schema = {
+    name: 'Person',
+    properties: {
+      name: Realm.Types.STRING,
+      address: Realm.Types.STRING,
+      realmSyncId: Realm.Types.STRING
+    }
+  };
+
+  // Instantiate KiteSync
+
+  const realmSync = new RealmSync([Person], remoteDBPath, localDBPath);
+  const realm = realmSync.getRealmInstance();
+
+  // Function used to create a person in realm
+  realm.write(() => {
+    realmSync.create('Person', {
+      name: 'Brian Smith',
+      address: '123 Main St'
+    });
   });
-});
 
-realmSync.sync(function(error, success) {
-  if (error) throw new Error(error);
-  console.log(success);
-});
+  realmSync.sync(function(error, success) {
+    if (error) {
+      throw new Error(error);
+    } else {
+      console.log(success);
+    }
+  });
+};
 ```
 
 ## Development & Contributing
