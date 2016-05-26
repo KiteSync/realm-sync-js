@@ -8,7 +8,7 @@ let syncType = 'SyncQueue';
 //These will be in the node module
 const RealmSync = require('../lib/realmSync');
 const remoteSync = require('../lib/helpers/remoteSync');
-const sync = require('../lib/helpers/Sync');
+const sync = require('../lib/helpers/sync');
 
 module.exports.runTests = function() {
   var realm;
