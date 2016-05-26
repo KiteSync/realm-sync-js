@@ -1,4 +1,3 @@
-// import realm from '../../components/realm';
 import usnHandler from './usnHandler';
 
 /**
@@ -9,7 +8,6 @@ import usnHandler from './usnHandler';
  * @param {obj} database class updates
  */
 var addObjectToSyncQueue = function(realm, type, obj) {
-  // TODO: Only search syncQueue for object to update for updates
 
   var filterText = 'realmSyncId = "' + obj.realmSyncId + '"'
   let objToUpdate = realm.objects('SyncQueue').filtered(filterText);
@@ -45,27 +43,33 @@ var deleteObjectFromSyncQueue = function(realm) {
   let objects = realm.objects('SyncQueue');
   realm.write(() => {
     realm.delete(objects);
+    usnHandler.setUsnToValue(0);
   });
 }
 
-
 /**
- * Updates USN and Removes the body from item in syncQueue \
+ * Updates USN and Changes the body to "DELETED" in syncQueue \
  * to indicate its been deleted.
  * @param realm database object
  * @param {string} realm sync id
  */
-var markSyncQueueObjectAsDeleted = function(realm, realmSyncId) {
-  var filterText = 'realmSyncId = "' + realmSyncId + '"'
+var markSyncQueueObjectAsDeleted = function(realm, deletedObject) {
+  var filterText = 'realmSyncId = "' + deletedObject.realmSyncId + '"'
   let objToDelete = realm.objects('SyncQueue').filtered(filterText);
   if(objToDelete[0]) {
     objToDelete[0].usn = usnHandler.incrementAndReturnUsn();
     objToDelete[0].modified = Date.now();
-    objToDelete[0].body = "";
+    objToDelete[0].body = "DELETED";
+  } else {
+    realm.create('SyncQueue', {
+      usn: usnHandler.incrementAndReturnUsn(),
+      realmSyncId: deletedObject.realmSyncId,
+      modified: Date.now(),
+      type: deletedObject.constructor.name,
+      body: "DELETED"
+    });
   }
-  // else object isn't in syncQueue, do nothing
 }
-
 
 /**
  * Generates a 'unique' id.
