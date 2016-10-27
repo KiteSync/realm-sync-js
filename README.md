@@ -2,6 +2,9 @@
 
 # [KiteSync](http://kitesync.io)
 
+## **KiteSync has been deprecated in favor of the new [Realm Mobile Platform](https://realm.io/products/realm-mobile-platform)
+
+We had an ambitious goal of building a library that makes creating offline first apps that sync with RealmDB easy. Syncing is hard, but we built a solution and had some early traction! However, after literally syncing up with Realm to get an early preview of their polished solution for this problem, we're happy to deprecate this repository and let them handle syncing.
 
 ## About KiteSync
 
